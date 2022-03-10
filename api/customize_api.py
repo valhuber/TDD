@@ -42,7 +42,9 @@ def expose_services(app, api, project_dir, HOST: str, PORT: str):
 
         See: https://github.com/thomaxxl/safrs/wiki/Customization
         """
+        req = request
         user = request.args.get('user')
+        rd = request.data
         # app_logger.info(f'hello_world returning:  hello, {user}')
         app_logger.info(f'{user}')
         return jsonify({"result": f'hello, {user}'})
