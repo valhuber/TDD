@@ -1,0 +1,99 @@
+{
+  "data": {
+    "attributes": {
+      "Address": "507 - 20th Ave. E. Apt. 2A", 
+      "BirthDate": "1980-12-08", 
+      "City": "Seattle", 
+      "Country": "USA", 
+      "Extension": "5467", 
+      "FirstName": "Nancy", 
+      "HireDate": "2024-05-01", 
+      "HomePhone": "(206) 555-9857", 
+      "Id": 1, 
+      "IsCommissioned": 1, 
+      "LastName": "Davolio", 
+      "Notes": "Education includes a BA in psychology from Colorado State University in 1970.  She also completed 'The Art of the Cold Call.'  Nancy is a member of Toastmasters International.", 
+      "OnLoanDepartmentId": 1, 
+      "Photo": null, 
+      "PhotoPath": "http://accweb/emmployees/davolio.bmp", 
+      "PostalCode": "98122", 
+      "ProperSalary": {
+        "comparator": "<sqlalchemy.sql.sqltypes._LookupExpressionAdapter.Comparator object at 0x10faecac0>", 
+        "left": "Employee.Salary", 
+        "modifiers": "{}", 
+        "negate": null, 
+        "operator": "<built-in function mul>", 
+        "right": ":Salary_1", 
+        "type": "DECIMAL"
+      }, 
+      "Region": "North America", 
+      "ReportsTo": 2, 
+      "Salary": 200000.0, 
+      "Title": "Sales Representative", 
+      "TitleOfCourtesy": "Ms.", 
+      "WorksForDepartmentId": 2
+    }, 
+    "id": "1", 
+    "links": {
+      "self": "http://localhost:5656/api/Employee/1/"
+    }, 
+    "relationships": {
+      "Department": {
+        "data": null, 
+        "links": {
+          "self": "http://localhost:5656/api/Employee/1/Department"
+        }
+      }, 
+      "Department1": {
+        "data": null, 
+        "links": {
+          "self": "http://localhost:5656/api/Employee/1/Department1"
+        }
+      }, 
+      "EmployeeAuditList": {
+        "data": [], 
+        "links": {
+          "self": "http://localhost:5656/api/Employee/1/EmployeeAuditList"
+        }
+      }, 
+      "EmployeeTerritoryList": {
+        "data": [], 
+        "links": {
+          "self": "http://localhost:5656/api/Employee/1/EmployeeTerritoryList"
+        }
+      }, 
+      "Manager": {
+        "data": null, 
+        "links": {
+          "self": "http://localhost:5656/api/Employee/1/Manager"
+        }
+      }, 
+      "Manages": {
+        "data": [], 
+        "links": {
+          "self": "http://localhost:5656/api/Employee/1/Manages"
+        }
+      }, 
+      "OrderList": {
+        "data": [], 
+        "links": {
+          "self": "http://localhost:5656/api/Employee/1/OrderList"
+        }
+      }
+    }, 
+    "type": "Employee"
+  }, 
+  "included": [], 
+  "jsonapi": {
+    "version": "1.0"
+  }, 
+  "links": {
+    "self": "http://localhost:5656/api/Employee/1/"
+  }, 
+  "meta": {
+    "count": 1, 
+    "instance_meta": {}, 
+    "limit": 250, 
+    "total": 1
+  }
+}
