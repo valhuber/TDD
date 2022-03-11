@@ -6,6 +6,8 @@ def step_impl(context):
 
 @when('GET Customer API')
 def step_impl(context):
+    import pdb
+    pdb.set_trace() # I want to add a break point in here (for whatever reason)
     assert True is not False
 
 @then('ALFKI retrieved')
