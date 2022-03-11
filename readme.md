@@ -79,3 +79,13 @@ Feature: Place Order # features/place_order.feature:1
 12 steps passed, 0 failed, 0 skipped, 0 undefined
 Took 0m0.001s
 ```
+
+&nbsp;&nbsp;
+
+# Debug behave
+
+Basic (no IDE) procedure [noted here](https://921kiyo.com/debugging-the-Python-behave-test/).
+
+Attempting VSCode using [this procedure](https://qxf2.com/blog/run-python-behave-from-visual-studio-code/); failing to debug:
+
+<figure><img src="https://github.com/valhuber/TDD/blob/main/images/debug-fails.png?raw=true"></figure>
