@@ -96,4 +96,4 @@ Attempting VSCode using [this procedure](https://qxf2.com/blog/run-python-behave
 
 Also tried [this procedure](https://github.com/behave/behave/issues/709), unable to import:
 
-<figure><img src="https://github.com/valhuber/TDD/blob/main/images/my-behave.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/TDD/blob/main/images/debug-my-behave.png?raw=true"></figure>
