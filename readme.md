@@ -11,31 +11,33 @@ From the TDD article
 ## Story
 ```
 As a [X]
-I want [Y]
-so that [Z]
+I want [Y-feature]
+so that [Z-benefit]
 ```
 
 ### Place Order
 ```
 As a Sales Manager,
-I want Place Orders services
+I want Place Order services
 So that I can check credit and reorder products
 ```
 
 
-## Behavior
+## Behavior (aka Scenario)
 ```
-Given some initial context (the givens),  
-When an event occurs,  
-Then ensure some outcomes.
+Given some initial context (the GIVEN),  ==> Class
+   And other conditions,
+When an EVENT occurs,                     ==> Class
+Then ensure some OUTCOME,                 ==> Class
+   And other outcomes.
 ```
 
 ### Place Order > Check Credit
 ```
-Given a customer account with an assigned credit limit,
-When an Order is Placed
-Then Accept the Order if credit limit is not exceeded
-And Reject the Order if the credit limit is exceeded
+Given a CustomerAccount with an assigned credit limit,
+When an OrderIsPlaced
+Then ensure OrderAccepted if credit limit is not exceeded
+And ensure OrderRejected if the credit limit is exceeded
 ```
 ### Place Order > Reorder Products
 ```
