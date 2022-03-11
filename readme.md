@@ -1,9 +1,11 @@
 # TDD - Test Driven Dev, with Logic Traceability
 
-This project is to explore:
+This project uses the sample app of [API Logic Server](https://github.com/valhuber/ApiLogicServer/blob/main/README.md) to explore:
 
 1. Using [TDD](http://dannorth.net/introducing-bdd/) to define Stories and their Behaviors (tests), using [behave](https://behave.readthedocs.io/en/stable/tutorial.html).
 2. Behavior / Logic Tracing - identifying logic that implements a behavior
+
+&nbsp;&nbsp;
 
 # Stories and Behaviors
 
@@ -46,6 +48,8 @@ Given Products with assigned reorder points
 When an OrderIsShipped
 Then ensure ProductsAreReordered iff the reorder points execeeds recomputed Units-Available
 ```
+
+&nbsp;&nbsp;
 
 # behave stubs
 
