@@ -55,8 +55,42 @@ def expose_services(app, api, project_dir, HOST: str, PORT: str):
         """
         Used by test/server_test.py - enables client app to log msg into server
         """
+        import os
+        import datetime
+
+        def add_file_handler(logger, name, log_dir):
+            """Add a file handler for this logger with the specified `name` (and
+            store the log file under `log_dir`)."""
+            # Format for file log
+            fmt = '%(asctime)s | %(levelname)8s | %(filename)s:%(lineno)d | %(message)s'
+            formatter = logging.Formatter(fmt)
+
+            # Determine log path/file name; create log_dir if necessary
+            now = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
+            log_name = f'{str(name).replace(" ", "_")}_{now}'
+            if not os.path.exists(log_dir):
+                try:
+                    os.makedirs(log_dir)
+                except:
+                    print('{}: Cannot create directory {}. '.format(
+                        self.__class__.__name__, log_dir),
+                        end='', file=sys.stderr)
+                    log_dir = '/tmp' if sys.platform.startswith('linux') else '.'
+                    print(f'Defaulting to {log_dir}.', file=sys.stderr)
+
+            log_file = os.path.join(log_dir, log_name) + '.log'
+
+            # Create file handler for logging to a file (log all five levels)
+            logger.file_handler = logging.FileHandler(log_file)
+            logger.file_handler.setLevel(logging.DEBUG)
+            logger.file_handler.setFormatter(formatter)
+            logger.addHandler(logger.file_handler)
+
         msg = request.args.get('msg')
         app_logger.info(f'{msg}')
+        logic_logger = logging.getLogger('logic_logger')  # for debugging user logic
+        logic_logger.info("\n\nLOGIC LOGGER HERE\n")
+        add_file_handler(logic_logger, "LogicLog", os.getcwd())
         return jsonify({"result": f'ok'})
 
     app_logger.info("api/expose_service.py - Exposing custom services")
