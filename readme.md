@@ -50,6 +50,7 @@ Then ensure ProductsAreReordered iff the reorder points execeeds recomputed Unit
 # behave stubs
 
 ```
+Feature: Application Integration 
 
   Scenario: GET Customer          # features/api.feature:3
     Given Customer Account: ALFKI # features/steps/api.py:3 0.000s
