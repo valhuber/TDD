@@ -23,7 +23,7 @@ def expose_services(app, api, project_dir, HOST: str, PORT: str):
     This sample illustrates the classic hello world,
     and a more interesting add_order.
 
-     """
+    """
 
 
     app_logger = logging.getLogger("api_logic_server_app")
@@ -57,17 +57,28 @@ def expose_services(app, api, project_dir, HOST: str, PORT: str):
         """
         import os
         import datetime
+        from pathlib import Path
+        import logging
+        # import logging.Logger as Logger
 
-        def add_file_handler(logger, name, log_dir):
+
+        def add_file_handler(logger, name: str, log_dir):
             """Add a file handler for this logger with the specified `name` (and
             store the log file under `log_dir`)."""
             # Format for file log
+            for each_handler in logger.handlers:
+                each_handler.flush()
+                handler_name = str(each_handler)
+                if "stderr" in handler_name:
+                    print(f'do not delete stderr')
+                else:
+                    logger.removeHandler(each_handler)
             fmt = '%(asctime)s | %(levelname)8s | %(filename)s:%(lineno)d | %(message)s'
             formatter = logging.Formatter(fmt)
 
             # Determine log path/file name; create log_dir if necessary
             now = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
-            log_name = f'{str(name).replace(" ", "_")}_{now}'
+            log_name = f'{str(name).replace(" ", "_")}'  # {now}'
             if not os.path.exists(log_dir):
                 try:
                     os.makedirs(log_dir)
@@ -81,16 +92,21 @@ def expose_services(app, api, project_dir, HOST: str, PORT: str):
             log_file = os.path.join(log_dir, log_name) + '.log'
 
             # Create file handler for logging to a file (log all five levels)
+            print(f'create file handler for logging: {log_file}')
             logger.file_handler = logging.FileHandler(log_file)
             logger.file_handler.setLevel(logging.DEBUG)
             logger.file_handler.setFormatter(formatter)
             logger.addHandler(logger.file_handler)
 
         msg = request.args.get('msg')
+        test = request.args.get('test')
+        if test is not None and test != "None":
+            if test == "None":
+                print(f'None for msg: {msg}')
+            logic_logger = logging.getLogger('logic_logger')  # for debugging user logic
+            logic_logger.info("\n\nLOGIC LOGGER HERE\n")
+            add_file_handler(logic_logger, test, Path(os.getcwd()).joinpath('test/results'))
         app_logger.info(f'{msg}')
-        logic_logger = logging.getLogger('logic_logger')  # for debugging user logic
-        logic_logger.info("\n\nLOGIC LOGGER HERE\n")
-        add_file_handler(logic_logger, "LogicLog", os.getcwd())
         return jsonify({"result": f'ok'})
 
     app_logger.info("api/expose_service.py - Exposing custom services")

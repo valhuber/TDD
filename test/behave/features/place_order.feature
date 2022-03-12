@@ -3,7 +3,8 @@ Feature: Place Order
   Scenario: Custom Service: add_order - good
      Given Customer Account: ALFKI
       When Good Order Placed
-      Then Balance Adjusted
+      Then Balance Adjusted (demo: chain up)
+      Then Products Reordered
 
 
   Scenario: Custom Service: add_order - bad

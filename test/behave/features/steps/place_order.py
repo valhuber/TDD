@@ -4,7 +4,11 @@ from behave import *
 def step_impl(context):
     assert True is not False
 
-@then('Balance Adjusted')
+@then('Balance Adjusted (demo: chain up)')
+def step_impl(context):
+    assert context.failed is False
+
+@then('Products Reordered')
 def step_impl(context):
     assert context.failed is False
 
