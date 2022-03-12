@@ -70,11 +70,13 @@ def expose_services(app, api, project_dir, HOST: str, PORT: str):
                 each_handler.flush()
                 handler_name = str(each_handler)
                 if "stderr" in handler_name:
-                    print(f'do not delete stderr')
+                    pass
+                    # print(f'do not delete stderr')
                 else:
                     logger.removeHandler(each_handler)
             fmt = '%(asctime)s | %(levelname)8s | %(filename)s:%(lineno)d | %(message)s'
             formatter = logging.Formatter(fmt)
+            formatter = logging.Formatter('%(message)s - %(asctime)s - %(name)s - %(levelname)s')
 
             # Determine log path/file name; create log_dir if necessary
             now = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
@@ -92,7 +94,7 @@ def expose_services(app, api, project_dir, HOST: str, PORT: str):
             log_file = os.path.join(log_dir, log_name) + '.log'
 
             # Create file handler for logging to a file (log all five levels)
-            print(f'create file handler for logging: {log_file}')
+            # print(f'create file handler for logging: {log_file}')
             logger.file_handler = logging.FileHandler(log_file)
             logger.file_handler.setLevel(logging.DEBUG)
             logger.file_handler.setFormatter(formatter)
@@ -104,7 +106,7 @@ def expose_services(app, api, project_dir, HOST: str, PORT: str):
             if test == "None":
                 print(f'None for msg: {msg}')
             logic_logger = logging.getLogger('logic_logger')  # for debugging user logic
-            logic_logger.info("\n\nLOGIC LOGGER HERE\n")
+            # logic_logger.info("\n\nLOGIC LOGGER HERE\n")
             add_file_handler(logic_logger, test, Path(os.getcwd()).joinpath('test/results'))
         app_logger.info(f'{msg}')
         return jsonify({"result": f'ok'})
