@@ -9,10 +9,10 @@ This project uses the sample app of [API Logic Server](https://github.com/valhub
 
 # Setup
 
-The usual:
+The usual (if cryptography fails, get a recent version of pip):
 ```
 python -m venv venv
-source venv/bin/activate
+source venv/bin/activate  # windows venv\Scripts\activate
 pip install -r requirements.txt
 ```
 

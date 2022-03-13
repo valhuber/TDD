@@ -11,3 +11,4 @@ Feature: Place Order
      Given Customer Account: ALFKI
       When Order Placed with excessive quantity
       Then Rejected per Credit Limit
+      Then And Test
