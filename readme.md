@@ -51,42 +51,12 @@ Then ensure ProductsAreReordered iff the reorder points execeeds recomputed Unit
 
 &nbsp;&nbsp;
 
-# behave stubs
-
-```
-Feature: Application Integration 
-
-  Scenario: GET Customer          # features/api.feature:3
-    Given Customer Account: ALFKI # features/steps/api.py:3 0.000s
-    When GET Customer API         # features/steps/api.py:7 0.000s
-    Then ALFKI retrieved          # features/steps/api.py:11 0.000s
-
-  Scenario: GET Department                      # features/api.feature:9
-    Given Department TBD                        # features/steps/api.py:16 0.000s
-    When GET Department with SubDepartments API # features/steps/api.py:20 0.000s
-    Then SubDepartments returned                # features/steps/api.py:24 0.000s
-
-Feature: Place Order # features/place_order.feature:1
-
-  Scenario: Custom Service: add_order - good  # features/place_order.feature:3
-    Given Customer Account: ALFKI             # features/steps/api.py:3 0.000s
-    When Good Order Placed                    # features/steps/place_order.py:3 0.000s
-    Then Balance Adjusted                     # features/steps/place_order.py:7 0.000s
-
-  Scenario: Custom Service: add_order - bad   # features/place_order.feature:9
-    Given Customer Account: ALFKI             # features/steps/api.py:3 0.000s
-    When Order Placed with excessive quantity # features/steps/place_order.py:12 0.000s
-    Then Rejected per Credit Limit            # features/steps/place_order.py:16 0.000s
-
-2 features passed, 0 failed, 0 skipped
-4 scenarios passed, 0 failed, 0 skipped
-12 steps passed, 0 failed, 0 skipped, 0 undefined
-Took 0m0.001s
-```
+# Example 1
+<figure><img src="https://github.com/valhuber/TDD/blob/main/images/example-1.png?raw=true"></figure>
 
 &nbsp;&nbsp;
 
-# Debug behave
+# Appendix - Debug behave
 
 Basic (no IDE) procedure [noted here](https://921kiyo.com/debugging-the-Python-behave-test/).
 
