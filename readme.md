@@ -52,6 +52,11 @@ Then ensure ProductsAreReordered iff the reorder points execeeds recomputed Unit
 &nbsp;&nbsp;
 
 # Example 1
+
+This diagram illustrates:
+1. A running TDD test
+2. Generating `behave/results` log files with rules trace and rule use
+
 <figure><img src="https://github.com/valhuber/TDD/blob/main/images/example-1.png?raw=true"></figure>
 
 &nbsp;&nbsp;
