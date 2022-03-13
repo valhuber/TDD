@@ -1,4 +1,5 @@
 from behave import *
+import requests, pdb
 
 host = "localhost"
 port = "5656"
@@ -9,7 +10,6 @@ def step_impl(context):
 
 @when('GET Customer API')
 def step_impl(context):
-    import pdb, requests
     # pdb.set_trace() # I want to add a break point in here (for whatever reason)
     # todo - host and port hard-coded
     get_order_uri = f'http://localhost:5656/api/Order/?' \
