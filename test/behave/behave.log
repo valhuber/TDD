@@ -1,0 +1,48 @@
+Feature: Application Integration # features/api.feature:1
+
+  Scenario: GET Customer          # features/api.feature:3
+    Given Customer Account: ALFKI # features/steps/api.py:7
+    When GET Customer API         # features/steps/api.py:11
+    Then ALFKI retrieved          # features/steps/api.py:23
+
+  Scenario: GET Department                      # features/api.feature:9
+    Given Department TBD                        # features/steps/api.py:29
+    When GET Department with SubDepartments API # features/steps/api.py:33
+    Then SubDepartments returned                # features/steps/api.py:37
+
+Feature: Place Order # features/place_order.feature:1
+
+  Scenario: Custom Service: add_order - good  # features/place_order.feature:3
+    Given Customer Account: ALFKI             # features/steps/api.py:7
+    When Good Order Placed                    # features/steps/place_order.py:6
+    Then Balance Adjusted (demo: chain up)    # features/steps/place_order.py:10
+    Then Products Reordered                   # features/steps/place_order.py:14
+
+  Scenario: Custom Service: add_order - bad   # features/place_order.feature:10
+    Given Customer Account: ALFKI             # features/steps/api.py:7
+    When Order Placed with excessive quantity # features/steps/place_order.py:19
+    Then Rejected per Credit Limit            # features/steps/place_order.py:52
+      Assertion Failed: Error - "exceeds credit not in {
+          "errors": [
+              {
+                  "title": "balance (22100.0000000000) exceeds credit (2300.0000000000)",
+                  "detail": {
+                      "model": "Customer"
+                  },
+                  "code": 2001
+              }
+          ]
+      }
+      
+      Captured stdout:
+      one last thing by the way
+
+
+
+Failing scenarios:
+  features/place_order.feature:10  Custom Service: add_order - bad
+
+1 feature passed, 1 failed, 0 skipped
+3 scenarios passed, 1 failed, 0 skipped
+12 steps passed, 1 failed, 0 skipped, 0 undefined
+Took 0m0.036s

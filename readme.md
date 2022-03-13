@@ -7,6 +7,26 @@ This project uses the sample app of [API Logic Server](https://github.com/valhub
 
 &nbsp;&nbsp;
 
+# Setup
+
+The usual:
+```
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+This should enable you to run launch configuration `ApiLogicServer`.
+1. Start the launch configuration `ApiLogicServer`
+2. Open a terminal window, and
+
+```
+cd test/behave
+behave
+```
+
+&nbsp;&nbsp;
+
 # Stories and Behaviors
 
 From the TDD article
