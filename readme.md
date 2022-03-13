@@ -92,3 +92,11 @@ Attempting VSCode using [this procedure](https://qxf2.com/blog/run-python-behave
 Also tried [this procedure](https://github.com/behave/behave/issues/709), unable to import:
 
 <figure><img src="https://github.com/valhuber/TDD/blob/main/images/debug-my-behave.png?raw=true"></figure>
+
+&nbsp;&nbsp;
+
+# Appendix - Wiki formatting
+
+Tips
+* use 2 spaces (at end) for newline
+* for tab: & emsp;
