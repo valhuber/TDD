@@ -107,7 +107,8 @@ def expose_services(app, api, project_dir, HOST: str, PORT: str):
                 print(f'None for msg: {msg}')
             logic_logger = logging.getLogger('logic_logger')  # for debugging user logic
             # logic_logger.info("\n\nLOGIC LOGGER HERE\n")
-            add_file_handler(logic_logger, test, Path(os.getcwd()).joinpath('test/results'))
+            dir = request.args.get('dir')
+            add_file_handler(logic_logger, test, Path(os.getcwd()).joinpath(dir))
         app_logger.info(f'{msg}')
         return jsonify({"result": f'ok'})
 

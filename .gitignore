@@ -4,4 +4,4 @@
 **/__pycache__
 *.egg-info
 venv/
-test/results
+test/basic/results
