@@ -1,72 +1,104 @@
+&nbsp;
+&nbsp;
 # Feature: Application Integration  
   
-  Scenario: GET Customer  
+&nbsp;
+&nbsp;
+## Scenario: GET Customer
+&emsp;  Scenario: GET Customer  
 &emsp;&emsp;    Given Customer Account: ALFKI  
 &emsp;&emsp;    When GET Customer API  
 &emsp;&emsp;    Then ALFKI retrieved  
 <details>
-<summary>Click to see Logic</summary>
+<summary>Tests - *and their logic* are transparent.. click to see Logic</summary>
 
 
 ```
-*** here is the code for T Customer ***
+unable to find logic file: test/behave/results/GET Customer.log
 ```
 </details>
   
-  Scenario: GET Department  
+&nbsp;
+&nbsp;
+## Scenario: GET Department
+&emsp;  Scenario: GET Department  
 &emsp;&emsp;    Given Department TBD  
 &emsp;&emsp;    When GET Department with SubDepartments API  
 &emsp;&emsp;    Then SubDepartments returned  
 <details>
-<summary>Click to see Logic</summary>
+<summary>Tests - *and their logic* are transparent.. click to see Logic</summary>
 
 
 ```
-*** here is the code for T Department ***
+unable to find logic file: test/behave/results/GET Department.log
 ```
 </details>
   
+&nbsp;
+&nbsp;
 # Feature: Place Order  
   
-  Scenario: Custom Service: add_order - good  
+&nbsp;
+&nbsp;
+## Scenario: Custom Service: add_order - good
+&emsp;  Scenario: Custom Service: add_order - good  
 &emsp;&emsp;    Given Customer Account: ALFKI  
 &emsp;&emsp;    When Good Order Placed  
 &emsp;&emsp;    Then Balance Adjusted (demo: chain up)  
 &emsp;&emsp;    Then Products Reordered  
 <details>
-<summary>Click to see Logic</summary>
+<summary>Tests - *and their logic* are transparent.. click to see Logic</summary>
 
 
 ```
-*** here is the code for stom Service: add_order - good ***
+unable to find logic file: test/behave/results/Custom Service: add_order - good.log
 ```
 </details>
   
-  Scenario: Custom Service: add_order - bad  
+&nbsp;
+&nbsp;
+## Scenario: Custom Service: add_order - bad
+&emsp;  Scenario: Custom Service: add_order - bad  
 &emsp;&emsp;    Given Customer Account: ALFKI  
 &emsp;&emsp;    When Order Placed with excessive quantity  
 &emsp;&emsp;    Then Rejected per Credit Limit  
-      Assertion Failed: Error - "exceeds credit not in {  
-          "errors": [  
-              {  
-                  "title": "balance (22100.0000000000) exceeds credit (2300.0000000000)",  
-                  "detail": {  
-                      "model": "Customer"  
-                  },  
-                  "code": 2001  
-              }  
-          ]  
-      }  
+&emsp;&emsp;    Then And Test  
+<details>
+<summary>Tests - *and their logic* are transparent.. click to see Logic</summary>
+
+
+```
+*** here is the logic for: Custom Service: add_order - bad ***
+Logic Phase:		ROW LOGIC(session=0x11237eac0) (sqlalchemy before_flush)			 - 2022-03-13 21:25:00,327 - logic_logger - INFO  
+..Order[None] {Insert - client} Id: None, CustomerId: ALFKI, EmployeeId: 1, OrderDate: None, RequiredDate: None, ShippedDate: None, ShipVia: None, Freight: 10, ShipName: None, ShipAddress: None, ShipCity: None, ShipRegion: None, ShipPostalCode: None, ShipCountry: None, AmountTotal: None, Country: None, City: None, Ready: None, OrderDetailCount: None  row: 0x11237e970  session: 0x11237eac0 - 2022-03-13 21:25:00,328 - logic_logger - INFO  
+....Customer[ALFKI] {Update - Adjusting Customer: UnpaidOrderCount, OrderCount} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance: 2102.0000000000, CreditLimit: 2300.0000000000, OrderCount:  [15-->] 16, UnpaidOrderCount:  [10-->] 11  row: 0x112426700  session: 0x11237eac0 - 2022-03-13 21:25:00,334 - logic_logger - INFO  
+..OrderDetail[None] {Insert - client} Id: None, OrderId: None, ProductId: 1, UnitPrice: None, Quantity: 1111, Discount: 0, Amount: None, ShippedDate: None  row: 0x112374880  session: 0x11237eac0 - 2022-03-13 21:25:00,336 - logic_logger - INFO  
+..OrderDetail[None] {copy_rules for role: Product - UnitPrice} Id: None, OrderId: None, ProductId: 1, UnitPrice: 18.0000000000, Quantity: 1111, Discount: 0, Amount: None, ShippedDate: None  row: 0x112374880  session: 0x11237eac0 - 2022-03-13 21:25:00,338 - logic_logger - INFO  
+..OrderDetail[None] {Formula Amount} Id: None, OrderId: None, ProductId: 1, UnitPrice: 18.0000000000, Quantity: 1111, Discount: 0, Amount: 19998.0000000000, ShippedDate: None  row: 0x112374880  session: 0x11237eac0 - 2022-03-13 21:25:00,339 - logic_logger - INFO  
+....Product[1] {Update - Adjusting Product: UnitsShipped} Id: 1, ProductName: Chai, SupplierId: 1, CategoryId: 1, QuantityPerUnit: 10 boxes x 20 bags, UnitPrice: 18.0000000000, UnitsInStock: 39, UnitsOnOrder: 0, ReorderLevel: 10, Discontinued: 0, UnitsShipped:  [0-->] 1111  row: 0x112439280  session: 0x11237eac0 - 2022-03-13 21:25:00,340 - logic_logger - INFO  
+....Product[1] {Formula UnitsInStock} Id: 1, ProductName: Chai, SupplierId: 1, CategoryId: 1, QuantityPerUnit: 10 boxes x 20 bags, UnitPrice: 18.0000000000, UnitsInStock:  [39-->] -1072, UnitsOnOrder: 0, ReorderLevel: 10, Discontinued: 0, UnitsShipped:  [0-->] 1111  row: 0x112439280  session: 0x11237eac0 - 2022-03-13 21:25:00,341 - logic_logger - INFO  
+....Order[None] {Update - Adjusting Order: AmountTotal, OrderDetailCount} Id: None, CustomerId: ALFKI, EmployeeId: 1, OrderDate: None, RequiredDate: None, ShippedDate: None, ShipVia: None, Freight: 10, ShipName: None, ShipAddress: None, ShipCity: None, ShipRegion: None, ShipPostalCode: None, ShipCountry: None, AmountTotal:  [None-->] 19998.0000000000, Country: None, City: None, Ready: None, OrderDetailCount:  [None-->] 1  row: 0x11237e970  session: 0x11237eac0 - 2022-03-13 21:25:00,343 - logic_logger - INFO  
+......Customer[ALFKI] {Update - Adjusting Customer: Balance} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance:  [2102.0000000000-->] 22100.0000000000, CreditLimit: 2300.0000000000, OrderCount: 16, UnpaidOrderCount: 11  row: 0x112426700  session: 0x11237eac0 - 2022-03-13 21:25:00,345 - logic_logger - INFO  
+......Customer[ALFKI] {Constraint Failure: balance (22100.0000000000) exceeds credit (2300.0000000000)} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance:  [2102.0000000000-->] 22100.0000000000, CreditLimit: 2300.0000000000, OrderCount: 16, UnpaidOrderCount: 11  row: 0x112426700  session: 0x11237eac0 - 2022-03-13 21:25:00,346 - logic_logger - INFO  
   
-      Captured stdout:  
-      one last thing by the way  
+Rules Fired: - 2022-03-13 21:25:00,346 - logic_logger - INFO  
+  1. Derive Customer.OrderCount as Count(<class 'database.models.Order'> Where None) - 2022-03-13 21:25:00,347 - logic_logger - INFO  
+  2. Derive Order.AmountTotal as Sum(OrderDetail.Amount Where None) - 2022-03-13 21:25:00,347 - logic_logger - INFO  
+  3. Derive Customer.Balance as Sum(Order.AmountTotal Where <function declare_logic.<locals>.<lambda> at 0x111db2790>) - 2022-03-13 21:25:00,347 - logic_logger - INFO  
+  4. Derive Order.OrderDetailCount as Count(<class 'database.models.OrderDetail'> Where None) - 2022-03-13 21:25:00,348 - logic_logger - INFO  
+  5. Derive Customer.UnpaidOrderCount as Count(<class 'database.models.Order'> Where <function declare_logic.<locals>.<lambda> at 0x111db91f0>) - 2022-03-13 21:25:00,348 - logic_logger - INFO  
+  6. Constraint Function: None  - 2022-03-13 21:25:00,348 - logic_logger - INFO  
+  7. Derive Product.UnitsInStock as Formula (1): <function> - 2022-03-13 21:25:00,348 - logic_logger - INFO  
+  8. Derive OrderDetail.Amount as Formula (1): as_expression=lambda row: row.UnitPrice * row.Qua [...] - 2022-03-13 21:25:00,349 - logic_logger - INFO  
+  9. Derive Product.UnitsShipped as Sum(OrderDetail.Quantity Where <function declare_logic.<locals>.<lambda> at 0x111db90d0>) - 2022-03-13 21:25:00,349 - logic_logger - INFO  
+  10. Derive OrderDetail.ShippedDate as Formula (2): row.Order.ShippedDate - 2022-03-13 21:25:00,350 - logic_logger - INFO  
+  11. Derive OrderDetail.UnitPrice as Copy(Product.UnitPrice) - 2022-03-13 21:25:00,350 - logic_logger - INFO  
   
+ - 2022-03-13 21:25:00,350 - logic_logger - INFO  
+```
+</details>
   
-  
-Failing scenarios:  
-  features/place_order.feature:10  Custom Service: add_order - bad  
-  
-1 feature passed, 1 failed, 0 skipped  
-3 scenarios passed, 1 failed, 0 skipped  
-12 steps passed, 1 failed, 0 skipped, 0 undefined  
-Took 0m0.036s  
+2 features passed, 0 failed, 0 skipped  
+4 scenarios passed, 0 failed, 0 skipped  
+14 steps passed, 0 failed, 0 skipped, 0 undefined  
+Took 0m0.061s  
