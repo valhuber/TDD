@@ -1,0 +1,72 @@
+# Feature: Application Integration  
+  
+  Scenario: GET Customer  
+&emsp;&emsp;    Given Customer Account: ALFKI  
+&emsp;&emsp;    When GET Customer API  
+&emsp;&emsp;    Then ALFKI retrieved  
+<details>
+<summary>Click to see Logic</summary>
+
+
+```
+*** here is the code for T Customer ***
+```
+</details>
+  
+  Scenario: GET Department  
+&emsp;&emsp;    Given Department TBD  
+&emsp;&emsp;    When GET Department with SubDepartments API  
+&emsp;&emsp;    Then SubDepartments returned  
+<details>
+<summary>Click to see Logic</summary>
+
+
+```
+*** here is the code for T Department ***
+```
+</details>
+  
+# Feature: Place Order  
+  
+  Scenario: Custom Service: add_order - good  
+&emsp;&emsp;    Given Customer Account: ALFKI  
+&emsp;&emsp;    When Good Order Placed  
+&emsp;&emsp;    Then Balance Adjusted (demo: chain up)  
+&emsp;&emsp;    Then Products Reordered  
+<details>
+<summary>Click to see Logic</summary>
+
+
+```
+*** here is the code for stom Service: add_order - good ***
+```
+</details>
+  
+  Scenario: Custom Service: add_order - bad  
+&emsp;&emsp;    Given Customer Account: ALFKI  
+&emsp;&emsp;    When Order Placed with excessive quantity  
+&emsp;&emsp;    Then Rejected per Credit Limit  
+      Assertion Failed: Error - "exceeds credit not in {  
+          "errors": [  
+              {  
+                  "title": "balance (22100.0000000000) exceeds credit (2300.0000000000)",  
+                  "detail": {  
+                      "model": "Customer"  
+                  },  
+                  "code": 2001  
+              }  
+          ]  
+      }  
+  
+      Captured stdout:  
+      one last thing by the way  
+  
+  
+  
+Failing scenarios:  
+  features/place_order.feature:10  Custom Service: add_order - bad  
+  
+1 feature passed, 1 failed, 0 skipped  
+3 scenarios passed, 1 failed, 0 skipped  
+12 steps passed, 1 failed, 0 skipped, 0 undefined  
+Took 0m0.036s  

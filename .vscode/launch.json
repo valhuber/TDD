@@ -30,23 +30,21 @@
             ]
         },
         {
+            "name": "Behave Logic Report",
+            "type": "python",
+            "request": "launch",
+            "program": "test/behave/behave_logic_report.py",
+            "redirectOutput": true,
+            "justMyCode": false,            
+            "console": "integratedTerminal"
+        },
+        {
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
             "program": "${file}",
             "redirectOutput": true,
             "justMyCode": false,            
-            "console": "integratedTerminal"
-        },
-        {
-            "name": "Basic Web App",
-            "type": "python",
-            "request": "launch",
-            "program": "run.py",
-            "args": ["localhost", "5002"],
-            "redirectOutput": true,
-            "justMyCode": false,            
-            "cwd": "${workspaceFolder}/ui/basic_web_app",
             "console": "integratedTerminal"
         },
         {
