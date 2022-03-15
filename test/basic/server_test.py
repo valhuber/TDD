@@ -23,10 +23,10 @@ if len(sys.argv) == 1 or (len(sys.argv) > 1 and sys.argv[1].__contains__("help")
 
 get_test = True  # Performs a basic get, with Fields and Filter
 self_reln_test = True  # Get dept, verify subDepts, headDept
-patch_test = True  # Updates a Customer with intentionally bad data to illustrate simple constraint
-adjust_test = True  # Update Order Detail with intentionally bad data to illustrate chaining, constraint, reuse
 post_test = True  # Posts a customer
 delete_test = True  # Deletes the posted customer
+
+adjust_test = True  # Update Order Detail with intentionally bad data to illustrate chaining, constraint, reuse
 audit_test = True  # alter salary, check for audit row
 prune_test = True  # observe rules pruned for Order.RequiredDate (2013-10-13)
 cascade_update_test = True  # verify Order.ShippedDate 2013-10-13 adjusts balance 2102-1086->1016, product onhand

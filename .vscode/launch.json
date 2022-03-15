@@ -15,13 +15,23 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "My Behave",
+            "type": "python",
+            "request": "launch",
+            "cwd": "test/api_logic_server_behave",
+            "program": "my_behave.py",
+            "redirectOutput": true,
+            "justMyCode": false,            
+            "console": "integratedTerminal"
+        },
+        {
             "name": "Behave",
             "type": "python",
             "request": "launch",
-            "module": "test/behave",
+            "module": "test/api_logic_server_behave",
             "console": "integratedTerminal",
             "env": {
-                "BASE_DIR": "test/behave"
+                "BASE_DIR": "test/api_logic_server_behave"
                    },
             "args":[
                 "--no-capture",

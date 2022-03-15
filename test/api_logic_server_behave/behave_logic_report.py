@@ -20,7 +20,7 @@ def show_logic(scenario: str):
     wiki_data.append("<summary>Tests - *and their logic* are transparent.. click to see Logic</summary>")
     wiki_data.append("\n")
     wiki_data.append("```")
-    logic_file_name = f'test/behave/results/{scenario}.log'
+    logic_file_name = f'test/behave/results_when/{scenario}.log'
     logic_file_name_path = Path(logic_file_name)
     if not logic_file_name_path.is_file():
         wiki_data.append(f'unable to find logic file: {logic_file_name}')

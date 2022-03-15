@@ -35,7 +35,7 @@ class Customer(SAFRSBase, Base):
     __tablename__ = 'Customer'
 
     Id = Column(String(8000), primary_key=True)
-    CompanyName = Column(String(8000))
+    CompanyName = Column("CompanyName", String(8000))  # could do comp=Column("colName"...
     ContactName = Column(String(8000))
     ContactTitle = Column(String(8000))
     Address = Column(String(8000))
