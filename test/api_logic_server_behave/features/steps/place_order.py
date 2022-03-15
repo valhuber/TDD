@@ -76,8 +76,15 @@ def step_impl(context):
     orders = result_map.data
     for each_order in orders:
         order_id = each_order.id
-        delete_uri = "http://localhost:5656/api/Order/" + str(id) + "/"
+        delete_uri = "http://localhost:5656/api/Order/" + str(order_id) + "/"
         r = requests.delete(delete_uri)
+
+    before = context.alfki_before
+    expected_adjustment = 0
+    after = get_ALFLI()
+    context.alfki_after = after
+    assert before.Balance + expected_adjustment == after.Balance, \
+        f'Before balance {before.Balance} + {expected_adjustment} != new Balance {after.Balance}'
 
     assert True is not False
 
