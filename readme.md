@@ -15,6 +15,7 @@ python -m venv venv
 source venv/bin/activate  # windows venv\Scripts\activate
 pip install -r requirements.txt
 ```
+The tests perform cascade delete operations.  You must alter the `models.py` file [as described here](https://github.com/valhuber/ApiLogicServer/wiki#edit-modelspy-referential-integrity-eg-sqlite).
 
 This should enable you to run launch configuration `ApiLogicServer`.
 

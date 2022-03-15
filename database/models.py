@@ -104,7 +104,6 @@ class Product(SAFRSBase, Base):
 
     OrderDetailList = relationship('OrderDetail', cascade_backrefs=True, backref='Product')
 
-
 class Region(SAFRSBase, Base):
     __tablename__ = 'Region'
 
@@ -245,7 +244,8 @@ class Order(SAFRSBase, Base):
     # see backref on parent: Customer = relationship('Customer', cascade_backrefs=True, backref='OrderList')
     # see backref on parent: Employee = relationship('Employee', cascade_backrefs=True, backref='OrderList')
 
-    OrderDetailList = relationship('OrderDetail', cascade_backrefs=True, backref='Order')
+    # OrderDetailList = relationship('OrderDetail', cascade_backrefs=True, backref='Order')
+    OrderDetailList = relationship('OrderDetail', cascade='all, delete', cascade_backrefs=True, backref='Order')
 
 
 class OrderDetail(SAFRSBase, Base):
