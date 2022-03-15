@@ -17,9 +17,14 @@ pip install -r requirements.txt
 ```
 
 This should enable you to run launch configuration `ApiLogicServer`.
-1. Start the launch configuration `ApiLogicServer`
-2. Open a terminal window, and
 
+To simplify debugging, this procedure is simpler:
+1. Open and terminal window and `python api_logic_server_run.py`  # starts the server
+2. Run Launch Configuration:
+   * **Debug Behave Logic**
+   * **Report Behave Logic**
+
+Or, open a terminal window and:
 ```
 cd test/behave
 behave
@@ -81,22 +86,16 @@ This diagram illustrates:
 
 &nbsp;&nbsp;
 
-# Appendix - Debug behave
+# Appendix - Debug behave tips
 
 Basic (no IDE) procedure [noted here](https://921kiyo.com/debugging-the-Python-behave-test/).
 
-Attempting VSCode using [this procedure](https://qxf2.com/blog/run-python-behave-from-visual-studio-code/); failing to debug:
+Better: uccessfully used [this procedure](https://github.com/behave/behave/issues/709).  Note the `debug_behave` launch configuration.
+
+> Tip: using directory `behave` interferes with Python namespace, hence `api_logic_server_behave`
+
+Attempted VSCode using [this procedure](https://qxf2.com/blog/run-python-behave-from-visual-studio-code/); failing to debug:
 
 <figure><img src="https://github.com/valhuber/TDD/blob/main/images/debug-fails.png?raw=true"></figure>
 
-Also tried [this procedure](https://github.com/behave/behave/issues/709), unable to import:
-
-<figure><img src="https://github.com/valhuber/TDD/blob/main/images/debug-my-behave.png?raw=true"></figure>
-
 &nbsp;&nbsp;
-
-# Appendix - Wiki formatting
-
-Tips
-* use 2 spaces (at end) for newline
-* for tab: & emsp;

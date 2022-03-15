@@ -15,35 +15,20 @@
             "console": "integratedTerminal"
         },
         {
-            "name": "My Behave",
+            "name": "Debug Behave Logic",
             "type": "python",
             "request": "launch",
-            "cwd": "test/api_logic_server_behave",
-            "program": "my_behave.py",
+            "cwd": "${workspaceFolder}/test/api_logic_server_behave",
+            "program": "${workspaceFolder}/test/api_logic_server_behave/debug_behave.py",
             "redirectOutput": true,
             "justMyCode": false,            
             "console": "integratedTerminal"
         },
         {
-            "name": "Behave",
+            "name": "Report Behave Logic",
             "type": "python",
             "request": "launch",
-            "module": "test/api_logic_server_behave",
-            "console": "integratedTerminal",
-            "env": {
-                "BASE_DIR": "test/api_logic_server_behave"
-                   },
-            "args":[
-                "--no-capture",
-                "--no-capture-stderr",
-                "${file}"
-            ]
-        },
-        {
-            "name": "Behave Logic Report",
-            "type": "python",
-            "request": "launch",
-            "program": "test/behave/behave_logic_report.py",
+            "program": "test/api_logic_server_behave/report_behave_logic.py",
             "redirectOutput": true,
             "justMyCode": false,            
             "console": "integratedTerminal"

@@ -75,9 +75,9 @@ def main(file: str):
         
         wiki_data.append(each_line)
 
-    with open(r'test/behave/behave_logic_report.txt', 'w') as rpt:
+    with open(r'test/behave/report_behave_logic.txt', 'w') as rpt:
         rpt.write('\n'.join(wiki_data))
 
 if __name__ == "__main__":
     print(f'\n Behave Logic Report.py, starting at {os.getcwd()}')
-    main(file = 'test/behave/behave.log')
+    main(file = 'test/api_logic_server_behave/behave.log')
