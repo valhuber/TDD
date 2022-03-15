@@ -129,7 +129,7 @@ def step_impl(context):
     assert "exceeds credit" in response_text, f'Error - "exceeds credit not in {response_text}'
     # behave.log_capture.capture("THIS IS behave.log_capture.capture")
 
-@then('And Test')
+@then('exceeds credit in response')
 def step_impl(context):
     response_text = context.response_text
     print( "one last thing", "by the way", "\n")
@@ -160,3 +160,32 @@ def step_impl(context):
     r = requests.patch(url=patch_cust_uri, json=patch_args)
     response_text = r.text
     context.response_text = r.text
+
+
+@when('Order RequiredDate altered (2013-10-13)')
+def step_impl(context):
+    test_name = 'Order RequiredDate altered (2013-10-13)'
+    test_utils.prt(f'\n\n\n{test_name}... observe rules pruned for Order.RequiredDate (2013-10-13) \n\n', test_name)
+    patch_uri = f'http://localhost:5656/api/Order/10643/'
+    patch_args = \
+        {
+            "data": {
+                "attributes": {
+                    "RequiredDate": "2013-10-13",
+                    "Id": 10643},
+                "type": "Order",
+                "id": 10643
+            }}
+    r = requests.patch(url=patch_uri, json=patch_args)
+    response_text = r.text
+    context.response_text = r.text
+
+@then('Balance not adjusted')
+def step_impl(context):
+    before = context.alfki_before
+    expected_adjustment = 0
+    after = get_ALFLI()
+    context.alfki_after = after
+    assert before.Balance + expected_adjustment == after.Balance, \
+        f'Before balance {before.Balance} + {expected_adjustment} != new Balance {after.Balance}'
+
