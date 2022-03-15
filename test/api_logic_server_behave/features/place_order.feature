@@ -5,6 +5,7 @@ Feature: Place Order
       When Good Order Placed
       Then Balance Adjusted (demo: chain up)
       Then Products Reordered
+      Then Proper delete
 
 
   Scenario: Custom Service: add_order - bad

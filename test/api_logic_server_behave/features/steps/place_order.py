@@ -3,17 +3,22 @@ import requests, pdb
 import test_services
 import sys
 import json
+from dotmap import DotMap
 
 def get_ALFLI():
     get_uri = 'http://localhost:5656/api/Customer/ALFKI/?include=OrderList&fields%5BCustomer%5D=Id%2CCompanyName%2CBalance%2CCreditLimit%2COrderCount%2CUnpaidOrderCount'
-    r = requests.get(url=get_order_uri)
+    r = requests.get(url=get_uri)
     response_text = r.text
     result_data = json.loads(response_text)
-    return result_data
+    result_map = DotMap(result_data)
+    result_attrs = result_map.data.attributes
+    return result_attrs
 
 
 @given('Customer Account: ALFKI')
 def step_impl(context):
+    alfki_before = get_ALFLI()
+    context.alfki_before = alfki_before
     pass
 
 @when('Good Order Placed')
@@ -25,7 +30,7 @@ def step_impl(context):
             "args": {
                 "CustomerId": "ALFKI",
                 "EmployeeId": 1,
-                "Freight": 10,
+                "Freight": 11,
                 "OrderDetailList": [
                     {
                         "ProductId": 1,
@@ -42,16 +47,17 @@ def step_impl(context):
         }
     }
     test_name = 'Custom Service: add_order - good'
-    test_services.prt(f'\n\n\n{test_name} - verify credit check returned...\n', test_name)
     r = requests.post(url=add_order_uri, json=add_order_args)
     context.response_text = r.text
-    # assert "???" in r.text, f'Error - is order# in {r.text}'
 
 @then('Balance Adjusted (demo: chain up)')
 def step_impl(context):
-    response_text = context.response_text
-    print( "one last thing", "by the way", "\n")
-    assert "exceeds credit" not in response_text, f'Error - "exceeds credit not in {response_text}'
+    before = context.alfki_before
+    expected_adjustment = 56  # find this from inspecting data on test run
+    after = get_ALFLI()
+    context.alfki_after = after
+    assert before.Balance + expected_adjustment == after.Balance, \
+        f'Before balance {before.Balance} + {expected_adjustment} != new Balance {after.Balance}'
 
 @then('Products Reordered')
 def step_impl(context):
@@ -59,7 +65,20 @@ def step_impl(context):
 
 @then('Proper delete')
 def step_impl(context):
-    # find ALFKI order with freight of 10 and delete it
+    # find ALFKI order with freight of 11 and delete it (hmm... cannot get created id)
+    order_uri = "http://localhost:5656/api/Order/?include=Customer&fields%5BOrder%5D=Id%2CCustomerId%2CEmployeeId%2COrderDate%2CRequiredDate%2CShippedDate%2CShipVia%2CFreight%2CShipName%2CShipAddress%2CShipCity%2CShipRegion%2CShipPostalCode%2CShipCountry%2CAmountTotal%2CCountry%2CCity%2CReady%2COrderDetailCount&page%5Boffset%5D=0&page%5Blimit%5D=10&sort=Id%2CCustomerId%2CEmployeeId%2COrderDate%2CRequiredDate%2CShippedDate%2CShipVia%2CFreight%2CShipName%2CShipAddress%2CShipCity%2CShipRegion%2CShipPostalCode%2CShipCountry%2CAmountTotal%2CCountry%2CCity%2CReady%2COrderDetailCount%2Cid&filter%5BCustomerId%5D=ALFKI&filter%5BFreight%5D=11"
+    r = requests.get(url=order_uri)
+    response_text = r.text
+    result_data = json.loads(response_text)
+    result_map = DotMap(result_data)
+    # if > 1, get result_map.data (array)
+
+    orders = result_map.data
+    for each_order in orders:
+        order_id = each_order.id
+        delete_uri = "http://localhost:5656/api/Order/" + str(id) + "/"
+        r = requests.delete(delete_uri)
+
     assert True is not False
 
 @when('Order Placed with excessive quantity')
