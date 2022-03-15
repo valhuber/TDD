@@ -13,3 +13,10 @@ Feature: Place Order
       When Order Placed with excessive quantity
       Then Rejected per Credit Limit
       Then And Test
+
+
+  Scenario: Alter Item Qty to exceed credit
+     Given Customer Account: ALFKI
+      When Order Detail Quantity altered very high
+      Then Rejected per Credit Limit
+      Then And Test

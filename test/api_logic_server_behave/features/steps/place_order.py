@@ -1,6 +1,6 @@
 from behave import *
 import requests, pdb
-import test_services
+import test_utils
 import sys
 import json
 from dotmap import DotMap
@@ -47,6 +47,7 @@ def step_impl(context):
         }
     }
     test_name = 'Custom Service: add_order - good'
+    test_utils.prt(f'\n\n\n{test_name} - verify adjustments...\n', test_name)
     r = requests.post(url=add_order_uri, json=add_order_args)
     context.response_text = r.text
 
@@ -114,7 +115,7 @@ def step_impl(context):
         }
     }
     test_name = 'Custom Service: add_order - bad'
-    test_services.prt(f'\n\n\n{test_name} - verify credit check returned...\n', test_name)
+    test_utils.prt(f'\n\n\n{test_name} - verify credit check response...\n', test_name)
     r = requests.post(url=add_order_uri, json=add_order_args)
     context.response_text = r.text
     # https://stackoverflow.com/questions/25150404/how-can-i-see-print-statements-in-behave-bdd#:~:text=By%20default%2C%20behave%20does%20not%20display%20any%20output,is%20to%20change%20some%20of%20the%20default%20settings.
@@ -138,3 +139,24 @@ def step_impl(context):
 def after_step(context, step):
     print("\nflush1 \n\n")
     print("\nflush2 \n\n")
+
+
+@when('Order Detail Quantity altered very high')
+def step_impl(context):
+    test_name = 'Order Detail Quantity altered very high'
+    test_utils.prt(f'\n\n\n{test_name} - verify credit check response...\n', test_name)
+    patch_cust_uri = f'http://localhost:5656/api/OrderDetail/1040/'
+    patch_args = \
+        {
+            "data": {
+                "attributes": {
+                    "Id": 1040,
+                    "Quantity": 1110
+                },
+                "type": "OrderDetail",
+                "id": "1040"
+            }
+        }
+    r = requests.patch(url=patch_cust_uri, json=patch_args)
+    response_text = r.text
+    context.response_text = r.text

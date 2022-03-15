@@ -92,6 +92,10 @@ def expose_services(app, api, project_dir, HOST: str, PORT: str):
                     print(f'Defaulting to {log_dir}.', file=sys.stderr)
 
             log_file = os.path.join(log_dir, log_name) + '.log'
+            if os.path.exists(log_file):
+                os.remove(log_file)
+            else:
+                pass  # file does not exist
 
             # Create file handler for logging to a file (log all five levels)
             # print(f'create file handler for logging: {log_file}')
