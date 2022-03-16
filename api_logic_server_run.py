@@ -68,12 +68,12 @@ def setup_logging(flask_app):
         handler = logging.StreamHandler(sys.stderr)
         handler.setLevel(logging.DEBUG)
         if flask_app.config['SQLALCHEMY_DATABASE_URI'].endswith("db.sqlite"):
-            formatter = logging.Formatter('%(message).160s')  # lead tag - '%(name)s: %(message)s')
+            formatter = logging.Formatter('%(message)s')  # lead tag - '%(name)s: %(message).160s')
             handler.setFormatter(formatter)
             logic_logger = logging.getLogger("logic_logger")
             logic_logger.handlers = []
             logic_logger.addHandler(handler)
-            app_logger.warning("\nLog width truncated for readability -- "
+            app_logger.warning("\nLogic Log width NOT truncated for readability -- "
                                "see https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python#debugging\n")
         else:
             formatter = logging.Formatter('%(message)s - %(asctime)s - %(name)s - %(levelname)s')

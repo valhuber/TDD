@@ -51,20 +51,20 @@ def step_impl(context):
     r = requests.post(url=add_order_uri, json=add_order_args)
     context.response_text = r.text
 
-@then('Balance Adjusted (demo: chain up)')
+@then('Logic adjusts Balance (demo: chain up)')
 def step_impl(context):
     before = context.alfki_before
     expected_adjustment = 56  # find this from inspecting data on test run
     after = get_ALFLI()
     context.alfki_after = after
     assert before.Balance + expected_adjustment == after.Balance, \
-        f'Before balance {before.Balance} + {expected_adjustment} != new Balance {after.Balance}'
+        f'On add, before balance {before.Balance} + {expected_adjustment} != new Balance {after.Balance}'
 
-@then('Products Reordered')
+@then('Logic adusts Products Reordered')
 def step_impl(context):
     assert True is not False
 
-@then('Proper delete')
+@then('Logic adjusts aggregates down on delete order')
 def step_impl(context):
     # find ALFKI order with freight of 11 and delete it (hmm... cannot get created id)
     order_uri = "http://localhost:5656/api/Order/?include=Customer&fields%5BOrder%5D=Id%2CCustomerId%2CEmployeeId%2COrderDate%2CRequiredDate%2CShippedDate%2CShipVia%2CFreight%2CShipName%2CShipAddress%2CShipCity%2CShipRegion%2CShipPostalCode%2CShipCountry%2CAmountTotal%2CCountry%2CCity%2CReady%2COrderDetailCount&page%5Boffset%5D=0&page%5Blimit%5D=10&sort=Id%2CCustomerId%2CEmployeeId%2COrderDate%2CRequiredDate%2CShippedDate%2CShipVia%2CFreight%2CShipName%2CShipAddress%2CShipCity%2CShipRegion%2CShipPostalCode%2CShipCountry%2CAmountTotal%2CCountry%2CCity%2CReady%2COrderDetailCount%2Cid&filter%5BCustomerId%5D=ALFKI&filter%5BFreight%5D=11"
@@ -81,11 +81,11 @@ def step_impl(context):
         r = requests.delete(delete_uri)
 
     before = context.alfki_before
-    expected_adjustment = 0
+    expected_adjustment = -56
     after = get_ALFLI()
     context.alfki_after = after
     assert before.Balance + expected_adjustment == after.Balance, \
-        f'Before balance {before.Balance} + {expected_adjustment} != new Balance {after.Balance}'
+        f'On delete, Before balance {before.Balance} + {expected_adjustment} != new Balance {after.Balance}'
 
     assert True is not False
 
@@ -189,3 +189,60 @@ def step_impl(context):
     assert before.Balance + expected_adjustment == after.Balance, \
         f'Before balance {before.Balance} + {expected_adjustment} != new Balance {after.Balance}'
 
+
+
+@when('Order ShippedDate altered (2013-10-13)')
+def step_impl(context):
+    test_name = 'Order ShippedDate altered (2013-10-13)'
+    test_utils.prt(f'\n\n\n{test_name}... observe rules pruned for Order.RequiredDate (2013-10-13) \n\n', test_name)
+    patch_uri = f'http://localhost:5656/api/Order/10643/'
+    patch_args = \
+        {
+            "data": {
+                "attributes": {
+                    "ShippedDate": "2013-10-13",
+                    "Id": 10643},
+                "type": "Order",
+                "id": 10643
+            }}
+    r = requests.patch(url=patch_uri, json=patch_args)
+    response_text = r.text
+    context.response_text = r.text
+
+@then('Balance reduced 1086')
+def step_impl(context):
+    before = context.alfki_before
+    expected_adjustment = -1086
+    after = get_ALFLI()
+    context.alfki_after = after
+    assert before.Balance + expected_adjustment == after.Balance, \
+        f'Before balance {before.Balance} + {expected_adjustment} != new Balance {after.Balance}'
+
+
+
+@when('Order ShippedDate set to None')
+def step_impl(context):
+    test_name = 'Order ShippedDate altered (2013-10-13)'
+    test_utils.prt(f'\n\n\n{test_name}... observe rules pruned for Order.RequiredDate (2013-10-13) \n\n', test_name)
+    patch_uri = f'http://localhost:5656/api/Order/10643/'
+    patch_args = \
+        {
+            "data": {
+                "attributes": {
+                    "ShippedDate": None,
+                    "Id": 10643},
+                "type": "Order",
+                "id": 10643
+            }}
+    r = requests.patch(url=patch_uri, json=patch_args)
+    response_text = r.text
+    context.response_text = r.text
+
+@then('Logic adjusts Balance by -1086')
+def step_impl(context):
+    before = context.alfki_before
+    expected_adjustment = -1086
+    after = get_ALFLI()
+    context.alfki_after = after
+    assert before.Balance + expected_adjustment == after.Balance, \
+        f'Before balance {before.Balance} + {expected_adjustment} != new Balance {after.Balance}'
