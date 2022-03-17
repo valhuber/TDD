@@ -1,22 +1,22 @@
-AbstractRule Bank[0x10ec1baf0] (loaded 2022-03-16 17:28:33.934376)		##   - 2022-03-16 17:30:14,241 - logic_logger - INFO
-Mapped Class[OrderDetail] rules:		##   - 2022-03-16 17:30:14,241 - logic_logger - INFO
-  Derive OrderDetail.UnitPrice as Copy(Product.UnitPrice)		##   - 2022-03-16 17:30:14,241 - logic_logger - INFO
-  Derive OrderDetail.Amount as Formula (1): as_expression=lambda row: row.UnitPrice * row.Qua [...]		##   - 2022-03-16 17:30:14,241 - logic_logger - INFO
-  Derive OrderDetail.ShippedDate as Formula (2): row.Order.ShippedDate		##   - 2022-03-16 17:30:14,241 - logic_logger - INFO
-Mapped Class[Order] rules:		##   - 2022-03-16 17:30:14,241 - logic_logger - INFO
-  Derive Order.AmountTotal as Sum(OrderDetail.Amount Where None)		##   - 2022-03-16 17:30:14,241 - logic_logger - INFO
-  RowEvent Order.congratulate_sales_rep() 		##   - 2022-03-16 17:30:14,242 - logic_logger - INFO
-  Derive Order.OrderDetailCount as Count(<class 'database.models.OrderDetail'> Where None)		##   - 2022-03-16 17:30:14,242 - logic_logger - INFO
-Mapped Class[Customer] rules:		##   - 2022-03-16 17:30:14,242 - logic_logger - INFO
-  Derive Customer.Balance as Sum(Order.AmountTotal Where <function declare_logic.<locals>.<lambda> at 0x10ed718b0>)		##   - 2022-03-16 17:30:14,242 - logic_logger - INFO
-  Constraint Function: None 		##   - 2022-03-16 17:30:14,242 - logic_logger - INFO
-  Derive Customer.UnpaidOrderCount as Count(<class 'database.models.Order'> Where <function declare_logic.<locals>.<lambda> at 0x10ed89280>)		##   - 2022-03-16 17:30:14,242 - logic_logger - INFO
-  Derive Customer.OrderCount as Count(<class 'database.models.Order'> Where None)		##   - 2022-03-16 17:30:14,242 - logic_logger - INFO
-Mapped Class[Product] rules:		##   - 2022-03-16 17:30:14,242 - logic_logger - INFO
-  Derive Product.UnitsShipped as Sum(OrderDetail.Quantity Where <function declare_logic.<locals>.<lambda> at 0x10ed89160>)		##   - 2022-03-16 17:30:14,242 - logic_logger - INFO
-  Derive Product.UnitsInStock as Formula (1): <function>		##   - 2022-03-16 17:30:14,242 - logic_logger - INFO
-Mapped Class[Employee] rules:		##   - 2022-03-16 17:30:14,242 - logic_logger - INFO
-  Constraint Function: <function declare_logic.<locals>.raise_over_20_percent at 0x10ed899d0> 		##   - 2022-03-16 17:30:14,242 - logic_logger - INFO
-  RowEvent Employee.audit_by_event() 		##   - 2022-03-16 17:30:14,242 - logic_logger - INFO
-  Copy to: EmployeeAudit		##   - 2022-03-16 17:30:14,243 - logic_logger - INFO
-Logic Bank - 21 rules loaded - 2022-03-16 17:30:14,243 - logic_logger - INFO
+AbstractRule Bank[0x10fa1faf0] (loaded 2022-03-16 18:11:04.893156)		##   - 2022-03-16 18:11:06,026 - logic_logger - INFO
+Mapped Class[OrderDetail] rules:		##   - 2022-03-16 18:11:06,027 - logic_logger - INFO
+  Derive OrderDetail.UnitPrice as Copy(Product.UnitPrice)		##   - 2022-03-16 18:11:06,027 - logic_logger - INFO
+  Derive OrderDetail.Amount as Formula (1): as_expression=lambda row: row.UnitPrice * row.Qua [...]		##   - 2022-03-16 18:11:06,027 - logic_logger - INFO
+  Derive OrderDetail.ShippedDate as Formula (2): row.Order.ShippedDate		##   - 2022-03-16 18:11:06,027 - logic_logger - INFO
+Mapped Class[Order] rules:		##   - 2022-03-16 18:11:06,027 - logic_logger - INFO
+  Derive Order.AmountTotal as Sum(OrderDetail.Amount Where None)		##   - 2022-03-16 18:11:06,027 - logic_logger - INFO
+  RowEvent Order.congratulate_sales_rep() 		##   - 2022-03-16 18:11:06,027 - logic_logger - INFO
+  Derive Order.OrderDetailCount as Count(<class 'database.models.OrderDetail'> Where None)		##   - 2022-03-16 18:11:06,027 - logic_logger - INFO
+Mapped Class[Customer] rules:		##   - 2022-03-16 18:11:06,028 - logic_logger - INFO
+  Derive Customer.Balance as Sum(Order.AmountTotal Where <function declare_logic.<locals>.<lambda> at 0x10fb75940>)		##   - 2022-03-16 18:11:06,028 - logic_logger - INFO
+  Constraint Function: None 		##   - 2022-03-16 18:11:06,028 - logic_logger - INFO
+  Derive Customer.UnpaidOrderCount as Count(<class 'database.models.Order'> Where <function declare_logic.<locals>.<lambda> at 0x10fb98310>)		##   - 2022-03-16 18:11:06,028 - logic_logger - INFO
+  Derive Customer.OrderCount as Count(<class 'database.models.Order'> Where None)		##   - 2022-03-16 18:11:06,028 - logic_logger - INFO
+Mapped Class[Product] rules:		##   - 2022-03-16 18:11:06,028 - logic_logger - INFO
+  Derive Product.UnitsShipped as Sum(OrderDetail.Quantity Where <function declare_logic.<locals>.<lambda> at 0x10fb981f0>)		##   - 2022-03-16 18:11:06,028 - logic_logger - INFO
+  Derive Product.UnitsInStock as Formula (1): <function>		##   - 2022-03-16 18:11:06,028 - logic_logger - INFO
+Mapped Class[Employee] rules:		##   - 2022-03-16 18:11:06,028 - logic_logger - INFO
+  Constraint Function: <function declare_logic.<locals>.raise_over_20_percent at 0x10fb98a60> 		##   - 2022-03-16 18:11:06,028 - logic_logger - INFO
+  RowEvent Employee.audit_by_event() 		##   - 2022-03-16 18:11:06,028 - logic_logger - INFO
+  Copy to: EmployeeAudit		##   - 2022-03-16 18:11:06,029 - logic_logger - INFO
+Logic Bank - 21 rules loaded - 2022-03-16 18:11:06,029 - logic_logger - INFO

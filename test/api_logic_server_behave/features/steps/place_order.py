@@ -212,12 +212,16 @@ def step_impl(context):
 def step_impl(context):
     before = context.alfki_before
     expected_adjustment = -1086
-    after = get_ALFLI()
-    context.alfki_after = after
-    assert before.Balance + expected_adjustment == after.Balance, \
-        f'Before balance {before.Balance} + {expected_adjustment} != new Balance {after.Balance}'
+    shipped = get_ALFLI()
+    context.alfki_shipped = shipped  # alert - this variable not visible in next scenario... need to use given
+    assert before.Balance + expected_adjustment == shipped.Balance, \
+        f'Before balance {before.Balance} + {expected_adjustment} != new Balance {shipped.Balance}'
 
 
+@given('Shipped Order')
+def step_impl(context):
+    context.alfki_shipped = get_ALFLI()
+    pass
 
 @when('Order ShippedDate set to None')
 def step_impl(context):
@@ -239,8 +243,8 @@ def step_impl(context):
 
 @then('Logic adjusts Balance by -1086')
 def step_impl(context):
-    before = context.alfki_before
-    expected_adjustment = -1086
+    before = context.alfki_shipped
+    expected_adjustment = 1086
     after = get_ALFLI()
     context.alfki_after = after
     assert before.Balance + expected_adjustment == after.Balance, \

@@ -35,6 +35,6 @@ Feature: Place Order
 
 
   Scenario: Reset Shipped - adjust logic reuse
-     Given Customer Account: ALFKI
+     Given Shipped Order
       When Order ShippedDate set to None
       Then Logic adjusts Balance by -1086
