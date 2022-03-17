@@ -72,7 +72,6 @@ def step_impl(context):
     response_text = r.text
     result_data = json.loads(response_text)
     result_map = DotMap(result_data)
-    # if > 1, get result_map.data (array)
 
     orders = result_map.data
     for each_order in orders:
@@ -81,7 +80,7 @@ def step_impl(context):
         r = requests.delete(delete_uri)
 
     before = context.alfki_before
-    expected_adjustment = -56
+    expected_adjustment = 0
     after = get_ALFLI()
     context.alfki_after = after
     assert before.Balance + expected_adjustment == after.Balance, \

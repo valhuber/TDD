@@ -13,6 +13,9 @@ from sqlalchemy.orm import object_mapper
 from database import models
 from database.db import Base
 
+#from logic_bank.logic_bank import LogicBank
+from logic_bank.rule_bank.rule_bank import RuleBank
+
 # called by expose_api_models.py, to customize api (new end points, services).
 # separate from expose_api_models.py, to simplify merge if project recreated
 
@@ -32,6 +35,18 @@ def expose_services(app, api, project_dir, HOST: str, PORT: str):
     app_logger.info(f'*** Server now running -- '
              f'explore sample data and API at http://{HOST}:{PORT}/')
 
+    def rules_report():
+        rules_bank = RuleBank()
+        logic_logger = logging.getLogger("logic_logger")
+        rule_count = 0
+        logic_logger.debug(f'\nThe following rules have been activated\n')
+        list_rules = rules_bank.__str__()
+        loaded_rules = list(list_rules.split("\n"))
+        for each_rule in loaded_rules:
+            logic_logger.info(each_rule + '\t\t##  ')
+            rule_count += 1
+        logic_logger.info(f'Logic Bank - {rule_count} rules loaded')
+
 
     @app.route('/hello_world')
     def hello_world():  # test it with: http://localhost:5656/hello_world?user=ApiLogicServer
@@ -47,6 +62,7 @@ def expose_services(app, api, project_dir, HOST: str, PORT: str):
         rd = request.data
         # app_logger.info(f'hello_world returning:  hello, {user}')
         app_logger.info(f'{user}')
+        rules_report()
         return jsonify({"result": f'hello, {user}'})
 
 
@@ -113,7 +129,11 @@ def expose_services(app, api, project_dir, HOST: str, PORT: str):
             # logic_logger.info("\n\nLOGIC LOGGER HERE\n")
             dir = request.args.get('dir')
             add_file_handler(logic_logger, test, Path(os.getcwd()).joinpath(dir))
-        app_logger.info(f'{msg}')
+        if msg == "Rules Report":
+            rules_report()
+            logic_logger.info(f'Logic Bank {__version__} - {rule_count} rules loaded')
+        else:
+            app_logger.info(f'{msg}')
         return jsonify({"result": f'ok'})
 
     app_logger.info("api/expose_service.py - Exposing custom services")
