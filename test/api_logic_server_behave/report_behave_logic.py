@@ -14,16 +14,30 @@ Tips
 tab = "&emsp;"
 debug_info = "# features"
 wiki_data = []
+debug_scenario = "Custom Service: add_order - good"
 
 def show_logic(scenario: str):
     wiki_data.append("<details>")
     wiki_data.append("<summary>Tests - *and their logic* are transparent.. click to see Logic</summary>")
     wiki_data.append("\n")
     wiki_data.append("```")
-    logic_file_name = f'test/behave/results_when/{scenario}.log'
+    scenario_trunc = scenario
+    if scenario_trunc is not None and len(scenario_trunc) >= 26:
+        scenario_trunc = scenario[0:25]
+    scenario_trunc = f'{str(scenario_trunc).replace(" ", "_")}'
+    logic_file_name = f'results_when/{scenario_trunc}.log'
     logic_file_name_path = Path(logic_file_name)
     if not logic_file_name_path.is_file():
         wiki_data.append(f'unable to find logic file: {logic_file_name}')
+        if scenario == debug_scenario:
+            print(f'RELATIVE: {logic_file_name} in {os.getcwd()}')
+            full_name = f'{os.getcwd()}/{logic_file_name}'
+            print(f'..FULL: {os.getcwd()}/{logic_file_name}')
+            logic_file_name = 'results_when/test.log'
+            with open(logic_file_name) as logic:
+                logic_lines = logic.readlines()
+            # finder:  /Users/val/dev/TDD/test/api_logic_server_behave/results_when
+            # seeking: /Users/val/dev/TDD/test/api_logic_server_behave/results_when/Custom Service: add_order - good.log
     else:
         wiki_data.append(f'*** here is the logic for: {scenario} ***')
         with open(logic_file_name) as logic:
@@ -32,8 +46,6 @@ def show_logic(scenario: str):
             wiki_data.append(each_logic_line[:-1] + "  ")
     wiki_data.append("```")
     wiki_data.append("</details>")
-
-
 
 
 def main(file: str):
@@ -75,9 +87,9 @@ def main(file: str):
         
         wiki_data.append(each_line)
 
-    with open(r'test/behave/report_behave_logic.txt', 'w') as rpt:
+    with open(r'report_behave_logic.txt', 'w') as rpt:
         rpt.write('\n'.join(wiki_data))
 
 if __name__ == "__main__":
     print(f'\n Behave Logic Report.py, starting at {os.getcwd()}')
-    main(file = 'test/api_logic_server_behave/behave.log')
+    main(file = 'behave.log')

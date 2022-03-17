@@ -1,30 +1,71 @@
+Feature: About Sample # features/about.feature:1
+
+  Scenario: Transaction Processing                           # features/about.feature:3
+    Given Sample Database                                    # features/steps/about.py:9
+    When Transactions are submitted                          # features/steps/about.py:13
+    Then Enforce business policies with Logic (rules + code) # features/steps/about.py:17
+
 Feature: Application Integration # features/api.feature:1
 
   Scenario: GET Customer          # features/api.feature:3
-    Given Customer Account: ALFKI # features/steps/api.py:7
-    When GET Customer API         # features/steps/api.py:11
-    Then ALFKI retrieved          # features/steps/api.py:23
+    Given Customer Account: VINET # features/steps/api.py:8
+    When GET Orders API           # features/steps/api.py:12
+    Then VINET retrieved          # features/steps/api.py:24
 
   Scenario: GET Department                      # features/api.feature:9
-    Given Department TBD                        # features/steps/api.py:29
-    When GET Department with SubDepartments API # features/steps/api.py:33
-    Then SubDepartments returned                # features/steps/api.py:37
+    Given Department 2                          # features/steps/api.py:30
+    When GET Department with SubDepartments API # features/steps/api.py:34
+    Then SubDepartments returned                # features/steps/api.py:38
 
 Feature: Place Order # features/place_order.feature:1
 
-  Scenario: Custom Service: add_order - good  # features/place_order.feature:3
-    Given Customer Account: ALFKI             # features/steps/api.py:7
-    When Good Order Placed                    # features/steps/place_order.py:6
-    Then Balance Adjusted (demo: chain up)    # features/steps/place_order.py:10
-    Then Products Reordered                   # features/steps/place_order.py:14
+  Scenario: Custom Service: add_order - good           # features/place_order.feature:3
+    Given Customer Account: ALFKI                      # features/steps/place_order.py:18
+    When Good Order Placed                             # features/steps/place_order.py:24
+    Then Logic adjusts Balance (demo: chain up)        # features/steps/place_order.py:54
+    Then Logic adusts Products Reordered               # features/steps/place_order.py:63
+    Then Logic adjusts aggregates down on delete order # features/steps/place_order.py:67
 
-  Scenario: Custom Service: add_order - bad   # features/place_order.feature:10
-    Given Customer Account: ALFKI             # features/steps/api.py:7
-    When Order Placed with excessive quantity # features/steps/place_order.py:19
-    Then Rejected per Credit Limit            # features/steps/place_order.py:52
-    Then And Test                             # features/steps/place_order.py:59
+  Scenario: Custom Service: add_order - bad   # features/place_order.feature:11
+    Given Customer Account: ALFKI             # features/steps/place_order.py:18
+    When Order Placed with excessive quantity # features/steps/place_order.py:91
+    Then Rejected per Credit Limit            # features/steps/place_order.py:124
+    Then exceeds credit in response           # features/steps/place_order.py:131
 
-2 features passed, 0 failed, 0 skipped
-4 scenarios passed, 0 failed, 0 skipped
-14 steps passed, 0 failed, 0 skipped, 0 undefined
-Took 0m0.061s
+  Scenario: Alter Item Qty to exceed credit      # features/place_order.feature:18
+    Given Customer Account: ALFKI                # features/steps/place_order.py:18
+    When Order Detail Quantity altered very high # features/steps/place_order.py:143
+    Then Rejected per Credit Limit               # features/steps/place_order.py:124
+    Then exceeds credit in response              # features/steps/place_order.py:131
+
+  Scenario: Alter Required Date - adjust logic pruned  # features/place_order.feature:25
+    Given Customer Account: ALFKI                      # features/steps/place_order.py:18
+    When Order RequiredDate altered (2013-10-13)       # features/steps/place_order.py:164
+    Then Balance not adjusted                          # features/steps/place_order.py:182
+
+  Scenario: Set Shipped - adjust logic reuse    # features/place_order.feature:31
+    Given Customer Account: ALFKI               # features/steps/place_order.py:18
+    When Order ShippedDate altered (2013-10-13) # features/steps/place_order.py:193
+    Then Balance reduced 1086                   # features/steps/place_order.py:211
+
+  Scenario: Reset Shipped - adjust logic reuse  # features/place_order.feature:37
+    Given Shipped Order                         # features/steps/place_order.py:221
+    When Order ShippedDate set to None          # features/steps/place_order.py:226
+    Then Logic adjusts Balance by -1086         # features/steps/place_order.py:244
+
+Feature: Salary Change # features/salary_change.feature:1
+
+  Scenario: Audit Salary Change   # features/salary_change.feature:3
+    Given Customer Account: VINET # features/steps/api.py:8
+    When Patch Salary to 200k     # features/steps/salary_change.py:13
+    Then Salary_audit row created # features/steps/salary_change.py:31
+
+  Scenario: GET Department                      # features/salary_change.feature:9
+    Given Department 2                          # features/steps/api.py:30
+    When GET Department with SubDepartments API # features/steps/api.py:34
+    Then SubDepartments returned                # features/steps/api.py:38
+
+4 features passed, 0 failed, 0 skipped
+11 scenarios passed, 0 failed, 0 skipped
+37 steps passed, 0 failed, 0 skipped, 0 undefined
+Took 0m0.453s

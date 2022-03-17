@@ -5,4 +5,4 @@
 *.egg-info
 venv/
 test/basic/results
-test/behave/results
+test/api_logic_server_behave/results

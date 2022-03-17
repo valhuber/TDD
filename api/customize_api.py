@@ -97,6 +97,9 @@ def expose_services(app, api, project_dir, HOST: str, PORT: str):
             # Determine log path/file name; create log_dir if necessary
             now = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
             log_name = f'{str(name).replace(" ", "_")}'  # {now}'
+            if len(log_name) >= 26:
+                log_name = log_name[0:25]
+
             if not os.path.exists(log_dir):
                 try:
                     os.makedirs(log_dir)

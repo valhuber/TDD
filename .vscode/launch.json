@@ -28,7 +28,8 @@
             "name": "Report Behave Logic",
             "type": "python",
             "request": "launch",
-            "program": "test/api_logic_server_behave/report_behave_logic.py",
+            "cwd": "${workspaceFolder}/test/api_logic_server_behave",
+            "program": "${workspaceFolder}/test/api_logic_server_behave/report_behave_logic.py",
             "redirectOutput": true,
             "justMyCode": false,            
             "console": "integratedTerminal"
