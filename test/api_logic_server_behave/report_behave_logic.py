@@ -16,11 +16,15 @@ debug_info = "# features"
 wiki_data = []
 debug_scenario = "Custom Service: add_order - good"
 
+
+def remove_trailer(line: str) -> str:
+    """ remove everything after the ## """
+    end_here = line.find("\t\t##")
+    result = line[0:end_here]
+    return result
+
+
 def show_logic(scenario: str):
-    wiki_data.append("<details>")
-    wiki_data.append("<summary>Tests - *and their logic* are transparent.. click to see Logic</summary>")
-    wiki_data.append("\n")
-    wiki_data.append("```")
     scenario_trunc = scenario
     if scenario_trunc is not None and len(scenario_trunc) >= 26:
         scenario_trunc = scenario[0:25]
@@ -28,7 +32,7 @@ def show_logic(scenario: str):
     logic_file_name = f'results_when/{scenario_trunc}.log'
     logic_file_name_path = Path(logic_file_name)
     if not logic_file_name_path.is_file():
-        wiki_data.append(f'unable to find logic file: {logic_file_name}')
+        # wiki_data.append(f'unable to find logic file: {logic_file_name}')
         if scenario == debug_scenario:
             print(f'RELATIVE: {logic_file_name} in {os.getcwd()}')
             full_name = f'{os.getcwd()}/{logic_file_name}'
@@ -39,13 +43,33 @@ def show_logic(scenario: str):
             # finder:  /Users/val/dev/TDD/test/api_logic_server_behave/results_when
             # seeking: /Users/val/dev/TDD/test/api_logic_server_behave/results_when/Custom Service: add_order - good.log
     else:
-        wiki_data.append(f'*** here is the logic for: {scenario} ***')
+        logic_log = []
+        rules_used = []
+        is_logic_log = True
+        wiki_data.append("<details>")
+        wiki_data.append("<summary>Tests - *and their logic* are transparent.. click to see Logic</summary>")
+        wiki_data.append("\n")
+        wiki_data.append(f'*** here are the rules used in: {scenario} ***')
+        wiki_data.append("```")
         with open(logic_file_name) as logic:
             logic_lines = logic.readlines()
         for each_logic_line in logic_lines:
-            wiki_data.append(each_logic_line[:-1] + "  ")
-    wiki_data.append("```")
-    wiki_data.append("</details>")
+            if is_logic_log:
+                if "Rules Fired" in each_logic_line:
+                    is_logic_log = False
+                    continue
+                else:
+                    logic_log.append(each_logic_line)
+            else:
+                each_logic_line = remove_trailer(each_logic_line)
+                wiki_data.append(each_logic_line + "  ")
+        wiki_data.append("```")
+        wiki_data.append(f'*** their operation is shown in the Logic Log ***')
+        wiki_data.append("```")
+        for each_logic_log in logic_log:
+            wiki_data.append(each_logic_log[0:-1])
+        wiki_data.append("```")
+        wiki_data.append("</details>")
 
 
 def main(file: str):

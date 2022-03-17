@@ -9,14 +9,6 @@
 &emsp;&emsp;    Given Sample Database  
 &emsp;&emsp;    When Transactions are submitted  
 &emsp;&emsp;    Then Enforce business policies with Logic (rules + code)  
-<details>
-<summary>Tests - *and their logic* are transparent.. click to see Logic</summary>
-
-
-```
-unable to find logic file: results_when/Transaction_Processing.log
-```
-</details>
   
 &nbsp;
 &nbsp;
@@ -29,14 +21,6 @@ unable to find logic file: results_when/Transaction_Processing.log
 &emsp;&emsp;    Given Customer Account: VINET  
 &emsp;&emsp;    When GET Orders API  
 &emsp;&emsp;    Then VINET retrieved  
-<details>
-<summary>Tests - *and their logic* are transparent.. click to see Logic</summary>
-
-
-```
-unable to find logic file: results_when/GET_Customer.log
-```
-</details>
   
 &nbsp;
 &nbsp;
@@ -45,14 +29,6 @@ unable to find logic file: results_when/GET_Customer.log
 &emsp;&emsp;    Given Department 2  
 &emsp;&emsp;    When GET Department with SubDepartments API  
 &emsp;&emsp;    Then SubDepartments returned  
-<details>
-<summary>Tests - *and their logic* are transparent.. click to see Logic</summary>
-
-
-```
-unable to find logic file: results_when/GET_Department.log
-```
-</details>
   
 &nbsp;
 &nbsp;
@@ -71,38 +47,40 @@ unable to find logic file: results_when/GET_Department.log
 <summary>Tests - *and their logic* are transparent.. click to see Logic</summary>
 
 
+*** here are the rules used in: Custom Service: add_order - good ***
 ```
-*** here is the logic for: Custom Service: add_order - good ***
-Logic Phase:		ROW LOGIC(session=0x10cbff0d0) (sqlalchemy before_flush)			 - 2022-03-16 20:29:53,013 - logic_logger - INFO  
-..Order[None] {Insert - client} Id: None, CustomerId: ALFKI, EmployeeId: 1, OrderDate: None, RequiredDate: None, ShippedDate: None, ShipVia: None, Freight: 10, ShipName: None, ShipAddress: None, ShipCity: None, ShipRegion: None, ShipPostalCode: None, ShipCountry: None, AmountTotal: None, Country: None, City: None, Ready: None, OrderDetailCount: None  row: 0x10cbff4f0  session: 0x10cbff0d0 - 2022-03-16 20:29:53,013 - logic_logger - INFO  
-....Customer[ALFKI] {Update - Adjusting Customer: UnpaidOrderCount, OrderCount} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance: 2102.0000000000, CreditLimit: 2300.0000000000, OrderCount:  [15-->] 16, UnpaidOrderCount:  [10-->] 11  row: 0x10cc36b50  session: 0x10cbff0d0 - 2022-03-16 20:29:53,016 - logic_logger - INFO  
-..OrderDetail[None] {Insert - client} Id: None, OrderId: None, ProductId: 1, UnitPrice: None, Quantity: 1111, Discount: 0, Amount: None, ShippedDate: None  row: 0x10cbff880  session: 0x10cbff0d0 - 2022-03-16 20:29:53,017 - logic_logger - INFO  
-..OrderDetail[None] {copy_rules for role: Product - UnitPrice} Id: None, OrderId: None, ProductId: 1, UnitPrice: 18.0000000000, Quantity: 1111, Discount: 0, Amount: None, ShippedDate: None  row: 0x10cbff880  session: 0x10cbff0d0 - 2022-03-16 20:29:53,018 - logic_logger - INFO  
-..OrderDetail[None] {Formula Amount} Id: None, OrderId: None, ProductId: 1, UnitPrice: 18.0000000000, Quantity: 1111, Discount: 0, Amount: 19998.0000000000, ShippedDate: None  row: 0x10cbff880  session: 0x10cbff0d0 - 2022-03-16 20:29:53,019 - logic_logger - INFO  
-....Product[1] {Update - Adjusting Product: UnitsShipped} Id: 1, ProductName: Chai, SupplierId: 1, CategoryId: 1, QuantityPerUnit: 10 boxes x 20 bags, UnitPrice: 18.0000000000, UnitsInStock: 40, UnitsOnOrder: 0, ReorderLevel: 10, Discontinued: 0, UnitsShipped:  [-1-->] 1110  row: 0x10cc46520  session: 0x10cbff0d0 - 2022-03-16 20:29:53,019 - logic_logger - INFO  
-....Product[1] {Formula UnitsInStock} Id: 1, ProductName: Chai, SupplierId: 1, CategoryId: 1, QuantityPerUnit: 10 boxes x 20 bags, UnitPrice: 18.0000000000, UnitsInStock:  [40-->] -1071, UnitsOnOrder: 0, ReorderLevel: 10, Discontinued: 0, UnitsShipped:  [-1-->] 1110  row: 0x10cc46520  session: 0x10cbff0d0 - 2022-03-16 20:29:53,020 - logic_logger - INFO  
-....Order[None] {Update - Adjusting Order: AmountTotal, OrderDetailCount} Id: None, CustomerId: ALFKI, EmployeeId: 1, OrderDate: None, RequiredDate: None, ShippedDate: None, ShipVia: None, Freight: 10, ShipName: None, ShipAddress: None, ShipCity: None, ShipRegion: None, ShipPostalCode: None, ShipCountry: None, AmountTotal:  [None-->] 19998.0000000000, Country: None, City: None, Ready: None, OrderDetailCount:  [None-->] 1  row: 0x10cbff4f0  session: 0x10cbff0d0 - 2022-03-16 20:29:53,020 - logic_logger - INFO  
-......Customer[ALFKI] {Update - Adjusting Customer: Balance} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance:  [2102.0000000000-->] 22100.0000000000, CreditLimit: 2300.0000000000, OrderCount: 16, UnpaidOrderCount: 11  row: 0x10cc36b50  session: 0x10cbff0d0 - 2022-03-16 20:29:53,021 - logic_logger - INFO  
-......Customer[ALFKI] {Constraint Failure: balance (22100.0000000000) exceeds credit (2300.0000000000)} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance:  [2102.0000000000-->] 22100.0000000000, CreditLimit: 2300.0000000000, OrderCount: 16, UnpaidOrderCount: 11  row: 0x10cc36b50  session: 0x10cbff0d0 - 2022-03-16 20:29:53,022 - logic_logger - INFO  
+  Customer  
+    1. Derive Customer.OrderCount as Count(<class 'database.models.Order'> Where None)  
+    2. Derive Customer.UnpaidOrderCount as Count(<class 'database.models.Order'> Where <function declare_logic.<locals>.<lambda> at 0x10c40f280>)  
+    3. Derive Customer.Balance as Sum(Order.AmountTotal Where <function declare_logic.<locals>.<lambda> at 0x10c4048b0>)  
+    4. Constraint Function: None   
+  Order  
+    5. Derive Order.AmountTotal as Sum(OrderDetail.Amount Where None)  
+    6. Derive Order.OrderDetailCount as Count(<class 'database.models.OrderDetail'> Where None)  
+  OrderDetail  
+    7. Derive OrderDetail.ShippedDate as Formula (2): row.Order.ShippedDate  
+    8. Derive OrderDetail.UnitPrice as Copy(Product.UnitPrice)  
+    9. Derive OrderDetail.Amount as Formula (1): as_expression=lambda row: row.UnitPrice * row.Qua [...]  
+  Product  
+    10. Derive Product.UnitsShipped as Sum(OrderDetail.Quantity Where <function declare_logic.<locals>.<lambda> at 0x10c40f160>)  
+    11. Derive Product.UnitsInStock as Formula (1): <function>  
   
-Rules Fired:		## - 2022-03-16 20:29:53,022 - logic_logger - INFO  
-  Customer		## - 2022-03-16 20:29:53,022 - logic_logger - INFO  
-    1. Derive Customer.OrderCount as Count(<class 'database.models.Order'> Where None)		## - 2022-03-16 20:29:53,022 - logic_logger - INFO  
-    2. Derive Customer.UnpaidOrderCount as Count(<class 'database.models.Order'> Where <function declare_logic.<locals>.<lambda> at 0x10c40f280>)		## - 2022-03-16 20:29:53,022 - logic_logger - INFO  
-    3. Derive Customer.Balance as Sum(Order.AmountTotal Where <function declare_logic.<locals>.<lambda> at 0x10c4048b0>)		## - 2022-03-16 20:29:53,022 - logic_logger - INFO  
-    4. Constraint Function: None 		## - 2022-03-16 20:29:53,022 - logic_logger - INFO  
-  Order		## - 2022-03-16 20:29:53,022 - logic_logger - INFO  
-    5. Derive Order.AmountTotal as Sum(OrderDetail.Amount Where None)		## - 2022-03-16 20:29:53,022 - logic_logger - INFO  
-    6. Derive Order.OrderDetailCount as Count(<class 'database.models.OrderDetail'> Where None)		## - 2022-03-16 20:29:53,022 - logic_logger - INFO  
-  OrderDetail		## - 2022-03-16 20:29:53,022 - logic_logger - INFO  
-    7. Derive OrderDetail.ShippedDate as Formula (2): row.Order.ShippedDate		## - 2022-03-16 20:29:53,022 - logic_logger - INFO  
-    8. Derive OrderDetail.UnitPrice as Copy(Product.UnitPrice)		## - 2022-03-16 20:29:53,022 - logic_logger - INFO  
-    9. Derive OrderDetail.Amount as Formula (1): as_expression=lambda row: row.UnitPrice * row.Qua [...]		## - 2022-03-16 20:29:53,023 - logic_logger - INFO  
-  Product		## - 2022-03-16 20:29:53,023 - logic_logger - INFO  
-    10. Derive Product.UnitsShipped as Sum(OrderDetail.Quantity Where <function declare_logic.<locals>.<lambda> at 0x10c40f160>)		## - 2022-03-16 20:29:53,023 - logic_logger - INFO  
-    11. Derive Product.UnitsInStock as Formula (1): <function>		## - 2022-03-16 20:29:53,023 - logic_logger - INFO  
-  
- - 2022-03-16 20:29:53,023 - logic_logger - INFO  
+ - 2022-03-16 20:40:37,444 - logic_logger - INFO  
+```
+*** their operation is shown in the Logic Log ***
+```
+Logic Phase:		ROW LOGIC(session=0x10cbff580) (sqlalchemy before_flush)			 - 2022-03-16 20:40:37,432 - logic_logger - INFO
+..Order[None] {Insert - client} Id: None, CustomerId: ALFKI, EmployeeId: 1, OrderDate: None, RequiredDate: None, ShippedDate: None, ShipVia: None, Freight: 10, ShipName: None, ShipAddress: None, ShipCity: None, ShipRegion: None, ShipPostalCode: None, ShipCountry: None, AmountTotal: None, Country: None, City: None, Ready: None, OrderDetailCount: None  row: 0x10cbff7f0  session: 0x10cbff580 - 2022-03-16 20:40:37,433 - logic_logger - INFO
+....Customer[ALFKI] {Update - Adjusting Customer: UnpaidOrderCount, OrderCount} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance: 2102.0000000000, CreditLimit: 2300.0000000000, OrderCount:  [15-->] 16, UnpaidOrderCount:  [10-->] 11  row: 0x10cb96bb0  session: 0x10cbff580 - 2022-03-16 20:40:37,436 - logic_logger - INFO
+..OrderDetail[None] {Insert - client} Id: None, OrderId: None, ProductId: 1, UnitPrice: None, Quantity: 1111, Discount: 0, Amount: None, ShippedDate: None  row: 0x10cc6efa0  session: 0x10cbff580 - 2022-03-16 20:40:37,437 - logic_logger - INFO
+..OrderDetail[None] {copy_rules for role: Product - UnitPrice} Id: None, OrderId: None, ProductId: 1, UnitPrice: 18.0000000000, Quantity: 1111, Discount: 0, Amount: None, ShippedDate: None  row: 0x10cc6efa0  session: 0x10cbff580 - 2022-03-16 20:40:37,438 - logic_logger - INFO
+..OrderDetail[None] {Formula Amount} Id: None, OrderId: None, ProductId: 1, UnitPrice: 18.0000000000, Quantity: 1111, Discount: 0, Amount: 19998.0000000000, ShippedDate: None  row: 0x10cc6efa0  session: 0x10cbff580 - 2022-03-16 20:40:37,439 - logic_logger - INFO
+....Product[1] {Update - Adjusting Product: UnitsShipped} Id: 1, ProductName: Chai, SupplierId: 1, CategoryId: 1, QuantityPerUnit: 10 boxes x 20 bags, UnitPrice: 18.0000000000, UnitsInStock: 40, UnitsOnOrder: 0, ReorderLevel: 10, Discontinued: 0, UnitsShipped:  [-1-->] 1110  row: 0x10cc718e0  session: 0x10cbff580 - 2022-03-16 20:40:37,440 - logic_logger - INFO
+....Product[1] {Formula UnitsInStock} Id: 1, ProductName: Chai, SupplierId: 1, CategoryId: 1, QuantityPerUnit: 10 boxes x 20 bags, UnitPrice: 18.0000000000, UnitsInStock:  [40-->] -1071, UnitsOnOrder: 0, ReorderLevel: 10, Discontinued: 0, UnitsShipped:  [-1-->] 1110  row: 0x10cc718e0  session: 0x10cbff580 - 2022-03-16 20:40:37,441 - logic_logger - INFO
+....Order[None] {Update - Adjusting Order: AmountTotal, OrderDetailCount} Id: None, CustomerId: ALFKI, EmployeeId: 1, OrderDate: None, RequiredDate: None, ShippedDate: None, ShipVia: None, Freight: 10, ShipName: None, ShipAddress: None, ShipCity: None, ShipRegion: None, ShipPostalCode: None, ShipCountry: None, AmountTotal:  [None-->] 19998.0000000000, Country: None, City: None, Ready: None, OrderDetailCount:  [None-->] 1  row: 0x10cbff7f0  session: 0x10cbff580 - 2022-03-16 20:40:37,442 - logic_logger - INFO
+......Customer[ALFKI] {Update - Adjusting Customer: Balance} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance:  [2102.0000000000-->] 22100.0000000000, CreditLimit: 2300.0000000000, OrderCount: 16, UnpaidOrderCount: 11  row: 0x10cb96bb0  session: 0x10cbff580 - 2022-03-16 20:40:37,443 - logic_logger - INFO
+......Customer[ALFKI] {Constraint Failure: balance (22100.0000000000) exceeds credit (2300.0000000000)} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance:  [2102.0000000000-->] 22100.0000000000, CreditLimit: 2300.0000000000, OrderCount: 16, UnpaidOrderCount: 11  row: 0x10cb96bb0  session: 0x10cbff580 - 2022-03-16 20:40:37,443 - logic_logger - INFO
+
 ```
 </details>
   
@@ -118,38 +96,40 @@ Rules Fired:		## - 2022-03-16 20:29:53,022 - logic_logger - INFO
 <summary>Tests - *and their logic* are transparent.. click to see Logic</summary>
 
 
+*** here are the rules used in: Custom Service: add_order - bad ***
 ```
-*** here is the logic for: Custom Service: add_order - bad ***
-Logic Phase:		ROW LOGIC(session=0x10cbff0d0) (sqlalchemy before_flush)			 - 2022-03-16 20:29:53,013 - logic_logger - INFO  
-..Order[None] {Insert - client} Id: None, CustomerId: ALFKI, EmployeeId: 1, OrderDate: None, RequiredDate: None, ShippedDate: None, ShipVia: None, Freight: 10, ShipName: None, ShipAddress: None, ShipCity: None, ShipRegion: None, ShipPostalCode: None, ShipCountry: None, AmountTotal: None, Country: None, City: None, Ready: None, OrderDetailCount: None  row: 0x10cbff4f0  session: 0x10cbff0d0 - 2022-03-16 20:29:53,013 - logic_logger - INFO  
-....Customer[ALFKI] {Update - Adjusting Customer: UnpaidOrderCount, OrderCount} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance: 2102.0000000000, CreditLimit: 2300.0000000000, OrderCount:  [15-->] 16, UnpaidOrderCount:  [10-->] 11  row: 0x10cc36b50  session: 0x10cbff0d0 - 2022-03-16 20:29:53,016 - logic_logger - INFO  
-..OrderDetail[None] {Insert - client} Id: None, OrderId: None, ProductId: 1, UnitPrice: None, Quantity: 1111, Discount: 0, Amount: None, ShippedDate: None  row: 0x10cbff880  session: 0x10cbff0d0 - 2022-03-16 20:29:53,017 - logic_logger - INFO  
-..OrderDetail[None] {copy_rules for role: Product - UnitPrice} Id: None, OrderId: None, ProductId: 1, UnitPrice: 18.0000000000, Quantity: 1111, Discount: 0, Amount: None, ShippedDate: None  row: 0x10cbff880  session: 0x10cbff0d0 - 2022-03-16 20:29:53,018 - logic_logger - INFO  
-..OrderDetail[None] {Formula Amount} Id: None, OrderId: None, ProductId: 1, UnitPrice: 18.0000000000, Quantity: 1111, Discount: 0, Amount: 19998.0000000000, ShippedDate: None  row: 0x10cbff880  session: 0x10cbff0d0 - 2022-03-16 20:29:53,019 - logic_logger - INFO  
-....Product[1] {Update - Adjusting Product: UnitsShipped} Id: 1, ProductName: Chai, SupplierId: 1, CategoryId: 1, QuantityPerUnit: 10 boxes x 20 bags, UnitPrice: 18.0000000000, UnitsInStock: 40, UnitsOnOrder: 0, ReorderLevel: 10, Discontinued: 0, UnitsShipped:  [-1-->] 1110  row: 0x10cc46520  session: 0x10cbff0d0 - 2022-03-16 20:29:53,019 - logic_logger - INFO  
-....Product[1] {Formula UnitsInStock} Id: 1, ProductName: Chai, SupplierId: 1, CategoryId: 1, QuantityPerUnit: 10 boxes x 20 bags, UnitPrice: 18.0000000000, UnitsInStock:  [40-->] -1071, UnitsOnOrder: 0, ReorderLevel: 10, Discontinued: 0, UnitsShipped:  [-1-->] 1110  row: 0x10cc46520  session: 0x10cbff0d0 - 2022-03-16 20:29:53,020 - logic_logger - INFO  
-....Order[None] {Update - Adjusting Order: AmountTotal, OrderDetailCount} Id: None, CustomerId: ALFKI, EmployeeId: 1, OrderDate: None, RequiredDate: None, ShippedDate: None, ShipVia: None, Freight: 10, ShipName: None, ShipAddress: None, ShipCity: None, ShipRegion: None, ShipPostalCode: None, ShipCountry: None, AmountTotal:  [None-->] 19998.0000000000, Country: None, City: None, Ready: None, OrderDetailCount:  [None-->] 1  row: 0x10cbff4f0  session: 0x10cbff0d0 - 2022-03-16 20:29:53,020 - logic_logger - INFO  
-......Customer[ALFKI] {Update - Adjusting Customer: Balance} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance:  [2102.0000000000-->] 22100.0000000000, CreditLimit: 2300.0000000000, OrderCount: 16, UnpaidOrderCount: 11  row: 0x10cc36b50  session: 0x10cbff0d0 - 2022-03-16 20:29:53,021 - logic_logger - INFO  
-......Customer[ALFKI] {Constraint Failure: balance (22100.0000000000) exceeds credit (2300.0000000000)} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance:  [2102.0000000000-->] 22100.0000000000, CreditLimit: 2300.0000000000, OrderCount: 16, UnpaidOrderCount: 11  row: 0x10cc36b50  session: 0x10cbff0d0 - 2022-03-16 20:29:53,022 - logic_logger - INFO  
+  Customer  
+    1. Derive Customer.OrderCount as Count(<class 'database.models.Order'> Where None)  
+    2. Derive Customer.UnpaidOrderCount as Count(<class 'database.models.Order'> Where <function declare_logic.<locals>.<lambda> at 0x10c40f280>)  
+    3. Derive Customer.Balance as Sum(Order.AmountTotal Where <function declare_logic.<locals>.<lambda> at 0x10c4048b0>)  
+    4. Constraint Function: None   
+  Order  
+    5. Derive Order.AmountTotal as Sum(OrderDetail.Amount Where None)  
+    6. Derive Order.OrderDetailCount as Count(<class 'database.models.OrderDetail'> Where None)  
+  OrderDetail  
+    7. Derive OrderDetail.ShippedDate as Formula (2): row.Order.ShippedDate  
+    8. Derive OrderDetail.UnitPrice as Copy(Product.UnitPrice)  
+    9. Derive OrderDetail.Amount as Formula (1): as_expression=lambda row: row.UnitPrice * row.Qua [...]  
+  Product  
+    10. Derive Product.UnitsShipped as Sum(OrderDetail.Quantity Where <function declare_logic.<locals>.<lambda> at 0x10c40f160>)  
+    11. Derive Product.UnitsInStock as Formula (1): <function>  
   
-Rules Fired:		## - 2022-03-16 20:29:53,022 - logic_logger - INFO  
-  Customer		## - 2022-03-16 20:29:53,022 - logic_logger - INFO  
-    1. Derive Customer.OrderCount as Count(<class 'database.models.Order'> Where None)		## - 2022-03-16 20:29:53,022 - logic_logger - INFO  
-    2. Derive Customer.UnpaidOrderCount as Count(<class 'database.models.Order'> Where <function declare_logic.<locals>.<lambda> at 0x10c40f280>)		## - 2022-03-16 20:29:53,022 - logic_logger - INFO  
-    3. Derive Customer.Balance as Sum(Order.AmountTotal Where <function declare_logic.<locals>.<lambda> at 0x10c4048b0>)		## - 2022-03-16 20:29:53,022 - logic_logger - INFO  
-    4. Constraint Function: None 		## - 2022-03-16 20:29:53,022 - logic_logger - INFO  
-  Order		## - 2022-03-16 20:29:53,022 - logic_logger - INFO  
-    5. Derive Order.AmountTotal as Sum(OrderDetail.Amount Where None)		## - 2022-03-16 20:29:53,022 - logic_logger - INFO  
-    6. Derive Order.OrderDetailCount as Count(<class 'database.models.OrderDetail'> Where None)		## - 2022-03-16 20:29:53,022 - logic_logger - INFO  
-  OrderDetail		## - 2022-03-16 20:29:53,022 - logic_logger - INFO  
-    7. Derive OrderDetail.ShippedDate as Formula (2): row.Order.ShippedDate		## - 2022-03-16 20:29:53,022 - logic_logger - INFO  
-    8. Derive OrderDetail.UnitPrice as Copy(Product.UnitPrice)		## - 2022-03-16 20:29:53,022 - logic_logger - INFO  
-    9. Derive OrderDetail.Amount as Formula (1): as_expression=lambda row: row.UnitPrice * row.Qua [...]		## - 2022-03-16 20:29:53,023 - logic_logger - INFO  
-  Product		## - 2022-03-16 20:29:53,023 - logic_logger - INFO  
-    10. Derive Product.UnitsShipped as Sum(OrderDetail.Quantity Where <function declare_logic.<locals>.<lambda> at 0x10c40f160>)		## - 2022-03-16 20:29:53,023 - logic_logger - INFO  
-    11. Derive Product.UnitsInStock as Formula (1): <function>		## - 2022-03-16 20:29:53,023 - logic_logger - INFO  
-  
- - 2022-03-16 20:29:53,023 - logic_logger - INFO  
+ - 2022-03-16 20:40:37,444 - logic_logger - INFO  
+```
+*** their operation is shown in the Logic Log ***
+```
+Logic Phase:		ROW LOGIC(session=0x10cbff580) (sqlalchemy before_flush)			 - 2022-03-16 20:40:37,432 - logic_logger - INFO
+..Order[None] {Insert - client} Id: None, CustomerId: ALFKI, EmployeeId: 1, OrderDate: None, RequiredDate: None, ShippedDate: None, ShipVia: None, Freight: 10, ShipName: None, ShipAddress: None, ShipCity: None, ShipRegion: None, ShipPostalCode: None, ShipCountry: None, AmountTotal: None, Country: None, City: None, Ready: None, OrderDetailCount: None  row: 0x10cbff7f0  session: 0x10cbff580 - 2022-03-16 20:40:37,433 - logic_logger - INFO
+....Customer[ALFKI] {Update - Adjusting Customer: UnpaidOrderCount, OrderCount} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance: 2102.0000000000, CreditLimit: 2300.0000000000, OrderCount:  [15-->] 16, UnpaidOrderCount:  [10-->] 11  row: 0x10cb96bb0  session: 0x10cbff580 - 2022-03-16 20:40:37,436 - logic_logger - INFO
+..OrderDetail[None] {Insert - client} Id: None, OrderId: None, ProductId: 1, UnitPrice: None, Quantity: 1111, Discount: 0, Amount: None, ShippedDate: None  row: 0x10cc6efa0  session: 0x10cbff580 - 2022-03-16 20:40:37,437 - logic_logger - INFO
+..OrderDetail[None] {copy_rules for role: Product - UnitPrice} Id: None, OrderId: None, ProductId: 1, UnitPrice: 18.0000000000, Quantity: 1111, Discount: 0, Amount: None, ShippedDate: None  row: 0x10cc6efa0  session: 0x10cbff580 - 2022-03-16 20:40:37,438 - logic_logger - INFO
+..OrderDetail[None] {Formula Amount} Id: None, OrderId: None, ProductId: 1, UnitPrice: 18.0000000000, Quantity: 1111, Discount: 0, Amount: 19998.0000000000, ShippedDate: None  row: 0x10cc6efa0  session: 0x10cbff580 - 2022-03-16 20:40:37,439 - logic_logger - INFO
+....Product[1] {Update - Adjusting Product: UnitsShipped} Id: 1, ProductName: Chai, SupplierId: 1, CategoryId: 1, QuantityPerUnit: 10 boxes x 20 bags, UnitPrice: 18.0000000000, UnitsInStock: 40, UnitsOnOrder: 0, ReorderLevel: 10, Discontinued: 0, UnitsShipped:  [-1-->] 1110  row: 0x10cc718e0  session: 0x10cbff580 - 2022-03-16 20:40:37,440 - logic_logger - INFO
+....Product[1] {Formula UnitsInStock} Id: 1, ProductName: Chai, SupplierId: 1, CategoryId: 1, QuantityPerUnit: 10 boxes x 20 bags, UnitPrice: 18.0000000000, UnitsInStock:  [40-->] -1071, UnitsOnOrder: 0, ReorderLevel: 10, Discontinued: 0, UnitsShipped:  [-1-->] 1110  row: 0x10cc718e0  session: 0x10cbff580 - 2022-03-16 20:40:37,441 - logic_logger - INFO
+....Order[None] {Update - Adjusting Order: AmountTotal, OrderDetailCount} Id: None, CustomerId: ALFKI, EmployeeId: 1, OrderDate: None, RequiredDate: None, ShippedDate: None, ShipVia: None, Freight: 10, ShipName: None, ShipAddress: None, ShipCity: None, ShipRegion: None, ShipPostalCode: None, ShipCountry: None, AmountTotal:  [None-->] 19998.0000000000, Country: None, City: None, Ready: None, OrderDetailCount:  [None-->] 1  row: 0x10cbff7f0  session: 0x10cbff580 - 2022-03-16 20:40:37,442 - logic_logger - INFO
+......Customer[ALFKI] {Update - Adjusting Customer: Balance} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance:  [2102.0000000000-->] 22100.0000000000, CreditLimit: 2300.0000000000, OrderCount: 16, UnpaidOrderCount: 11  row: 0x10cb96bb0  session: 0x10cbff580 - 2022-03-16 20:40:37,443 - logic_logger - INFO
+......Customer[ALFKI] {Constraint Failure: balance (22100.0000000000) exceeds credit (2300.0000000000)} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance:  [2102.0000000000-->] 22100.0000000000, CreditLimit: 2300.0000000000, OrderCount: 16, UnpaidOrderCount: 11  row: 0x10cb96bb0  session: 0x10cbff580 - 2022-03-16 20:40:37,443 - logic_logger - INFO
+
 ```
 </details>
   
@@ -161,14 +141,6 @@ Rules Fired:		## - 2022-03-16 20:29:53,022 - logic_logger - INFO
 &emsp;&emsp;    When Order Detail Quantity altered very high  
 &emsp;&emsp;    Then Rejected per Credit Limit  
 &emsp;&emsp;    Then exceeds credit in response  
-<details>
-<summary>Tests - *and their logic* are transparent.. click to see Logic</summary>
-
-
-```
-unable to find logic file: results_when/Alter_Item_Qty_to_exceed_.log
-```
-</details>
   
 &nbsp;
 &nbsp;
@@ -177,14 +149,6 @@ unable to find logic file: results_when/Alter_Item_Qty_to_exceed_.log
 &emsp;&emsp;    Given Customer Account: ALFKI  
 &emsp;&emsp;    When Order RequiredDate altered (2013-10-13)  
 &emsp;&emsp;    Then Balance not adjusted  
-<details>
-<summary>Tests - *and their logic* are transparent.. click to see Logic</summary>
-
-
-```
-unable to find logic file: results_when/Alter_Required_Date_-_adj.log
-```
-</details>
   
 &nbsp;
 &nbsp;
@@ -193,14 +157,6 @@ unable to find logic file: results_when/Alter_Required_Date_-_adj.log
 &emsp;&emsp;    Given Customer Account: ALFKI  
 &emsp;&emsp;    When Order ShippedDate altered (2013-10-13)  
 &emsp;&emsp;    Then Balance reduced 1086  
-<details>
-<summary>Tests - *and their logic* are transparent.. click to see Logic</summary>
-
-
-```
-unable to find logic file: results_when/Set_Shipped_-_adjust_logi.log
-```
-</details>
   
 &nbsp;
 &nbsp;
@@ -209,14 +165,6 @@ unable to find logic file: results_when/Set_Shipped_-_adjust_logi.log
 &emsp;&emsp;    Given Shipped Order  
 &emsp;&emsp;    When Order ShippedDate set to None  
 &emsp;&emsp;    Then Logic adjusts Balance by -1086  
-<details>
-<summary>Tests - *and their logic* are transparent.. click to see Logic</summary>
-
-
-```
-unable to find logic file: results_when/Reset_Shipped_-_adjust_lo.log
-```
-</details>
   
 &nbsp;
 &nbsp;
@@ -229,14 +177,6 @@ unable to find logic file: results_when/Reset_Shipped_-_adjust_lo.log
 &emsp;&emsp;    Given Customer Account: VINET  
 &emsp;&emsp;    When Patch Salary to 200k  
 &emsp;&emsp;    Then Salary_audit row created  
-<details>
-<summary>Tests - *and their logic* are transparent.. click to see Logic</summary>
-
-
-```
-unable to find logic file: results_when/Audit_Salary_Change.log
-```
-</details>
   
 &nbsp;
 &nbsp;
@@ -245,14 +185,6 @@ unable to find logic file: results_when/Audit_Salary_Change.log
 &emsp;&emsp;    Given Department 2  
 &emsp;&emsp;    When GET Department with SubDepartments API  
 &emsp;&emsp;    Then SubDepartments returned  
-<details>
-<summary>Tests - *and their logic* are transparent.. click to see Logic</summary>
-
-
-```
-unable to find logic file: results_when/GET_Department.log
-```
-</details>
   
 4 features passed, 0 failed, 0 skipped  
 11 scenarios passed, 0 failed, 0 skipped  
