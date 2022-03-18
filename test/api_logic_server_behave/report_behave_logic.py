@@ -24,6 +24,17 @@ def remove_trailer(line: str) -> str:
     return result
 
 
+def get_current_readme():
+    """ initialize wiki_data with readme up to 'TDD Report' """
+    readme_file_name = '../../readme.md'
+    with open(readme_file_name) as readme:
+        readme_lines = readme.readlines()
+    for each_readme_line in readme_lines:
+        if "TDD Report" in each_readme_line:
+            break
+        wiki_data.append(each_readme_line + "  ")
+
+
 def show_logic(scenario: str):
     """ insert scenario.log into wiki_data as disclosure area """
     scenario_trunc = scenario
@@ -76,9 +87,11 @@ def show_logic(scenario: str):
         wiki_data.append("</details>")
 
 
-def main(file: str):
+def main(behave_log: str):
+    get_current_readme()
+
     contents = None
-    with open(file) as f:
+    with open(behave_log) as f:
         contents = f.readlines()
 
     just_saw_then = False
@@ -121,4 +134,4 @@ def main(file: str):
 
 if __name__ == "__main__":
     print(f'\n***\n* Begin:  starting Behave Logic Report.py, at {os.getcwd()}')
-    main(file = 'behave.log')
+    main(behave_log = 'behave.log')
