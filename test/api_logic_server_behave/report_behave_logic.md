@@ -202,13 +202,20 @@ Attempted VSCode using [this procedure](https://qxf2.com/blog/run-python-behave-
   
 &nbsp;&nbsp;
   
+
+
 &nbsp;
 &nbsp;
-# Feature: About Sample  
+
+
+# TDD Report
+&nbsp;
+&nbsp;
+## Feature: About Sample  
   
 &nbsp;
 &nbsp;
-## Scenario: Transaction Processing
+### Scenario: Transaction Processing
 &emsp;  Scenario: Transaction Processing  
 &emsp;&emsp;    Given Sample Database  
 &emsp;&emsp;    When Transactions are submitted  
@@ -253,11 +260,11 @@ Logic Bank - 21 rules loaded - 2022-03-17 19:24:04,656 - logic_logger - INFO
   
 &nbsp;
 &nbsp;
-# Feature: Application Integration  
+## Feature: Application Integration  
   
 &nbsp;
 &nbsp;
-## Scenario: GET Customer
+### Scenario: GET Customer
 &emsp;  Scenario: GET Customer  
 &emsp;&emsp;    Given Customer Account: VINET  
 &emsp;&emsp;    When GET Orders API  
@@ -266,7 +273,7 @@ unable to find LogicLog file: results_when/GET_Customer.log
   
 &nbsp;
 &nbsp;
-## Scenario: GET Department
+### Scenario: GET Department
 &emsp;  Scenario: GET Department  
 &emsp;&emsp;    Given Department 2  
 &emsp;&emsp;    When GET Department with SubDepartments API  
@@ -275,11 +282,11 @@ unable to find LogicLog file: results_when/GET_Department.log
   
 &nbsp;
 &nbsp;
-# Feature: Place Order  
+## Feature: Place Order  
   
 &nbsp;
 &nbsp;
-## Scenario: Good Order Custom Service
+### Scenario: Good Order Custom Service
 &emsp;  Scenario: Good Order Custom Service  
 &emsp;&emsp;    Given Customer Account: ALFKI  
 &emsp;&emsp;    When Good Order Placed  
@@ -332,7 +339,7 @@ Logic Phase:		COMMIT(session=0x107969790)   										 - 2022-03-17 19:24:04,803
   
 &nbsp;
 &nbsp;
-## Scenario: Bad Order Custom Service
+### Scenario: Bad Order Custom Service
 &emsp;  Scenario: Bad Order Custom Service  
 &emsp;&emsp;    Given Customer Account: ALFKI  
 &emsp;&emsp;    When Order Placed with excessive quantity  
@@ -385,7 +392,7 @@ Logic Phase:		ROW LOGIC(session=0x10799fe20) (sqlalchemy before_flush)			 - 2022
   
 &nbsp;
 &nbsp;
-## Scenario: Alter Item Qty to exceed credit
+### Scenario: Alter Item Qty to exceed credit
 &emsp;  Scenario: Alter Item Qty to exceed credit  
 &emsp;&emsp;    Given Customer Account: ALFKI  
 &emsp;&emsp;    When Order Detail Quantity altered very high  
@@ -434,7 +441,7 @@ Logic Phase:		ROW LOGIC(session=0x1079c2ac0) (sqlalchemy before_flush)			 - 2022
   
 &nbsp;
 &nbsp;
-## Scenario: Alter Required Date - adjust logic pruned
+### Scenario: Alter Required Date - adjust logic pruned
 &emsp;  Scenario: Alter Required Date - adjust logic pruned  
 &emsp;&emsp;    Given Customer Account: ALFKI  
 &emsp;&emsp;    When Order RequiredDate altered (2013-10-13)  
@@ -471,7 +478,7 @@ Logic Phase:		COMMIT(session=0x1079aab20)   										 - 2022-03-17 19:24:04,919
   
 &nbsp;
 &nbsp;
-## Scenario: Set Shipped - adjust logic reuse
+### Scenario: Set Shipped - adjust logic reuse
 &emsp;  Scenario: Set Shipped - adjust logic reuse  
 &emsp;&emsp;    Given Customer Account: ALFKI  
 &emsp;&emsp;    When Order ShippedDate altered (2013-10-13)  
@@ -531,7 +538,7 @@ Logic Phase:		COMMIT(session=0x1079972b0)   										 - 2022-03-17 19:24:04,981
   
 &nbsp;
 &nbsp;
-## Scenario: Reset Shipped - adjust logic reuse
+### Scenario: Reset Shipped - adjust logic reuse
 &emsp;  Scenario: Reset Shipped - adjust logic reuse  
 &emsp;&emsp;    Given Shipped Order  
 &emsp;&emsp;    When Order ShippedDate set to None  
@@ -591,11 +598,11 @@ Logic Phase:		COMMIT(session=0x1078dffd0)   										 - 2022-03-17 19:24:05,046
   
 &nbsp;
 &nbsp;
-# Feature: Salary Change  
+## Feature: Salary Change  
   
 &nbsp;
 &nbsp;
-## Scenario: Audit Salary Change
+### Scenario: Audit Salary Change
 &emsp;  Scenario: Audit Salary Change  
 &emsp;&emsp;    Given Customer Account: VINET  
 &emsp;&emsp;    When Patch Salary to 200k  

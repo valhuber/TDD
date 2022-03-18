@@ -23,16 +23,25 @@ def remove_trailer(line: str) -> str:
     result = line[0:end_here]
     return result
 
+def line_spacer():
+    wiki_data.append("\n")
+    wiki_data.append("&nbsp;")
+    wiki_data.append("&nbsp;")
+    wiki_data.append("\n")
+
 
 def get_current_readme():
     """ initialize wiki_data with readme up to 'TDD Report' """
+    TDD_report_name = "TDD Report"
     readme_file_name = '../../readme.md'
     with open(readme_file_name) as readme:
         readme_lines = readme.readlines()
     for each_readme_line in readme_lines:
-        if "TDD Report" in each_readme_line:
+        if TDD_report_name in each_readme_line:
             break
         wiki_data.append(each_readme_line + "  ")
+    line_spacer()
+    wiki_data.append("# TDD Report")
 
 
 def show_logic(scenario: str):
@@ -60,10 +69,7 @@ def show_logic(scenario: str):
         is_logic_log = True
         wiki_data.append("<details>")
         wiki_data.append("<summary>Tests - and their logic - are transparent.. click to see Logic</summary>")
-        wiki_data.append("\n")
-        wiki_data.append("&nbsp;")
-        wiki_data.append("&nbsp;")
-        wiki_data.append("\n")
+        line_spacer()
         wiki_data.append(f'**Rules Used** in Scenario: {scenario}')
         wiki_data.append("```")
         with open(logic_file_name) as logic:
@@ -103,7 +109,7 @@ def main(behave_log: str):
         if each_line.startswith("Feature"):
             wiki_data.append("&nbsp;")
             wiki_data.append("&nbsp;")
-            each_line = "# " + each_line
+            each_line = "## " + each_line
         if each_line.startswith("  Scenario"):
             each_line = tab + each_line
         if each_line.startswith("    Given") or \
@@ -122,15 +128,16 @@ def main(behave_log: str):
             current_scenario = each_line[18:]
             wiki_data.append("&nbsp;")
             wiki_data.append("&nbsp;")
-            wiki_data.append("## " + each_line[8:])
+            wiki_data.append("### " + each_line[8:])
 
         each_line = each_line + "  "  # wiki for "new line"
         
         wiki_data.append(each_line)
 
-    with open('report_behave_logic.txt', 'w') as rpt:
+    report_name = 'report_behave_logic.md'
+    with open(report_name, 'w') as rpt:
         rpt.write('\n'.join(wiki_data))
-    print(f'* Output: report_behave_logic.txt\n***\n\n')
+    print(f'* Output: {report_name}\n***\n\n')
 
 if __name__ == "__main__":
     print(f'\n***\n* Begin:  starting Behave Logic Report.py, at {os.getcwd()}')
