@@ -25,6 +25,7 @@ def remove_trailer(line: str) -> str:
 
 
 def show_logic(scenario: str):
+    """ insert scenario.log into wiki_data as disclosure area """
     scenario_trunc = scenario
     if scenario_trunc is not None and len(scenario_trunc) >= 26:
         scenario_trunc = scenario[0:25]
@@ -32,7 +33,7 @@ def show_logic(scenario: str):
     logic_file_name = f'results_when/{scenario_trunc}.log'
     logic_file_name_path = Path(logic_file_name)
     if not logic_file_name_path.is_file():
-        # wiki_data.append(f'unable to find logic file: {logic_file_name}')
+        wiki_data.append(f'unable to find LogicLog file: {logic_file_name}')
         if scenario == debug_scenario:
             print(f'RELATIVE: {logic_file_name} in {os.getcwd()}')
             full_name = f'{os.getcwd()}/{logic_file_name}'
@@ -47,9 +48,12 @@ def show_logic(scenario: str):
         rules_used = []
         is_logic_log = True
         wiki_data.append("<details>")
-        wiki_data.append("<summary>Tests - *and their logic* are transparent.. click to see Logic</summary>")
+        wiki_data.append("<summary>Tests - and their logic - are transparent.. click to see Logic</summary>")
         wiki_data.append("\n")
-        wiki_data.append(f'*** here are the rules used in: {scenario} ***')
+        wiki_data.append("&nbsp;")
+        wiki_data.append("&nbsp;")
+        wiki_data.append("\n")
+        wiki_data.append(f'**Rules Used** in Scenario: {scenario}')
         wiki_data.append("```")
         with open(logic_file_name) as logic:
             logic_lines = logic.readlines()
@@ -64,7 +68,7 @@ def show_logic(scenario: str):
                 each_logic_line = remove_trailer(each_logic_line)
                 wiki_data.append(each_logic_line + "  ")
         wiki_data.append("```")
-        wiki_data.append(f'*** their operation is shown in the Logic Log ***')
+        wiki_data.append(f'**Logic Log** in Scenario: {scenario}')
         wiki_data.append("```")
         for each_logic_log in logic_log:
             wiki_data.append(each_logic_log[0:-1])
@@ -111,9 +115,10 @@ def main(file: str):
         
         wiki_data.append(each_line)
 
-    with open(r'report_behave_logic.txt', 'w') as rpt:
+    with open('report_behave_logic.txt', 'w') as rpt:
         rpt.write('\n'.join(wiki_data))
+    print(f'* Output: report_behave_logic.txt\n***\n\n')
 
 if __name__ == "__main__":
-    print(f'\n Behave Logic Report.py, starting at {os.getcwd()}')
+    print(f'\n***\n* Begin:  starting Behave Logic Report.py, at {os.getcwd()}')
     main(file = 'behave.log')

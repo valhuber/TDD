@@ -12,7 +12,7 @@ def step_impl(context):
 
 @when('Patch Salary to 200k')
 def step_impl(context):
-    test_name = "Patch Salary to 200k"
+    test_name = "Audit Salary Change"
     test_utils.prt(f'\n\n\n{test_name}... alter salary, ensure audit row created (also available in shell script\n\n', test_name)
     patch_emp_uri = f'http://localhost:5656/api/Employee/5/'
     patch_args = \

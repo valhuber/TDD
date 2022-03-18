@@ -46,8 +46,8 @@ def step_impl(context):
             }
         }
     }
-    test_name = 'Custom Service: add_order - good'
-    test_utils.prt(f'\n\n\n{test_name} - verify adjustments...\n', test_name)
+    scenario_name = 'Good Order Custom Service'
+    test_utils.prt(f'\n\n\n{scenario_name} - verify adjustments...\n', scenario_name)
     r = requests.post(url=add_order_uri, json=add_order_args)
     context.response_text = r.text
 
@@ -66,6 +66,8 @@ def step_impl(context):
 
 @then('Logic adjusts aggregates down on delete order')
 def step_impl(context):
+    scenario_name = 'Good Order Custom Service - cleanup'
+    test_utils.prt(f'\n\n\n{scenario_name} - verify credit check response...\n', scenario_name)
     # find ALFKI order with freight of 11 and delete it (hmm... cannot get created id)
     order_uri = "http://localhost:5656/api/Order/?include=Customer&fields%5BOrder%5D=Id%2CCustomerId%2CEmployeeId%2COrderDate%2CRequiredDate%2CShippedDate%2CShipVia%2CFreight%2CShipName%2CShipAddress%2CShipCity%2CShipRegion%2CShipPostalCode%2CShipCountry%2CAmountTotal%2CCountry%2CCity%2CReady%2COrderDetailCount&page%5Boffset%5D=0&page%5Blimit%5D=10&sort=Id%2CCustomerId%2CEmployeeId%2COrderDate%2CRequiredDate%2CShippedDate%2CShipVia%2CFreight%2CShipName%2CShipAddress%2CShipCity%2CShipRegion%2CShipPostalCode%2CShipCountry%2CAmountTotal%2CCountry%2CCity%2CReady%2COrderDetailCount%2Cid&filter%5BCustomerId%5D=ALFKI&filter%5BFreight%5D=11"
     r = requests.get(url=order_uri)
@@ -113,8 +115,8 @@ def step_impl(context):
             }
         }
     }
-    test_name = 'Custom Service: add_order - bad'
-    test_utils.prt(f'\n\n\n{test_name} - verify credit check response...\n', test_name)
+    scenario_name = 'Bad Order Custom Service'
+    test_utils.prt(f'\n\n\n{scenario_name} - verify credit check response...\n', scenario_name)
     r = requests.post(url=add_order_uri, json=add_order_args)
     context.response_text = r.text
     # https://stackoverflow.com/questions/25150404/how-can-i-see-print-statements-in-behave-bdd#:~:text=By%20default%2C%20behave%20does%20not%20display%20any%20output,is%20to%20change%20some%20of%20the%20default%20settings.
@@ -142,8 +144,8 @@ def after_step(context, step):
 
 @when('Order Detail Quantity altered very high')
 def step_impl(context):
-    test_name = 'Order Detail Quantity altered very high'
-    test_utils.prt(f'\n\n\n{test_name} - verify credit check response...\n', test_name)
+    scenario_name = 'Alter Item Qty to exceed credit'
+    test_utils.prt(f'\n\n\n{scenario_name} - verify credit check response...\n', scenario_name)
     patch_cust_uri = f'http://localhost:5656/api/OrderDetail/1040/'
     patch_args = \
         {
@@ -163,8 +165,8 @@ def step_impl(context):
 
 @when('Order RequiredDate altered (2013-10-13)')
 def step_impl(context):
-    test_name = 'Order RequiredDate altered (2013-10-13)'
-    test_utils.prt(f'\n\n\n{test_name}... observe rules pruned for Order.RequiredDate (2013-10-13) \n\n', test_name)
+    scenario_name = 'Alter Required Date - adjust logic pruned'
+    test_utils.prt(f'\n\n\n{scenario_name}... observe rules pruned for Order.RequiredDate (2013-10-13) \n\n', scenario_name)
     patch_uri = f'http://localhost:5656/api/Order/10643/'
     patch_args = \
         {
@@ -192,8 +194,8 @@ def step_impl(context):
 
 @when('Order ShippedDate altered (2013-10-13)')
 def step_impl(context):
-    test_name = 'Order ShippedDate altered (2013-10-13)'
-    test_utils.prt(f'\n\n\n{test_name}... observe rules pruned for Order.RequiredDate (2013-10-13) \n\n', test_name)
+    scenario_name = 'Set Shipped - adjust logic reuse'
+    test_utils.prt(f'\n\n\n{scenario_name}... observe rules pruned for Order.RequiredDate (2013-10-13) \n\n', scenario_name)
     patch_uri = f'http://localhost:5656/api/Order/10643/'
     patch_args = \
         {
@@ -225,8 +227,8 @@ def step_impl(context):
 
 @when('Order ShippedDate set to None')
 def step_impl(context):
-    test_name = 'Order ShippedDate altered (2013-10-13)'
-    test_utils.prt(f'\n\n\n{test_name}... observe rules pruned for Order.RequiredDate (2013-10-13) \n\n', test_name)
+    scenario_name = 'Reset Shipped - adjust logic reuse'
+    test_utils.prt(f'\n\n\n{scenario_name}... observe rules pruned for Order.RequiredDate (2013-10-13) \n\n', scenario_name)
     patch_uri = f'http://localhost:5656/api/Order/10643/'
     patch_args = \
         {

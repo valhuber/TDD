@@ -1,6 +1,6 @@
 Feature: Place Order
 
-  Scenario: Custom Service: add_order - good
+  Scenario: Good Order Custom Service
      Given Customer Account: ALFKI
       When Good Order Placed
       Then Logic adjusts Balance (demo: chain up)
@@ -8,7 +8,7 @@ Feature: Place Order
       Then Logic adjusts aggregates down on delete order
 
 
-  Scenario: Custom Service: add_order - bad
+  Scenario: Bad Order Custom Service
      Given Customer Account: ALFKI
       When Order Placed with excessive quantity
       Then Rejected per Credit Limit

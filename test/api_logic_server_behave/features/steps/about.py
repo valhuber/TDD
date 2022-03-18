@@ -16,5 +16,6 @@ def step_impl(context):
 
 @then('Enforce business policies with Logic (rules + code)')
 def step_impl(context):
-    test_utils.prt(f'Rules Report', 'Enforce business policies with Logic (rules + code)')
+    scenario = "Transaction Processing"
+    test_utils.prt(f'Rules Report', scenario)
     assert True
