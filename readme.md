@@ -23,23 +23,15 @@ This project uses the sample app of [API Logic Server](https://github.com/valhub
 The usual (if cryptography fails, get a recent version of pip):
   
 ```
-  
 python -m venv venv
-  
 source venv/bin/activate  # windows venv\Scripts\activate
-  
 pip install -r requirements.txt
-  
 ```
   
 The tests perform cascade delete operations.  You must alter the `models.py` file [as described here](https://github.com/valhuber/ApiLogicServer/wiki#edit-modelspy-referential-integrity-eg-sqlite).
-  
 
-  
 This should enable you to run launch configuration `ApiLogicServer`.
-  
 
-  
 To simplify debugging, this procedure is simpler:
   
 1. Open and terminal window and `python api_logic_server_run.py`  # starts the server
@@ -55,11 +47,8 @@ To simplify debugging, this procedure is simpler:
 Or, open a terminal window and:
   
 ```
-  
 cd test/behave
-  
 behave
-  
 ```
   
 
@@ -70,12 +59,9 @@ behave
   
 # Stories and Behaviors
   
-
-  
 From the TDD article
   
 
-  
 ## Story
   
 ```
