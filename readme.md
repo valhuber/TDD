@@ -123,6 +123,12 @@ Next, we defined a custom service to add an order and it's Order Details, as [de
 
 ## 3. Define TDD Tests
 
+
+&nbsp;&nbsp;
+
+#### Working with TDD
+For more information, see Working with TDD]
+
 &nbsp;&nbsp;
 
 # Business Agility
@@ -139,11 +145,6 @@ The underlying objective here is to promote _business agilty:_
 This project illustrates you can extract the logic from the Logic Log, and insert it into the TDD output:
 1. The TDD Report follows (converted to wiki format)
 2. Click the _disclosure icons_ to see the rules actually used, including how they operate on the given scenario
-
-
-&nbsp;&nbsp;
-
-# Working with TDD
 
   
 &nbsp;&nbsp;
