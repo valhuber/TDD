@@ -1,25 +1,17 @@
 # TDD - Test Driven Dev, with Logic Traceability
-  
 
+This project uses the sample app of [API Logic Server](https://github.com/valhuber/ApiLogicServer/blob/main/README.md) to illustrate:
   
-This project uses the sample app of [API Logic Server](https://github.com/valhuber/ApiLogicServer/blob/main/README.md) to explore:
-  
+1. Rapid project creation and customization, using API Logic Server
 
-  
 1. Using [TDD](http://dannorth.net/introducing-bdd/) to define Stories and their Behaviors (tests), using [behave](https://behave.readthedocs.io/en/stable/tutorial.html).
   
-2. Behavior / Logic Tracing - identifying logic that implements a behavior
-  
-
+2. Behavior / Logic Tracing - extending (Agile) collaboration by making logic transparent logic in this generated `readme` (see the [Rules Report,](#rules_report) at end)
   
 &nbsp;&nbsp;
-  
 
-  
 # Setup
-  
 
-  
 The usual (if cryptography fails, get a recent version of pip):
   
 ```
@@ -51,41 +43,27 @@ cd test/behave
 behave
 ```
   
-
-  
 &nbsp;&nbsp;
-  
-
   
 # Stories and Behaviors
   
 From the TDD article
-  
 
 ## Story
   
 ```
-  
 As a [X]
-  
 I want [Y-feature]
-  
 so that [Z-benefit]
   
 ```
   
-
-  
 ### Place Order
   
 ```
-  
 As a Sales Manager,
-  
 I want Place Order services
-  
-So that I can check credit and reorder products
-  
+So that I can check credit and reorder products 
 ```
   
 
@@ -188,6 +166,12 @@ Attempted VSCode using [this procedure](https://qxf2.com/blog/run-python-behave-
   
 &nbsp;&nbsp;
   
+
+
+&nbsp;
+&nbsp;
+
+
 
 
 &nbsp;
