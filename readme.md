@@ -2,11 +2,13 @@
 
 This project uses the sample app of [API Logic Server](https://github.com/valhuber/ApiLogicServer/blob/main/README.md) to illustrate:
   
-1. Rapid project creation and customization, using API Logic Server
+1. **Rapid project creation and customization:** using API Logic Server
 
-1. Using [TDD](http://dannorth.net/introducing-bdd/) to define Stories and their Behaviors (tests), using [behave](https://behave.readthedocs.io/en/stable/tutorial.html).  A quick reference is [shown here](https://github.com/valhuber/TDD/wiki/Stories-And-Behaviors).
+1. **Spreadsheet-like rules:** to dramatically reduce backend code, and make it transparent
+
+1. **Testing:** with [TDD](http://dannorth.net/introducing-bdd/) to define Stories and their Behaviors (tests), using [behave](https://behave.readthedocs.io/en/stable/tutorial.html).  A quick reference is [shown here](https://github.com/valhuber/TDD/wiki/Stories-And-Behaviors).
   
-2. Behavior / Logic Tracing - extending (Agile) collaboration by making logic transparent logic in this generated `readme` (see the [TDD Report,](#tdd-report) at end)
+2. **Behavior / Logic Tracing:** extending (Agile) collaboration by making logic transparent in this generated `readme.md` (see the [TDD Report,](#tdd-report) at end)
   
 &nbsp;&nbsp;
 
@@ -25,7 +27,7 @@ Installation differs slightly, depending on whether you are using `venv` or dock
 
 &nbsp;&nbsp;
 
-#### Using 'venv`
+#### 1a. Using 'venv`
 
 If you are using `venv`: the usual (if cryptography fails, get a recent version of pip):
   
@@ -37,7 +39,7 @@ pip install -r requirements.txt
 
 &nbsp;&nbsp;
 
-#### Using Docker
+#### 1b. Or, using Docker
 
 If you are using docker, just accept the default docker (must be current).
 
@@ -54,19 +56,19 @@ ApiLogicServer create-and-run --project_name=/localhost/ApiLogicProject --db_url
 
 ## 2. Start the API Logic Server
 
-Run launch configuration `ApiLogicServer`.
+Open the project in VS Code, and run launch configuration `ApiLogicServer`.
 
 &nbsp;&nbsp;
 
 ## 3. Execute the TDD Test
 
-
-Run launch configuration `ApiLogicServer`.
+Run launch configuration `Debug Behave Logic`.
 
 &nbsp;&nbsp;
+
 ## 4. Run the TDD Report
 
-Run launch configuration `ApiLogicServer`.
+Run Launch Configuration `Report Behave Logic` to create `report_behave_logic.md`.  Examine in your IDE.
 
 </details>
 
@@ -78,25 +80,32 @@ This is the sample project from API Logic Server, based on the Northwind databas
 
 <figure><img src="https://github.com/valhuber/LogicBank/raw/main/images/nw.png"></figure>
 
-It provides the User Interface and API described below, and implements the transactional logic described in the [TDD Report.](#tdd-report)
+The created project provides the User Interface and API described below, and implements the transactional logic described in the [TDD Report.](#tdd-report).  It was created, customized and tested as described in the subsections below.
 
 &nbsp;&nbsp;
 
-## 1. Create with API Logic Server
+## 1. Create project with API Logic Server
 
-With API Logic Server installed, we created the project with this command:
+With API Logic Server installed, we created the project with this command, using `venv` based installs:
 
 ```
 ApiLogicServer create db_url= project_name=TDD
 ```
 
+or, like this, using docker-based installs:
+```
+ApiLogicServer create-and-run --project_name=/localhost/ApiLogicProject --db_url=
+```
+
 This creates an executable project that provides:
+
+&nbsp;&nbsp;
 
 #### 1a. An **Admin App**
 
-[The app shown below](https://github.com/valhuber/ApiLogicServer#admin-app-multi-page-multi-table-automatic-joins) is suitable for initial business user collaboration to confirm the data model structure, and basic _back office_ data maintenance.
+The app shown below [(more detail here)](https://github.com/valhuber/ApiLogicServer#admin-app-multi-page-multi-table-automatic-joins) is suitable for initial business user collaboration to confirm the data model structure, and basic _back office_ data maintenance.
 
-You can [customize it](https://github.com/valhuber/ApiLogicServer#admin-app-customization) by editing a simple `yaml`file.
+You can [customize it](https://github.com/valhuber/ApiLogicServer#admin-app-customization) by editing a simple `yaml`file (e.g, field captions, ordering etc.)
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/ui-admin/run-admin-app.png?raw=true"></figure>
 
@@ -104,14 +113,19 @@ You can [customize it](https://github.com/valhuber/ApiLogicServer#admin-app-cust
 
 #### 1b. An **API**
 
-An API is created for application integration and creating custom User Interfaces.  The API enforces the business logic described below.
+An API is created for application integration, and creating custom User Interfaces.  The API enforces the business logic described below.
 
 The [created project is customizable,](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#customize-and-debug) using a standard IDE.
 
+&nbsp;&nbsp;
 
 ##### Fix `models.py` for cascade delete
   
 The tests perform cascade delete operations.  The `models.py` file was altered [as described here](https://github.com/valhuber/ApiLogicServer/wiki#edit-modelspy-referential-integrity-eg-sqlite).
+
+&nbsp;&nbsp;
+
+>  Key Take-away: instead of weeks of effort, you have an Admin App and API, ready for business user collaboration
 
 &nbsp;&nbsp;
 
@@ -121,10 +135,15 @@ We customized the created project by adding logic and a custom service, as descr
 
 &nbsp;&nbsp;
 
-### 2a. Add Logic: 21 rules (`logic/declare_logic.py`)
-The core of TDD is to test behavior, in this case transaction behavior.  [Instead of several hundred lines of code](https://github.com/valhuber/LogicBank/wiki/by-code), we declared 21 rules, as [outlined here](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#logic).  Logic consists of rules and Python; 5 key rules are shown below:
+### 2a. Add Logic: 21 rules (`logic/declare_logic.py`) - not hundreds of lines of code
+The core of TDD is to test behavior, in this case transaction behavior.  [Instead of several hundred lines of code](https://github.com/valhuber/LogicBank/wiki/by-code), we declared 21 rules [(more details here)](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#logic).  Logic consists of rules and Python; 5 key rules are shown below:
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/declare-logic.png"></figure>
+
+
+&nbsp;&nbsp;
+
+>  Key Take-away: logic spreadsheet-like rules can dramatically reduce backend logic
 
 &nbsp;&nbsp;
 
@@ -178,6 +197,10 @@ This runs `report_behave_logic.py`, which
    1. Reading the `behave.log` from step 3c
    2. Injecting the `results_when` Logic Log files
 
+
+&nbsp;&nbsp;
+
+>  Key Take-away: TDD makes *requirements and tests* transparent; rules make your *logic* transparent; combine them both into the [**TDD Report.**](#tdd-report)
 
 &nbsp;&nbsp;
 
