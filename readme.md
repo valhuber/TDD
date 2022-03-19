@@ -6,7 +6,7 @@ This project uses the sample app of [API Logic Server](https://github.com/valhub
 
 1. Using [TDD](http://dannorth.net/introducing-bdd/) to define Stories and their Behaviors (tests), using [behave](https://behave.readthedocs.io/en/stable/tutorial.html).
   
-2. Behavior / Logic Tracing - extending (Agile) collaboration by making logic transparent logic in this generated `readme` (see the [Rules Report,](#rules_report) at end)
+2. Behavior / Logic Tracing - extending (Agile) collaboration by making logic transparent logic in this generated `readme` (see the [TDD Report,](#tdd_report) at end)
   
 &nbsp;&nbsp;
 
