@@ -76,7 +76,7 @@ Run launch configuration `ApiLogicServer`.
 
 This is the sample project from API Logic Server:
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database"></figure>
 
 It provides the User Interface and API described below, and implements the transactional logic described in the [TDD Report.](#tdd-report)
 
