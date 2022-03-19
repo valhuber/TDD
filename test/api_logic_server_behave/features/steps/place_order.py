@@ -47,7 +47,8 @@ def step_impl(context):
         }
     }
     scenario_name = 'Good Order Custom Service'
-    test_utils.prt(f'\n\n\n{scenario_name} - verify adjustments...\n', scenario_name)
+    test_utils.prt(f'\n\n\n{scenario_name} - verify adjustments...\n',\
+        scenario_name)
     r = requests.post(url=add_order_uri, json=add_order_args)
     context.response_text = r.text
 
