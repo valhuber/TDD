@@ -74,7 +74,7 @@ Run launch configuration `ApiLogicServer`.
 
 # How this project was created
 
-This is the sample project from API Logic Server:
+This is the sample project from API Logic Server, based on the Northwind database:
 
 <figure><img src="https://github.com/valhuber/LogicBank/raw/main/images/nw.png"></figure>
 
