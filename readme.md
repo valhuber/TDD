@@ -10,7 +10,7 @@ This project uses the sample app of [API Logic Server](https://github.com/valhub
   
 &nbsp;&nbsp;
 
-# Confirm Installation: Install, Test Run
+# Confirm Project Installation: Install, Test Run
 
 This project is the API Logic Server sample.  Install and run as described below.
 
@@ -122,7 +122,9 @@ We customized the created project by adding logic and a custom service, as descr
 &nbsp;&nbsp;
 
 ### 2a. Add Logic: 21 rules (`logic/declare_logic.py`)
-The core of TDD is to test behavior, in this case transaction behavior.  [Instead of several hundred lines of code](https://github.com/valhuber/LogicBank/wiki/by-code), we declared 21 rules, as [outlined here](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#logic).
+The core of TDD is to test behavior, in this case transaction behavior.  [Instead of several hundred lines of code](https://github.com/valhuber/LogicBank/wiki/by-code), we declared 21 rules, as [outlined here](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#logic).  Logic consists of rules and Python; 5 key rules are shown below:
+
+<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/declare-logic.png"></figure>
 
 &nbsp;&nbsp;
 
