@@ -57,19 +57,53 @@ behave
 
 ## Create with API Logic Server
 
+With API Logic Server installed, we created the project with this command:
 
-### Project Fixup
+```
+ApiLogicServer create db_url= project_name=TDD
+```
+
+This creates an executable project that provides:
+
+1. An **Admin App** that you can customize by editing a simple file
+
+   * This running User Interface conforms to Agile approaches of _Working Software_ to promote _collaboration_.
+
+&nbsp;
+
+
+2. An **API**, suitable for application integration and creating custom User Interfaces.
+
+The [created project is customizable,](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#customize-and-debug) using a standard IDE.
+
+&nbsp;
+&nbsp;
+
+### Fix models.py for cascade delete
   
-The tests perform cascade delete operations.  You must alter the `models.py` file [as described here](https://github.com/valhuber/ApiLogicServer/wiki#edit-modelspy-referential-integrity-eg-sqlite).
-  
+The tests perform cascade delete operations.  The `models.py` file as altered [as described here](https://github.com/valhuber/ApiLogicServer/wiki#edit-modelspy-referential-integrity-eg-sqlite).
+
 &nbsp;&nbsp;
 &nbsp;&nbsp;
 
-## Customize
+## Customize using your IDE
+
+We customized the created project by adding logic and a custom service, as described below.
+
+&nbsp;&nbsp;
+&nbsp;&nbsp;
 
 ### Add Logic
+The core of TDD is to test behavior, in this case transaction behavior.  Instead of several hundred lines of code, we declared 21 rules, as [outlined here](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#logic).
+
+&nbsp;&nbsp;
+&nbsp;&nbsp;
 
 ### Add Customn Service
+Next, we define a custom service to add an order and it's Order Details, as [described here](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#api-customization).
+
+&nbsp;&nbsp;
+&nbsp;&nbsp;
 
 ## Define TDD Tests
 
