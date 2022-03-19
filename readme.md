@@ -92,20 +92,24 @@ ApiLogicServer create db_url= project_name=TDD
 
 This creates an executable project that provides:
 
-1. An **Admin App** that you can customize by editing a simple file
+#### 1a. An **Admin App**
 
-   * This running User Interface conforms to Agile approaches of _Working Software_ to promote _collaboration_.
+[The app shown below](https://github.com/valhuber/ApiLogicServer#admin-app-multi-page-multi-table-automatic-joins) is suitable for initial business user collaboration to confirm the data model structure, and basic _back office_ data maintenance.
 
-&nbsp;
+You can [customize it](https://github.com/valhuber/ApiLogicServer#admin-app-customization) by editing a simple `yaml`file.
 
-
-2. An **API**, suitable for application integration and creating custom User Interfaces.
-
-The [created project is customizable,](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#customize-and-debug) using a standard IDE.
+<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/ui-admin/run-admin-app.png?raw=true"></figure>
 
 &nbsp;&nbsp;
 
-### 1a. Fix `models.py` for cascade delete
+#### 1b. An **API**
+
+An API is created for application integration and creating custom User Interfaces.  The API enforces the business logic described below.
+
+The [created project is customizable,](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#customize-and-debug) using a standard IDE.
+
+
+##### Fix `models.py` for cascade delete
   
 The tests perform cascade delete operations.  The `models.py` file was altered [as described here](https://github.com/valhuber/ApiLogicServer/wiki#edit-modelspy-referential-integrity-eg-sqlite).
 
