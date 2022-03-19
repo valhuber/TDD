@@ -133,8 +133,27 @@ Next, we defined a custom service to add an order and it's Order Details, as [de
 
 &nbsp;&nbsp;
 
-## 3. Define TDD Tests
+## 3. Define and Run TDD Tests
 
+Define and Run TDD Tests as shown below:
+
+<figure><img src="https://github.com/valhuber/TDD/blob/main/images/TDD-overview.png?raw=true"></figure>
+
+&nbsp;&nbsp;
+
+#### 3a. Define Tests (e.g., `place_order.feature`)
+
+&nbsp;&nbsp;
+
+#### 3b. Implement Tests (e.g., `place_order.py`)
+
+&nbsp;&nbsp;
+
+#### 3c. Run `Debug Behave Logic`
+
+&nbsp;&nbsp;
+
+#### 3d. Run `Report Behave Logic`
 
 &nbsp;&nbsp;
 
