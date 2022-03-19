@@ -50,7 +50,8 @@ Or, open a terminal window and:
 cd test/behave
 behave
 ```
-  
+</details>
+
 &nbsp;&nbsp;
 # How this project was created
 
