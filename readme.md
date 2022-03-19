@@ -128,7 +128,18 @@ Next, we defined a custom service to add an order and it's Order Details, as [de
 # Business Agility
 The underlying objective here is to promote _business agilty:_
 
+1. TDD promotes transparent and testable behaviors
+2. Unlike code, logic is transparent - business users can read it and collaborate (_"hey, you forgot to add tax"_)
+
+
 <figure><img src="https://github.com/valhuber/TDD/blob/main/images/business-agility.png?raw=true"></figure>
+
+### Increased Transparency: TDD Report, _with logic_
+
+This project illustrates you can extract the logic from the Logic Log, and insert it into the TDD output:
+1. The TDD Report follows (converted to wiki format)
+2. Click the _disclosure icons_ to see the rules actually used, including how they operate on the given scenario
+
 
 &nbsp;&nbsp;
 
