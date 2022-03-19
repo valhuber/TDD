@@ -39,7 +39,7 @@ def get_current_readme():
     for each_readme_line in readme_lines:
         if TDD_report_name in each_readme_line:
             break
-        wiki_data.append(each_readme_line + "  ")
+        wiki_data.append(each_readme_line[0:-1])
     line_spacer()
     wiki_data.append("# TDD Report")
 
