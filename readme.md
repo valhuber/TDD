@@ -125,6 +125,13 @@ Next, we defined a custom service to add an order and it's Order Details, as [de
 
 &nbsp;&nbsp;
 
+# Business Agility
+The underlying objective here is to promote _business agilty:_
+
+<figure><img src="https://github.com/valhuber/TDD/blob/main/images/business-agility.png?raw=true"></figure>
+
+&nbsp;&nbsp;
+
 # Working with TDD
 
   
