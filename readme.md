@@ -143,17 +143,41 @@ Define and Run TDD Tests as shown below:
 
 #### 3a. Define Tests (e.g., `place_order.feature`)
 
+TDD is designed for business use collaboration by making Features and Scenarios transparent.  So, the start of Behave is to define one or more `.feature` files.
+
 &nbsp;&nbsp;
 
 #### 3b. Implement Tests (e.g., `place_order.py`)
+
+Implement the actual tests in Python, using annotations to match definitions and implementations.  In this project, the implementation is basically calling APIs to get old data, run transactions, and check results.
+
+The rules fire as transactions are run, and produce [Logic Log output](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python#debugging).  The highlight code on lines 50-51 signals that the Logic Log should be directed to files in `results_when`.  These are later used in Report Behave Logic, described below.
 
 &nbsp;&nbsp;
 
 #### 3c. Run `Debug Behave Logic`
 
+With the server started, run your tests using Launch Configuration `Debug Behave Logic`:
+1. You can use the debugger to stop in a test and verify results
+2. When your test is running, run it one last time to create the `behave.log`, like this:
+
+`
+cd test/api_logic_server_behave
+behave > behave.log
+`
+
 &nbsp;&nbsp;
 
 #### 3d. Run `Report Behave Logic`
+
+Run Launch Configuration `Report Behave Logic` to create `report_behave_logic.md`.  
+
+This runs `report_behave_logic.py`, which
+1. Reads your current `readme.md` file (text like you are reading now), and
+2. Appends the [TDD Report:](#tdd-report) by
+   1. Reading the `behave.log` from step 3c
+   2. Injecting the `results_when` Logic Log files
+
 
 &nbsp;&nbsp;
 
