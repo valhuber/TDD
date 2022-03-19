@@ -10,14 +10,22 @@ This project uses the sample app of [API Logic Server](https://github.com/valhub
   
 &nbsp;&nbsp;
 
-# Perform a test run
+# Confirm Installation: Install, Test Run
 
 This project is the API Logic Server sample.  Install and run as described below.
 
 <details>
 <summary>Use the following procedure to install and test</summary>
 
-## Installation
+&nbsp;&nbsp;
+
+## 1. Install API Logic Server
+
+Installation differs slightly, depending on whether you are using `venv` or docker.
+
+&nbsp;&nbsp;
+
+#### Using 'venv`
 
 If you are using `venv`: the usual (if cryptography fails, get a recent version of pip):
   
@@ -26,36 +34,49 @@ python -m venv venv
 source venv/bin/activate  # windows venv\Scripts\activate
 pip install -r requirements.txt
 ```
+
+&nbsp;&nbsp;
+
+#### Using Docker
+
 If you are using docker, just accept the default docker (must be current).
 
-
-
-## Running the TDD Report
-
-This should enable you to run launch configuration `ApiLogicServer`.
-
-To simplify debugging, this procedure is simpler:
-  
-1. Open and terminal window and `python api_logic_server_run.py`  # starts the server
-  
-2. Run Launch Configuration:
-  
-   * **Debug Behave Logic**
-  
-   * **Report Behave Logic**
-
-Or, open a terminal window and:
-  
 ```
-cd test/behave
-behave
+cd TDD         # directory of API Logic Server projects on local host
+
+# Start (installs if required) the API Logic Server docker container
+docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server
 ```
+
+ApiLogicServer create-and-run --project_name=/localhost/ApiLogicProject --db_url=
+
+&nbsp;&nbsp;
+
+## 2. Start the API Logic Server
+
+Run launch configuration `ApiLogicServer`.
+
+&nbsp;&nbsp;
+
+## 3. Execute the TDD Test
+
+
+Run launch configuration `ApiLogicServer`.
+
+&nbsp;&nbsp;
+## 4. Run the TDD Report
+
+Run launch configuration `ApiLogicServer`.
+
 </details>
 
 &nbsp;&nbsp;
+
 # How this project was created
 
-## Create with API Logic Server
+&nbsp;&nbsp;
+
+## 1. Create with API Logic Server
 
 With API Logic Server installed, we created the project with this command:
 
@@ -76,37 +97,31 @@ This creates an executable project that provides:
 
 The [created project is customizable,](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#customize-and-debug) using a standard IDE.
 
-&nbsp;
-&nbsp;
+&nbsp;&nbsp;
 
-### Fix models.py for cascade delete
+### 1a. Fix `models.py` for cascade delete
   
-The tests perform cascade delete operations.  The `models.py` file as altered [as described here](https://github.com/valhuber/ApiLogicServer/wiki#edit-modelspy-referential-integrity-eg-sqlite).
+The tests perform cascade delete operations.  The `models.py` file was altered [as described here](https://github.com/valhuber/ApiLogicServer/wiki#edit-modelspy-referential-integrity-eg-sqlite).
 
 &nbsp;&nbsp;
-&nbsp;&nbsp;
 
-## Customize using your IDE
+## 2. Customize using your IDE
 
 We customized the created project by adding logic and a custom service, as described below.
 
 &nbsp;&nbsp;
-&nbsp;&nbsp;
 
-### Add Logic
-The core of TDD is to test behavior, in this case transaction behavior.  Instead of several hundred lines of code, we declared 21 rules, as [outlined here](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#logic).
-
-&nbsp;&nbsp;
-&nbsp;&nbsp;
-
-### Add Customn Service
-Next, we define a custom service to add an order and it's Order Details, as [described here](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#api-customization).
+### 2a. Add Logic: 21 rules (`logic/declare_logic.py`)
+The core of TDD is to test behavior, in this case transaction behavior.  [Instead of several hundred lines of code](https://github.com/valhuber/LogicBank/wiki/by-code), we declared 21 rules, as [outlined here](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#logic).
 
 &nbsp;&nbsp;
+
+### 2b. Add Custom Service: 10 lines of Python (`api/customize_api.py`)
+Next, we defined a custom service to add an order and it's Order Details, as [described here](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#api-customization).
+
 &nbsp;&nbsp;
 
-## Define TDD Tests
-
+## 3. Define TDD Tests
 
 &nbsp;&nbsp;
 
