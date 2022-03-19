@@ -4,23 +4,33 @@ This project uses the sample app of [API Logic Server](https://github.com/valhub
   
 1. Rapid project creation and customization, using API Logic Server
 
-1. Using [TDD](http://dannorth.net/introducing-bdd/) to define Stories and their Behaviors (tests), using [behave](https://behave.readthedocs.io/en/stable/tutorial.html).
+1. Using [TDD](http://dannorth.net/introducing-bdd/) to define Stories and their Behaviors (tests), using [behave](https://behave.readthedocs.io/en/stable/tutorial.html).  A quick reference is [shown here](https://github.com/valhuber/TDD/wiki/Stories-And-Behaviors).
   
-2. Behavior / Logic Tracing - extending (Agile) collaboration by making logic transparent logic in this generated `readme` (see the [TDD Report,](#tdd_report) at end)
+2. Behavior / Logic Tracing - extending (Agile) collaboration by making logic transparent logic in this generated `readme` (see the [TDD Report,](#tdd-report) at end)
   
 &nbsp;&nbsp;
 
-# Setup
+# Perform a test run
 
-The usual (if cryptography fails, get a recent version of pip):
+This project is the API Logic Server sample.  Install and run as described below.
+
+<details>
+<summary>Use the following procedure to install and test</summary>
+
+## Installation
+
+If you are using `venv`: the usual (if cryptography fails, get a recent version of pip):
   
 ```
 python -m venv venv
 source venv/bin/activate  # windows venv\Scripts\activate
 pip install -r requirements.txt
 ```
-  
-The tests perform cascade delete operations.  You must alter the `models.py` file [as described here](https://github.com/valhuber/ApiLogicServer/wiki#edit-modelspy-referential-integrity-eg-sqlite).
+If you are using docker, just accept the default docker (must be current).
+
+
+
+## Running the TDD Report
 
 This should enable you to run launch configuration `ApiLogicServer`.
 
@@ -33,9 +43,7 @@ To simplify debugging, this procedure is simpler:
    * **Debug Behave Logic**
   
    * **Report Behave Logic**
-  
 
-  
 Or, open a terminal window and:
   
 ```
@@ -44,145 +52,33 @@ behave
 ```
   
 &nbsp;&nbsp;
-  
-# Stories and Behaviors
-  
-From the TDD article
+# How this project was created
 
-## Story
-  
-```
-As a [X]
-I want [Y-feature]
-so that [Z-benefit]
-  
-```
-  
-### Place Order
-  
-```
-As a Sales Manager,
-I want Place Order services
-So that I can check credit and reorder products 
-```
-  
+## Create with API Logic Server
 
-  
 
+### Project Fixup
   
-## Behavior (aka Scenario)
+The tests perform cascade delete operations.  You must alter the `models.py` file [as described here](https://github.com/valhuber/ApiLogicServer/wiki#edit-modelspy-referential-integrity-eg-sqlite).
   
-```
-  
-Given some initial context (the GIVEN),   ==> Class
-  
-   And other conditions,
-  
-When an EVENT occurs,                     ==> Class
-  
-Then ensure some OUTCOME,                 ==> Class
-  
-   And other outcomes.
-  
-```
-  
+&nbsp;&nbsp;
+&nbsp;&nbsp;
 
-  
-### Place Order > Check Credit
-  
-```
-  
-Given a CustomerAccount with an assigned credit limit,
-  
-When an OrderIsPlaced
-  
-Then ensure OrderAccepted if credit limit is not exceeded
-  
-And ensure OrderRejected if the credit limit is exceeded
-  
-```
-  
-### Place Order > Reorder Products
-  
-```
-  
-Given Products with assigned reorder points
-  
-When an OrderIsShipped
-  
-Then ensure ProductsAreReordered iff the reorder points execeeds recomputed Units-Available
-  
-```
-  
+## Customize
+
+### Add Logic
+
+### Add Customn Service
+
+## Define TDD Tests
+
+
+&nbsp;&nbsp;
+
+# Working with TDD
 
   
 &nbsp;&nbsp;
-  
-
-  
-# Example 1
-  
-
-  
-This diagram illustrates:
-  
-1. A running TDD test
-  
-2. Generating `behave/results` log files with rules trace and rule use
-  
-
-  
-<figure><img src="https://github.com/valhuber/TDD/blob/main/images/example-1.png?raw=true"></figure>
-  
-
-  
-&nbsp;&nbsp;
-  
-
-  
-# Appendix - Debug behave tips
-  
-
-  
-Basic (no IDE) procedure [noted here](https://921kiyo.com/debugging-the-Python-behave-test/).
-  
-
-  
-Better: uccessfully used [this procedure](https://github.com/behave/behave/issues/709).  Note the `debug_behave` launch configuration.
-  
-
-  
-> Tip: using directory `behave` interferes with Python namespace, hence `api_logic_server_behave`
-  
-
-  
-Attempted VSCode using [this procedure](https://qxf2.com/blog/run-python-behave-from-visual-studio-code/); failing to debug:
-  
-
-  
-<figure><img src="https://github.com/valhuber/TDD/blob/main/images/debug-fails.png?raw=true"></figure>
-  
-
-  
-&nbsp;&nbsp;
-  
-
-
-&nbsp;
-&nbsp;
-
-
-
-
-&nbsp;
-&nbsp;
-
-
-
-
-&nbsp;
-&nbsp;
-
 
 # TDD Report
 &nbsp;
