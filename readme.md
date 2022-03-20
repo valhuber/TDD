@@ -2,13 +2,13 @@
 
 This project uses the sample app of [API Logic Server](https://github.com/valhuber/ApiLogicServer/blob/main/README.md) to illustrate:
   
-1. **Rapid project creation and customization:** using API Logic Server
+1. **Rapid project creation and customization:** using API Logic Server, for 1-command creation of projects providing User Interfaces and APIs from a database.  Runnng screens are an excellent way to engage business user collaboration.
 
-1. **Spreadsheet-like rules:** to dramatically reduce backend code, and make it transparent
+1. **Logic Automation:** using spreadsheet-like rules for dramatically reduce backend code, and make logic transparent to the team.
 
-1. **Testing:** with [TDD](http://dannorth.net/introducing-bdd/) to define Stories and their Behaviors (tests), using [behave](https://behave.readthedocs.io/en/stable/tutorial.html).  A quick reference is [shown here](https://github.com/valhuber/TDD/wiki/Stories-And-Behaviors).
-  
-2. **Behavior / Logic Tracing:** extending (Agile) collaboration by making logic transparent in this generated `readme.md` (see the [TDD Report,](#tdd-report) at end)
+1. **Transparent TDD Testing:** using [behave](https://behave.readthedocs.io/en/stable/tutorial.html) (a [TDD](http://dannorth.net/introducing-bdd/) framework) for defining systems, to promote Agile collaboration with business users.  You define Features and Scenarios (tests) in `behave`, with underlying Python test implementations.
+
+2. **Transparent Test / Logic Tracing:** further promote Agile collaboration, by making logic transparent and integrated with Testing, in this generated `readme.md` (see the [TDD Report,](#tdd-report) at end).
   
 &nbsp;&nbsp;
 
@@ -158,23 +158,25 @@ Define and Run TDD Tests as shown below:
 
 <figure><img src="https://github.com/valhuber/TDD/blob/main/images/TDD-overview.png?raw=true"></figure>
 
+For more on TDD, [see here](https://github.com/valhuber/TDD/wiki/Stories-And-Behaviors).
+
 &nbsp;&nbsp;
 
 #### 3a. Define Tests (e.g., `place_order.feature`)
 
-TDD is designed for business use collaboration by making Features and Scenarios transparent.  So, the start of Behave is to define one or more `.feature` files.
+TDD is designed for business use collaboration by making Features and Scenarios transparent.  So, the start of Behave is to define one or more `.feature` files.  See the example above.
 
 &nbsp;&nbsp;
 
 #### 3b. Implement Tests (e.g., `place_order.py`)
 
-Implement the actual tests in Python, using annotations to match definitions and implementations.  In this project, the implementation is basically calling APIs to get old data, run transactions, and check results.
+Implement the actual tests in Python, using annotations to match tests and implementations.  In this project, the implementation is basically calling APIs to get old data, run transactions, and check results.
 
 The rules fire as transactions are run, and produce [Logic Log output](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python#debugging).  The highlight code on lines 50-51 signals that the Logic Log should be directed to files in `results_when`.  These are later used in Report Behave Logic, described below.
 
 &nbsp;&nbsp;
 
-#### 3c. Run `Debug Behave Logic`
+#### 3c. Run Tests, using Launch Configuration `Debug Behave Logic`
 
 With the server started, run your tests using Launch Configuration `Debug Behave Logic`:
 1. You can use the debugger to stop in a test and verify results
@@ -187,7 +189,7 @@ behave > behave.log
 
 &nbsp;&nbsp;
 
-#### 3d. Run `Report Behave Logic`
+#### 3d. Create TDD/Logic Reports, by running Launch Configuration `Report Behave Logic`
 
 Run Launch Configuration `Report Behave Logic` to create `report_behave_logic.md`.  
 
@@ -222,7 +224,8 @@ The underlying objective here is to promote _business agilty:_
 
 This project illustrates you can extract the logic from the Logic Log, and insert it into the TDD output:
 1. The TDD Report follows (converted to wiki format)
-2. Click the _disclosure icons_ to see the rules actually used, including how they operate on the given scenario
+
+2. Click the __disclosure icons__ to see the rules actually used, including how they operate on the given scenario
 
   
 &nbsp;&nbsp;
