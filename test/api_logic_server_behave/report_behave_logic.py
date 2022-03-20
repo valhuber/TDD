@@ -53,7 +53,7 @@ def show_logic(scenario: str):
     logic_file_name = f'results_when/{scenario_trunc}.log'
     logic_file_name_path = Path(logic_file_name)
     if not logic_file_name_path.is_file():
-        wiki_data.append(f'unable to find LogicLog file: {logic_file_name}')
+        # wiki_data.append(f'unable to find LogicLog file: {logic_file_name}')
         if scenario == debug_scenario:
             print(f'RELATIVE: {logic_file_name} in {os.getcwd()}')
             full_name = f'{os.getcwd()}/{logic_file_name}'
@@ -88,7 +88,8 @@ def show_logic(scenario: str):
         wiki_data.append(f'**Logic Log** in Scenario: {scenario}')
         wiki_data.append("```")
         for each_logic_log in logic_log:
-            wiki_data.append(each_logic_log[0:-1])
+            each_line = remove_trailer(each_logic_log)
+            wiki_data.append(each_line)
         wiki_data.append("```")
         wiki_data.append("</details>")
 
