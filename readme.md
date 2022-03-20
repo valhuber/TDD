@@ -1,4 +1,4 @@
-# TDD - Test Driven Dev, with Logic Traceability
+# TDD - Test Driven Development, with Logic Traceability
 
 This project uses the sample app of [API Logic Server](https://github.com/valhuber/ApiLogicServer/blob/main/README.md) to illustrate:
   
@@ -136,7 +136,13 @@ We customized the created project by adding logic and a custom service, as descr
 &nbsp;&nbsp;
 
 ### 2a. Add Logic: 21 rules (`logic/declare_logic.py`) - not hundreds of lines of code
-The core of TDD is to test behavior, in this case transaction behavior.  [Instead of several hundred lines of code](https://github.com/valhuber/LogicBank/wiki/by-code), we declared 21 rules [(more details here)](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#logic).  Logic consists of rules and Python; 5 key rules are shown below:
+The core of TDD is to test behavior, in this case transaction behavior.  API Logic Server provides Logic Automation, where logic is implemented as:
+
+* [Spreadsheet-like rules](https://github.com/valhuber/LogicBank/wiki/Examples) for multi-table derivations and constraints, and
+
+* Python, to implement logic not addressed in rules
+
+So, [instead of several hundred lines of code](https://github.com/valhuber/LogicBank/wiki/by-code), we declared 21 rules [(more details here)](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#logic).  5 key rules are shown below:
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/declare-logic.png"></figure>
 
