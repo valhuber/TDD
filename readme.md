@@ -247,11 +247,11 @@ For more information, see [Working with Behave.](https://github.com/valhuber/TDD
 
 The underlying objective here is to promote _business agilty:_
 
-1. **Working Software, Now:** the project creation process creates screens for business user collaboration
+1. **Working Software, *Now:*** the project creation process creates screens for business user collaboration
 2. **Customer Collaboration:** 
    * Screen-based collaboration, as noted above
-   * Use TDD to define testable behaviors
-   * Unlike code, logic is *transparent* - business users can read it and collaborate (_"hey, you forgot to add tax"_).
+   * TDD is a transparent process for defining testable behaviors
+   * Logic (unlike code) is *transparent* - business users can read it and collaborate (_"hey, you forgot to add tax"_).
       * This opens up the opportunity to combine the TDD Report _with a Logic report,_ as described below
 3. **Responding to Change:**
    * Rebuild the App as requirements are uncovered
