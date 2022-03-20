@@ -208,7 +208,9 @@ The rules fire as transactions are run, and produce [Logic Log output](https://g
 
 #### 3c. Run Tests, using Launch Configuration `Debug Behave Logic`
 
-With the server started, run your tests using Launch Configuration `Debug Behave Logic`.  It creates a file `test/api_logic_server_behave/behave.log`.
+With the server started, run your tests using Launch Configuration `Debug Behave Logic`.  It creates the following files:
+1. `test/api_logic_server_behave/behave.log`
+2. `results_when/<scenario-name>.log` one for each scenario
 
 >  You can use the debugger to stop in a test and verify results
 
