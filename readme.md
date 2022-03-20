@@ -2,7 +2,7 @@
 
 This project uses the sample app of [API Logic Server](https://github.com/valhuber/ApiLogicServer/blob/main/README.md) to illustrate:
   
-1. **Rapid project creation and customization:** using API Logic Server, for 1-command creation of projects providing User Interfaces and APIs from a database.  Runnng screens are an excellent way to engage business user collaboration.
+1. **Rapid project creation and customization:** using API Logic Server, for 1-command creation of projects that provide User Interfaces and APIs from a database.  Runnng screens are an excellent way to engage business user collaboration.
 
 1. **Logic Automation:** using spreadsheet-like rules to dramatically reduce backend code, and make logic transparent to the team.
 
@@ -80,7 +80,7 @@ This is the sample project from API Logic Server, based on the Northwind databas
 
 <figure><img src="https://github.com/valhuber/LogicBank/raw/main/images/nw.png"></figure>
 
-The created project provides the User Interface and API described below, and implements the transactional logic described in the [TDD Report.](#tdd-report).  It was created, customized and tested as described in the subsections below.
+The created project provides the User Interface and API described below, and implements the transactional logic described in the [TDD Report](#tdd-report).  It was created, customized and tested as described in the subsections below.
 
 &nbsp;&nbsp;
 
@@ -108,6 +108,7 @@ The Agile objective of collaboration is typically best-served with _running_ scr
 Ideally, User Interface creation would be automatic.
 
 So, API Logic Server creates first-cut screens, automatically from the data model.  
+
 The app shown below [(more detail here)](https://github.com/valhuber/ApiLogicServer#admin-app-multi-page-multi-table-automatic-joins) is suitable for initial business user collaboration to confirm the data model structure, and basic _back office_ data maintenance.
 
 You can [customize it](https://github.com/valhuber/ApiLogicServer#admin-app-customization) by editing a simple `yaml`file (e.g, field captions, ordering etc.)
@@ -146,12 +147,12 @@ We customized the created project by adding logic and a custom service, as descr
 
 ### 2a. Add Logic: 21 rules (`logic/declare_logic.py`) - not hundreds of lines of code
 
-Business Logic is the heart of the system, enforcing our business policies.  These consist of multi-table constraints and derivations, and actions such as sending email and messages.  A core TDD objective is to establish and test such behavior.
+Business Logic is the heart of the system, enforcing our business policies.  These consist of multi-table constraints and derivations, and actions such as sending email and messages.  A core TDD objective is to define and test such behavior.
 
 It's generally accepted that such domain-specific logic _must_ require domain-specific code.  The problem is that this is:
 * **slow** (it's often nearly half the system)
 * **opaque** to business users
-* **painful to maintain** - it's no secret that developers hate it, since it's less coding than the "arcaeology" of first understanding existing code to understand where to insert the new logic
+* **painful to maintain** - it's no secret that developers hate maintenance, since it's less coding than the "archaeology" of first understanding existing code to understand where to insert the new logic
 
 Ideally, we could capture TDD requirements as executable statements.
 
@@ -159,16 +160,16 @@ So, API Logic Server provides Logic Automation, where logic is implemented as:
 
 * [Spreadsheet-like rules](https://github.com/valhuber/LogicBank/wiki/Examples) for multi-table derivations and constraints, and
 
-* Python, to implement logic not addressed in rules
+* Python, to implement logic not addressed in rules such as sending email or messages
 
-So, [instead of several hundred lines of code](https://github.com/valhuber/LogicBank/wiki/by-code), we declared 21 rules [(more details here)](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#logic).  5 key rules are shown below:
+So, [instead of several hundred lines of code](https://github.com/valhuber/LogicBank/wiki/by-code), we declared 21 rules [(more details here)](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#logic).  Rules are entered in Python, with code completion.  5 key rules are shown below:
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/declare-logic.png"></figure>
 
 Unlike manual code, logic is 
-* **automatically reused** - it is enforced as part of the API, so automatically shared across *all* screens and services
-* **automatically ordered** - maintenance is simply altering the rules; the system computes their execution order by automatically discovering their depenencies.  No more archaeology.
-* **transparent** - business users can read the spreadsheet-like rules
+* **automatically reused** - it is enforced as part of the API, so automatically shared across *all* screens and services.
+* **automatically ordered** - maintenance is simply altering the rules; the system computes their execution order by automatically discovering their dependencies.  No more archaeology.
+* **transparent** - business users can read the spreadsheet-like rules.
 
 
 &nbsp;&nbsp;
@@ -192,21 +193,21 @@ For more on TDD, [see here](https://github.com/valhuber/TDD/wiki/Stories-And-Beh
 
 &nbsp;&nbsp;
 
-#### 3a. Define Tests (e.g., `place_order.feature`)
+#### 3a. **Define Tests** (e.g., `place_order.feature`)
 
 TDD is designed for business use collaboration by making Features and Scenarios transparent.  So, the start of Behave is to define one or more `.feature` files.  See the example above.
 
 &nbsp;&nbsp;
 
-#### 3b. Implement Tests (e.g., `place_order.py`)
+#### 3b. **Implement Tests** (e.g., `place_order.py`)
 
 Implement the actual tests in Python, using annotations to match tests and implementations.  In this project, the implementation is basically calling APIs to get old data, run transactions, and check results.
 
-The rules fire as transactions are run, and produce [Logic Log output](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python#debugging).  The highlight code on lines 50-51 signals that the Logic Log should be directed to files in `results_when`.  These are later used in Report Behave Logic, described below.
+The rules fire as transactions are run, and produce [Logic Log output](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python#debugging).  The highlighted code on lines 50-51 signals that the Logic Log should be directed to files in `results_when`.  These are later used in Report Behave Logic, described below.
 
 &nbsp;&nbsp;
 
-#### 3c. Run Tests, using Launch Configuration `Debug Behave Logic`
+#### 3c. **Run Tests,** using Launch Configuration: `Debug Behave Logic`
 
 With the server started, run your tests using Launch Configuration `Debug Behave Logic`.  It creates the following files:
 1. `test/api_logic_server_behave/behave.log`
@@ -217,14 +218,14 @@ With the server started, run your tests using Launch Configuration `Debug Behave
 
 &nbsp;&nbsp;
 
-#### 3d. Create TDD/Logic Reports, by running Launch Configuration `Report Behave Logic`
+#### 3d. **Create TDD/Logic Reports,** using Launch Configuration: `Report Behave Logic`
 
 Run Launch Configuration `Report Behave Logic` to create `report_behave_logic.md`.  
 
 This runs `report_behave_logic.py`, which
 1. Reads your current `readme.md` file (text like you are reading now), and
-2. Appends the [TDD Report:](#tdd-report) by
-   1. Reading the `behave.log` from step 3c
+2. Appends the [TDD Report:](#tdd-report) by processing the files created in step 3c
+   1. Reading the `behave.log`, and
    2. Injecting the `results_when` Logic Log files
 
 
@@ -240,13 +241,23 @@ For more information, see [Working with Behave.](https://github.com/valhuber/TDD
 &nbsp;&nbsp;
 
 # Business Agility
-The underlying objective here is to promote _business agilty:_
-
-1. TDD promotes transparent and testable behaviors
-2. Unlike code, logic is transparent - business users can read it and collaborate (_"hey, you forgot to add tax"_)
 
 
 <figure><img src="https://github.com/valhuber/TDD/blob/main/images/business-agility.png?raw=true"></figure>
+
+The underlying objective here is to promote _business agilty:_
+
+1. **Working Software, Now:** the project creation process creates screens for business user collaboration
+2. **Customer Collaboration:** 
+   * Screen-based collaboration, as noted above
+   * Use TDD to define testable behaviors
+   * Unlike code, logic is *transparent* - business users can read it and collaborate (_"hey, you forgot to add tax"_).
+      * This opens up the opportunity to combine the TDD Report _with a Logic report,_ as described below
+3. **Responding to Change:**
+   * Rebuild the App as requirements are uncovered
+   * Alter logic, utilizing *automatic ordering* to keep things agile
+
+&nbsp;&nbsp;
 
 ### Increased Transparency: TDD Report, _with logic_
 
@@ -254,22 +265,6 @@ This project illustrates you can extract the logic from the Logic Log, and inser
 1. The TDD Report follows (converted to wiki format)
 
 2. Click the __disclosure icons__ to see the rules actually used, including how they operate on the given scenario
-
-  
-&nbsp;&nbsp;
-
-
-
-&nbsp;
-&nbsp;
-
-
-
-
-&nbsp;
-&nbsp;
-
-
 
 
 &nbsp;
