@@ -37,7 +37,7 @@ def get_current_readme():
     with open(readme_file_name) as readme:
         readme_lines = readme.readlines()
     for each_readme_line in readme_lines:
-        if TDD_report_name in each_readme_line:
+        if '# ' + TDD_report_name in each_readme_line:
             break
         wiki_data.append(each_readme_line[0:-1])
     line_spacer()
