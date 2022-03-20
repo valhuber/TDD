@@ -21,6 +21,7 @@
             "cwd": "${workspaceFolder}/test/api_logic_server_behave",
             "program": "${workspaceFolder}/test/api_logic_server_behave/debug_behave.py",
             "redirectOutput": true,
+            "args": [ ">", "${workspaceFolder}/test/api_logic_server_behave/behave.log"],
             "justMyCode": false,            
             "console": "integratedTerminal"
         },

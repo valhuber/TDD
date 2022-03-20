@@ -63,4 +63,4 @@ Feature: Salary Change # features/salary_change.feature:1
 4 features passed, 0 failed, 0 skipped
 10 scenarios passed, 0 failed, 0 skipped
 34 steps passed, 0 failed, 0 skipped, 0 undefined
-Took 0m1.464s
+Took 0m0.809s
