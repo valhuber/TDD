@@ -4,7 +4,7 @@ This project uses the sample app of [API Logic Server](https://github.com/valhub
   
 1. **Rapid project creation and customization:** using API Logic Server, for 1-command creation of projects providing User Interfaces and APIs from a database.  Runnng screens are an excellent way to engage business user collaboration.
 
-1. **Logic Automation:** using spreadsheet-like rules for dramatically reduce backend code, and make logic transparent to the team.
+1. **Logic Automation:** using spreadsheet-like rules to dramatically reduce backend code, and make logic transparent to the team.
 
 1. **Transparent TDD Testing:** using [behave](https://behave.readthedocs.io/en/stable/tutorial.html) (a [TDD](http://dannorth.net/introducing-bdd/) framework) for defining systems, to promote Agile collaboration with business users.  You define Features (aka Stories) and Scenarios (aka tests) in `behave`, with underlying Python test implementations.
 
@@ -210,7 +210,7 @@ The rules fire as transactions are run, and produce [Logic Log output](https://g
 
 With the server started, run your tests using Launch Configuration `Debug Behave Logic`.  It creates the following files:
 1. `test/api_logic_server_behave/behave.log`
-2. `results_when/<scenario-name>.log` one for each scenario
+2. `results_when/<scenario-name>.log` (one for each scenario)
 
 >  You can use the debugger to stop in a test and verify results
 
