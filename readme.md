@@ -1,4 +1,4 @@
-# TDD - Test Driven Development, with Transparent Logic Automation
+# Test Driven Development, with Transparent Logic Automation
 
 This project uses the sample app of [API Logic Server](https://github.com/valhuber/ApiLogicServer/blob/main/README.md) to illustrate:
   
