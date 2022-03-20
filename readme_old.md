@@ -6,7 +6,7 @@ This project uses the sample app of [API Logic Server](https://github.com/valhub
 
 1. **Logic Automation:** using spreadsheet-like rules for dramatically reduce backend code, and make logic transparent to the team.
 
-1. **Transparent TDD Testing:** using [behave](https://behave.readthedocs.io/en/stable/tutorial.html) (a [TDD](http://dannorth.net/introducing-bdd/) framework) for defining systems, to promote Agile collaboration with business users.  You define Features and Scenarios (tests) in `behave`, with underlying Python test implementations.
+1. **Transparent TDD Testing:** using [behave](https://behave.readthedocs.io/en/stable/tutorial.html) (a [TDD](http://dannorth.net/introducing-bdd/) framework) for defining systems, to promote Agile collaboration with business users.  You define Features (aka Stories) and Scenarios (aka tests) in `behave`, with underlying Python test implementations.
 
 2. **Transparent Test / Logic Tracing:** further promote Agile collaboration, by making logic transparent and integrated with Testing, in this generated `readme.md` (see the [TDD Report,](#tdd-report) at end).
   
@@ -103,6 +103,11 @@ This creates an executable project that provides:
 
 #### 1a. An **Admin App**
 
+The Agile objective of collaboration is typically best-served with _running_ screens.  The problem is, it takes quite a long time to create the API and screens to reach this point.  And this work can be wasted if there were misunderstandings.
+
+Ideally, User Interface creation would be automatic.
+
+So, API Logic Server creates first-cut screens, automatically from the data model.  
 The app shown below [(more detail here)](https://github.com/valhuber/ApiLogicServer#admin-app-multi-page-multi-table-automatic-joins) is suitable for initial business user collaboration to confirm the data model structure, and basic _back office_ data maintenance.
 
 You can [customize it](https://github.com/valhuber/ApiLogicServer#admin-app-customization) by editing a simple `yaml`file (e.g, field captions, ordering etc.)
@@ -113,7 +118,11 @@ You can [customize it](https://github.com/valhuber/ApiLogicServer#admin-app-cust
 
 #### 1b. An **API**
 
-An API is created for application integration, and creating custom User Interfaces.  The API enforces the business logic described below.
+It is not difficult to create a single endpoint API.  The problem is that it's quite a bit more work to create an endpoint for each table, with support for related data, pagination, filtering and sorting.
+
+Ideally, API creation would be automatic.
+
+So, API Logic Server creates such an API instantly, suitable for application integration, and creating custom User Interfaces.  The API enforces the business logic described below.
 
 The [created project is customizable,](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#customize-and-debug) using a standard IDE.
 
@@ -125,7 +134,7 @@ The tests perform cascade delete operations.  The `models.py` file was altered [
 
 &nbsp;&nbsp;
 
->  Key Take-away: instead of weeks of effort, you have an Admin App and API, ready for business user collaboration
+>  Key Take-away: instead of weeks of effort, you have an Admin App and API, ready for business user collaboration.
 
 &nbsp;&nbsp;
 
@@ -136,7 +145,17 @@ We customized the created project by adding logic and a custom service, as descr
 &nbsp;&nbsp;
 
 ### 2a. Add Logic: 21 rules (`logic/declare_logic.py`) - not hundreds of lines of code
-The core of TDD is to test behavior, in this case transaction behavior.  API Logic Server provides Logic Automation, where logic is implemented as:
+
+Business Logic is the heart of the system, enforcing our business policies.  These consist of multi-table constraints and derivations, and actions such as sending email and messages.  A core TDD objective is to establish and test such behavior.
+
+It's generally accepted that such domain-specific logic _must_ require domain-specific code.  The problem is that this is:
+* **slow** (it's often nearly half the system)
+* **opaque** to business users
+* **painful to maintain** - it's no secret that developers hate it, since it's less coding than the "arcaeology" of first understanding existing code to understand where to insert the new logic
+
+Ideally, we could capture TDD requirements as executable statements.
+
+So, API Logic Server provides Logic Automation, where logic is implemented as:
 
 * [Spreadsheet-like rules](https://github.com/valhuber/LogicBank/wiki/Examples) for multi-table derivations and constraints, and
 
@@ -146,10 +165,15 @@ So, [instead of several hundred lines of code](https://github.com/valhuber/Logic
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/declare-logic.png"></figure>
 
+Unlike manual code, logic is 
+* **automatically reused** - it is enforced as part of the API, so automatically shared across *all* screens and services
+* **automatically ordered** - maintenance is simply altering the rules; the system computes their execution order by automatically discovering their depenencies.  No more archaeology.
+* **transparent** - business users can read the spreadsheet-like rules
+
 
 &nbsp;&nbsp;
 
->  Key Take-away: logic spreadsheet-like rules can dramatically reduce backend logic
+>  Key Take-away: logic spreadsheet-like rules can dramatically reduce the effort for backend logic, and make it transparent
 
 &nbsp;&nbsp;
 

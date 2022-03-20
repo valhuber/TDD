@@ -45,15 +45,15 @@ def get_current_readme():
 
 
 def show_logic(scenario: str):
-    """ insert scenario.log into wiki_data as disclosure area """
+    """ insert results_when/scenario.log into wiki_data as disclosure area """
     scenario_trunc = scenario
     if scenario_trunc is not None and len(scenario_trunc) >= 26:
         scenario_trunc = scenario[0:25]
     scenario_trunc = f'{str(scenario_trunc).replace(" ", "_")}'
     logic_file_name = f'results_when/{scenario_trunc}.log'
     logic_file_name_path = Path(logic_file_name)
-    if not logic_file_name_path.is_file():
-        # wiki_data.append(f'unable to find LogicLog file: {logic_file_name}')
+    if not logic_file_name_path.is_file():  # debug code
+        # wiki_data.append(f'unable to find Logic Log file: {logic_file_name}')
         if scenario == debug_scenario:
             print(f'RELATIVE: {logic_file_name} in {os.getcwd()}')
             full_name = f'{os.getcwd()}/{logic_file_name}'
@@ -66,7 +66,6 @@ def show_logic(scenario: str):
     else:
         logic_log = []
         rules_used = []
-        is_logic_log = True
         wiki_data.append("<details>")
         wiki_data.append("<summary>Tests - and their logic - are transparent.. click to see Logic</summary>")
         line_spacer()
@@ -74,7 +73,9 @@ def show_logic(scenario: str):
         wiki_data.append("```")
         with open(logic_file_name) as logic:
             logic_lines = logic.readlines()
+        is_logic_log = True
         for each_logic_line in logic_lines:
+            each_logic_line = remove_trailer(each_logic_line)
             if is_logic_log:
                 if "Rules Fired" in each_logic_line:
                     is_logic_log = False
@@ -82,7 +83,9 @@ def show_logic(scenario: str):
                 else:
                     logic_log.append(each_logic_line)
             else:
-                each_logic_line = remove_trailer(each_logic_line)
+                if 'logic_logger - INFO' in each_logic_line:
+                    pass
+                    break
                 wiki_data.append(each_logic_line + "  ")
         wiki_data.append("```")
         wiki_data.append(f'**Logic Log** in Scenario: {scenario}')
