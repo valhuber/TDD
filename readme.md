@@ -37,8 +37,7 @@ The created project provides the User Interface and API described below, and imp
 
 ## 1. Create Api Logic Project
 
-API Logic Server is used once you have a preliminary database design.  Use your existing procedures.  Include at least minimal test data.
-
+API Logic Server is used once you have a preliminary database design.  Use your existing procedures for database design.  Include at least minimal test data.
 
 Then (presuming API Logic Server [is installed](https://github.com/valhuber/ApiLogicServer/blob/main/README.md)), create the project with this command, using `venv` based installs:
 
@@ -53,15 +52,15 @@ ApiLogicServer create-and-run --project_name=/localhost/ApiLogicProject --db_url
 
 &nbsp;&nbsp;
 
-#### 1a. Creates Admin App
+#### 1a. Creates **Admin App**
 
 The Agile objective of collaboration is typically best-served with _running_ screens.  The problem is, it takes quite a long time to create the API and screens to reach this point.  And this work can be wasted if there were misunderstandings.
 
 Ideally, User Interface creation would be automatic.
 
-So, API Logic Server creates first-cut screens, automatically from the data model.  
+So, the API Logic Server `create` command above builds first-cut screens, automatically from the data model.  
 
-The app shown below [(more detail here)](https://github.com/valhuber/ApiLogicServer#admin-app-multi-page-multi-table-automatic-joins) is suitable for initial business user collaboration to confirm the data model structure, and basic _back office_ data maintenance.
+The app shown below [(more detail here)](https://github.com/valhuber/ApiLogicServer#admin-app-multi-page-multi-table-automatic-joins) is suitable for initial _business user collaboration_ (further discussed below), and basic _back office_ data maintenance.
 
 You can [customize it](https://github.com/valhuber/ApiLogicServer#admin-app-customization) by editing a simple `yaml`file (e.g, field captions, ordering etc.)
 
@@ -70,23 +69,21 @@ You can [customize it](https://github.com/valhuber/ApiLogicServer#admin-app-cust
 
 &nbsp;&nbsp;
 
-#### 1b. And **API**
+#### 1b. Also creates **API**
 
 It is not difficult to create a single endpoint API.  The problem is that it's quite a bit more work to create an endpoint for each table, with support for related data, pagination, filtering and sorting.
 
 Ideally, API creation would be automatic.
 
-So, API Logic Server creates such an API instantly, suitable for application integration, and creating custom User Interfaces.  The API enforces the business logic described below.
+So, the API Logic Server `create` command above builds such an API instantly, suitable for _application integration_, and creating _custom User Interfaces_.  The API enforces the business logic described below.
 
 The [created project is customizable,](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#customize-and-debug) using a standard IDE.
-
 
 &nbsp;&nbsp;
 
 ## 2. Collaborate using **Admin App**
 
-As noted above, running screens are an excellent way to engage business user collaboration and ensure the 
-system meets actual user needs.  Such collaboration typically leads in two important directions, as described below.
+As noted above, running screens are an excellent way to engage business user collaboration and ensure the system meets actual user needs.  Such collaboration typically leads in two important directions, as described below.
 
 &nbsp;&nbsp;
 
@@ -101,37 +98,37 @@ In a conventional system, this would mean revising the API and App.  However, si
 
 #### 2b. Uncover TDD Scenarios
 
-User Interfaces also spark insight about the Features ("Place Order") and Scenarios ("Check Credit"): _"When the customer places an order, we need to reject it if it exceeds the credit limit:._
+User Interfaces also spark insight about the Features ("Place Order") and Scenarios ("Check Credit"): _"When the customer places an order, we need to reject it if it exceeds the credit limit:._  Capture these as described below.
 
 
 &nbsp;&nbsp;
 
 ## 3. Define Scenarios in Behave
 
-(e.g., `place_order.feature`)
+TDD is designed for business use collaboration by making Features and Scenarios transparent.  So, the start of Behave is to define one or more `.feature` files.
 
-TDD is designed for business use collaboration by making Features and Scenarios transparent.  So, the start of Behave is to define one or more `.feature` files.  For example:
+For example, see the `place_order.feature`, as tested by the `Bad Order: Custom Service` Scenario, below.
 
 <figure><img src="https://github.com/valhuber/TDD/blob/main/images/scenario.png?raw=true"></figure>
 
 &nbsp;&nbsp;
 
-### Add Custom Service
+#### Add Custom Service
 
-While the autmatically API is a great start, you may uncover a need for a custom service.  This is easy to add - 10 lines of Python (`api/customize_api.py`) - since the logic (discussed below) is enforced by the underlying data access.  For details, [see here](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#api-customization).
+While the automatically-created API is a great start, you may uncover a need for a custom service.  This is easy to add - it's only about 10 lines of Python (`api/customize_api.py`), since the logic (discussed below) is enforced by the underlying data access.  For details, [see here](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#api-customization).
 
 &nbsp;&nbsp;
 
 ## 4. Logic Specification
 
- ("cocktail napkin")
+We now choose a scenario (e.g, `Bad Order`), and engage business users for a clear understanding of _check credit_.  This follows a familiar step-wise definition of terms, which we capture in text as shown below.
 
 <figure><img src="https://github.com/valhuber/TDD/blob/main/images/logic-spec.png?raw=true"></figure>
   
 
 &nbsp;&nbsp;
 
-## 5. Declare Logic: same as spec
+## 5. Declare Logic (same as spec)
 
 Business Logic is the heart of the system, enforcing our business policies.  These consist of multi-table constraints and derivations, and actions such as sending email and messages.  A core TDD objective is to define and test such behavior.
 
@@ -140,7 +137,7 @@ It's generally accepted that such domain-specific logic _must_ require domain-sp
 * **opaque** to business users
 * **painful to maintain** - it's no secret that developers hate maintenance, since it's less coding than the "archaeology" of first understanding existing code to understand where to insert the new logic
 
-Ideally, we could capture TDD requirements as executable statements.
+Ideally, our _logic specification is executable._
 
 So, API Logic Server provides Logic Automation, where logic is implemented as:
 
@@ -148,14 +145,16 @@ So, API Logic Server provides Logic Automation, where logic is implemented as:
 
 * Python, to implement logic not addressed in rules such as sending email or messages
 
-So, [instead of several hundred lines of code](https://github.com/valhuber/LogicBank/wiki/by-code), we declared 21 rules [(more details here)](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#logic).  Rules are entered in Python, with code completion.  5 key rules are shown below:
+So, [instead of several hundred lines of code](https://github.com/valhuber/LogicBank/wiki/by-code), we declared 5 rules [(more details here)](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#logic).  
+
+Rules are entered in Python, with code completion.  5 key rules are shown below.  Oserve how they exactly correspond to our specification, and are executable by the API Logic Server rules engine:
 
 <figure><img src="https://github.com/valhuber/TDD/blob/main/images/declare-logic.png?raw=true"></figure>
 
-Unlike manual code, logic is 
+Unlike manual code, logic is ***declarative:***
 * **automatically reused** - it is enforced as part of the API, so automatically shared across *all* screens and services.
 * **automatically ordered** - maintenance is simply altering the rules; the system computes their execution order by automatically discovering their dependencies.  No more archaeology.
-* **transparent** - business users can read the spreadsheet-like rules.
+* **transparent** - business users can read the spreadsheet-like rules.  We'll exploit this in the TDD Report, described below.
 
 
 &nbsp;&nbsp;
@@ -164,25 +163,26 @@ Unlike manual code, logic is
 
 &nbsp;&nbsp;
 
-## 6. Code/Run TDD Tests
+## 6. Code/Run TDD Scenarios
 
-Define and Run TDD Tests as shown below:
+Implement the actual scenarios (tests) in Python (`place_order.tdd`), using annotations (`when`) to match scenarios and implementations.  In this project, the implementation is basically calling APIs to get old data, run transactions, and check results.
 
 <figure><img src="https://github.com/valhuber/TDD/blob/main/images/TDD-ide.png?raw=true"></figure>
 
 For more on TDD, [see here](https://github.com/valhuber/TDD/wiki/Stories-And-Behaviors).
 
-&nbsp;&nbsp;
+Execute the tests using the pre-supplied Launch Configurations (shown at the bottom):
 
- (e.g., `place_order.py`)
+1. Run Launch Configuration `API Logic Server` 
+1. Run Launch Configuration `Debug Behave Logic` 
 
-Implement the actual tests in Python, using annotations to match tests and implementations.  In this project, the implementation is basically calling APIs to get old data, run transactions, and check results.
-
-The rules fire as transactions are run, and produce [Logic Log output](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python#debugging).  The highlighted code on lines 50-51 signals that the Logic Log should be directed to files in `results_when`.  These are later used in Report Behave Logic, described below. 
-
-With the server started, run your tests using Launch Configuration `Debug Behave Logic`.  It creates the following files:
-1. `test/api_logic_server_behave/behave.log`
-2. `results_when/<scenario-name>.log` (one for each scenario)
+The rules fire as transactions are run, and produce files later used in Report Behave Logic (described below): 
+1. `test/api_logic_server_behave/behave.log` - summarizes test success / failure
+2. `api_logic_server_behave/Bad_Order_Custom_Service.log` - [Logic Log output](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python#debugging).
+   * The code on line 121 signals the name of Logic Log
+   * Note the Logic Log actually consists of 2 logs:
+      * The first shows each rule firing, including complete old/new row values, with indentation for multi-table chaining
+      * The "Rules Fired" summarizes which rules actually fired, representing a _confirmation of our Logic Specification_
 
 >  You can use the debugger to stop in a test and verify results
 
