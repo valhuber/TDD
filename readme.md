@@ -21,7 +21,7 @@ This is the sample project from API Logic Server, based on the Northwind databas
 
 &nbsp;&nbsp;
 
-### Verify Installation
+## Verify Installation
 
 You can confirm its working by installing and running [as described here](https://github.com/valhuber/TDD/wiki/Setup).
 
