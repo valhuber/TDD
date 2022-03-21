@@ -37,9 +37,6 @@ The created project provides the User Interface and API described below, and imp
 
 ## Table of Contents
 
-* [Automation: Agile, TDD Process](#automation-agile-tdd-process)
-* [Sample Project](#sample-project)
-      * [Verify Installation](#verify-installation)
 * [Process Overview](#process-overview)
    * [1. Create Api Logic Project](#1-create-api-logic-project)
          * [1a. Creates Admin App](#1a-creates-admin-app)
@@ -57,20 +54,6 @@ The created project provides the User Interface and API described below, and imp
 * [Business Agility](#business-agility)
       * [Increased Transparency: TDD Report, <em>with logic</em>](#increased-transparency-tdd-report-with-logic)
 * [TDD Report](#tdd-report)
-   * [Feature: About Sample](#feature-about-sample)
-      * [Scenario: Transaction Processing](#scenario-transaction-processing)
-   * [Feature: Application Integration](#feature-application-integration)
-      * [Scenario: GET Customer](#scenario-get-customer)
-      * [Scenario: GET Department](#scenario-get-department)
-   * [Feature: Place Order](#feature-place-order)
-      * [Scenario: Good Order Custom Service](#scenario-good-order-custom-service)
-      * [Scenario: Bad Order Custom Service](#scenario-bad-order-custom-service)
-      * [Scenario: Alter Item Qty to exceed credit](#scenario-alter-item-qty-to-exceed-credit)
-      * [Scenario: Alter Required Date - adjust logic pruned](#scenario-alter-required-date---adjust-logic-pruned)
-      * [Scenario: Set Shipped - adjust logic reuse](#scenario-set-shipped---adjust-logic-reuse)
-      * [Scenario: Reset Shipped - adjust logic reuse](#scenario-reset-shipped---adjust-logic-reuse)
-   * [Feature: Salary Change](#feature-salary-change)
-      * [Scenario: Audit Salary Change](#scenario-audit-salary-change)
 
 &nbsp;&nbsp;
 
@@ -282,6 +265,20 @@ This project illustrates you can extract the logic from the Logic Log, and inser
 # TDD Report
 &nbsp;
 &nbsp;
+   * [Feature: About Sample](#feature-about-sample)
+      * [Scenario: Transaction Processing](#scenario-transaction-processing)
+   * [Feature: Application Integration](#feature-application-integration)
+      * [Scenario: GET Customer](#scenario-get-customer)
+      * [Scenario: GET Department](#scenario-get-department)
+   * [Feature: Place Order](#feature-place-order)
+      * [Scenario: Good Order Custom Service](#scenario-good-order-custom-service)
+      * [Scenario: Bad Order Custom Service](#scenario-bad-order-custom-service)
+      * [Scenario: Alter Item Qty to exceed credit](#scenario-alter-item-qty-to-exceed-credit)
+      * [Scenario: Alter Required Date - adjust logic pruned](#scenario-alter-required-date---adjust-logic-pruned)
+      * [Scenario: Set Shipped - adjust logic reuse](#scenario-set-shipped---adjust-logic-reuse)
+      * [Scenario: Reset Shipped - adjust logic reuse](#scenario-reset-shipped---adjust-logic-reuse)
+   * [Feature: Salary Change](#feature-salary-change)
+      * [Scenario: Audit Salary Change](#scenario-audit-salary-change)
 ## Feature: About Sample  
   
 &nbsp;
