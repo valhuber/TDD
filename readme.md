@@ -98,7 +98,7 @@ In a conventional system, this would mean revising the API and App.  However, si
 
 #### 2b. Uncover TDD Scenarios
 
-User Interfaces also spark insight about the Features ("Place Order") and Scenarios ("Check Credit"): _"When the customer places an order, we need to reject it if it exceeds the credit limit:._  Capture these as described below.
+User Interfaces also spark insight about the Features ("Place Order") and Scenarios ("Check Credit"): _"When the customer places an order, we need to reject it if it exceeds the credit limit"._  Capture these as described below.
 
 
 &nbsp;&nbsp;
@@ -123,6 +123,8 @@ While the automatically-created API is a great start, you may uncover a need for
 
 We now choose a scenario (e.g, `Bad Order`), and engage business users for a clear understanding of _check credit_.  This follows a familiar step-wise definition of terms, which we capture in text as shown below.
 
+Note this "cocktail napkin spec" is short, yet clear.  That's because instead of diving unto unecessary technical detail of _how_ (such as pseudoode), it focuses on ***what***.
+
 <figure><img src="https://github.com/valhuber/TDD/blob/main/images/logic-spec.png?raw=true"></figure>
   
 
@@ -137,11 +139,11 @@ It's generally accepted that such domain-specific logic _must_ require domain-sp
 * **opaque** to business users
 * **painful to maintain** - it's no secret that developers hate maintenance, since it's less coding than the "archaeology" of first understanding existing code to understand where to insert the new logic
 
-Ideally, our _logic specification is executable._
+Ideally, our _logic specification is executable._  
 
 So, API Logic Server provides Logic Automation, where logic is implemented as:
 
-* [Spreadsheet-like rules](https://github.com/valhuber/LogicBank/wiki/Examples) for multi-table derivations and constraints, and
+* [Spreadsheet-like ***rules***](https://github.com/valhuber/LogicBank/wiki/Examples) for multi-table derivations and constraints, and
 
 * Python, to implement logic not addressed in rules such as sending email or messages
 
@@ -189,25 +191,25 @@ The rules fire as transactions are run, and produce files later used in Report B
 
 &nbsp;&nbsp;
 
-## 7. **Create TDD/Logic Reports**
+## 7. **Create TDD/Logic Report**
 
-Run Launch Configuration `Report Behave Logic` to create `report_behave_logic.md`.  
+This is pretty interesting: a record of all our Features and Scenarios, including transparent underlying logic.  It would be a great asset to the team to publish this in a transparent manner.
 
-This runs `report_behave_logic.py`, which
+So, this project provides `report_behave_logic.py` to create a TDD Report that includes the logic as a wiki file in your project.
+
+To run it, use Launch Configuration `Report Behave Logic`:
+
 1. Reads your current `readme.md` file (text like you are reading now), and
 2. Appends the [TDD Report:](#tdd-report) by processing the files created in step 3c
    1. Reading the `behave.log`, and
-   2. Injecting the `results_when` Logic Log files
+   2. Injecting the `results_when` Logic Log file
+3. Creates the output report as a wiki file named `report_behave_logic.md`
+
 
 
 &nbsp;&nbsp;
 
 >  Key Take-away: TDD makes *requirements and tests* transparent; rules make your *logic* transparent; combine them both into the [**TDD Report.**](#tdd-report)
-
-&nbsp;&nbsp;
-
-#### Working with TDD
-For more information, see [Working with Behave.](https://github.com/valhuber/TDD/wiki/Working-With-Behave)
 
 &nbsp;&nbsp;
 
