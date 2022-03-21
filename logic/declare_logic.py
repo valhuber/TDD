@@ -44,28 +44,40 @@ def declare_logic():
         * delete order
         * move order to new customer, etc
     This reuse is how 5 rules replace 200 lines of legacy code: https://github.com/valhuber/LogicBank/wiki/by-code
+    """
 
-    Rules are listed below to best illustrate chaining
+    """
+    Feature: Place Order
+        Scenario: Bad Order Custom Service
+            When Order Placed with excessive quantity
+            Then Rejected per Credit Limit
+
+    Logic Specification ("Cocktail Napkin Spec")
+        Customer.Balance <= CreditLimit
+        Customer.Balance = Sum(Order.AmountTotal where unshipped)
+        Order.AmountTotal = Sum(OrderDetail.Amount)
+        OrderDetail.Amount = Quantity * UnitPrice
+        OrderDetail.UnitPrice = copy from Product
     """
 
     # get Product Price (e,g., on insert, or ProductId change)
-    price = Rule.copy(derive=models.OrderDetail.UnitPrice,
-              from_parent=models.Product.UnitPrice)
-    declared_rules.append(price)
+    Rule.copy(derive=models.OrderDetail.UnitPrice,
+        from_parent=models.Product.UnitPrice)
+
     # compute price * qty
-    amount = Rule.formula(derive=models.OrderDetail.Amount,
-                 as_expression=lambda row: row.UnitPrice * row.Quantity)
-    declared_rules.append(amount)
+    Rule.formula(derive=models.OrderDetail.Amount,
+        as_expression=lambda row: row.UnitPrice * row.Quantity)
 
     # adjust AmountTotal iff Amount changes
-    amount_total = Rule.sum(derive=models.Order.AmountTotal,
-             as_sum_of=models.OrderDetail.Amount)
+    Rule.sum(derive=models.Order.AmountTotal,
+        as_sum_of=models.OrderDetail.Amount)
 
     # adjust Balance iff AmountTotal or ShippedDate or CustomerID changes
-    balance = Rule.sum(derive=models.Customer.Balance,
-             as_sum_of=models.Order.AmountTotal,
-             where=lambda row: row.ShippedDate is None)  # adjusts - *not* a sql select sum...
-    credit = Rule.constraint(validate=models.Customer,
+    Rule.sum(derive=models.Customer.Balance,
+        as_sum_of=models.Order.AmountTotal,
+        where=lambda row: row.ShippedDate is None)  # adjusts - *not* a sql select sum...
+    
+    Rule.constraint(validate=models.Customer,
                     as_condition=lambda row: row.Balance <= row.CreditLimit,
                     error_msg="balance ({row.Balance}) exceeds credit ({row.CreditLimit})")
 

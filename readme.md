@@ -138,10 +138,9 @@ TDD is designed for business use collaboration by making Features and Scenarios 
 
 &nbsp;&nbsp;
 
-### 3a. Add Custom Service
+### Add Custom Service
 
-10 lines of Python (`api/customize_api.py`)
-Next, we defined a custom service to add an order and it's Order Details, as [described here](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#api-customization).
+While the autmatically API is a great start, you may uncover a need for a custom service.  This is easy to add - 10 lines of Python (`api/customize_api.py`) - since the logic (discussed below) is enforced by the underlying data access.  For details, [see here](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#api-customization).
 
 &nbsp;&nbsp;
 
@@ -149,9 +148,12 @@ Next, we defined a custom service to add an order and it's Order Details, as [de
 
  ("cocktail napkin")
 
+<figure><img src="https://github.com/valhuber/TDD/blob/main/images/logic-spec.png"></figure>
+  
+
 &nbsp;&nbsp;
 
-## 5. Declare Logic: 21 rules
+## 5. Declare Logic: same as spec
 
 Business Logic is the heart of the system, enforcing our business policies.  These consist of multi-table constraints and derivations, and actions such as sending email and messages.  A core TDD objective is to define and test such behavior.
 
