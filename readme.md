@@ -30,6 +30,8 @@ You can confirm its working by installing and running [as described here](https:
 # Process Overview
 
 The created project provides the User Interface and API described below, and implements the transactional logic described in the [TDD Report](#tdd-report).  It was created, customized and tested as described in the subsections below.
+
+<figure><img src="https://github.com/valhuber/TDD/blob/main/images/TDD-process.png"></figure>
   
 &nbsp;&nbsp;
 
@@ -69,10 +71,6 @@ The created project provides the User Interface and API described below, and imp
       * [Scenario: Reset Shipped - adjust logic reuse](#scenario-reset-shipped---adjust-logic-reuse)
    * [Feature: Salary Change](#feature-salary-change)
       * [Scenario: Audit Salary Change](#scenario-audit-salary-change)
-
-
-
-<figure><img src="https://github.com/valhuber/TDD/blob/main/images/TDD-process.png"></figure>
 
 &nbsp;&nbsp;
 
