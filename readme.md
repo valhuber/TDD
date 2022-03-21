@@ -188,14 +188,15 @@ The rules fire as transactions are run, and produce files later used in Report B
 
 >  You can use the debugger to stop in a test and verify results
 
-
 &nbsp;&nbsp;
 
 ## 7. **Create TDD/Logic Report**
 
-This is pretty interesting: a record of all our Features and Scenarios, including transparent underlying logic.  It would be a great asset to the team to publish this in a transparent manner.
+This is pretty interesting: a record of all our Features and Scenarios, including transparent underlying logic.  The problem is that it's buried in some text files inside our project.
 
-So, this project provides `report_behave_logic.py` to create a TDD Report that includes the logic as a wiki file in your project.
+Ideally, publishing this in a transparent manner (e.g., a wiki accessible via the Browser) would be a great asset to the team.
+
+So, this project provides `report_behave_logic.py` to create a TDD Report, _including logic_, as a wiki file.
 
 To run it, use Launch Configuration `Report Behave Logic`:
 
@@ -205,8 +206,6 @@ To run it, use Launch Configuration `Report Behave Logic`:
    2. Injecting the `results_when` Logic Log file
 3. Creates the output report as a wiki file named `report_behave_logic.md`
 
-
-
 &nbsp;&nbsp;
 
 >  Key Take-away: TDD makes *requirements and tests* transparent; rules make your *logic* transparent; combine them both into the [**TDD Report.**](#tdd-report)
@@ -214,7 +213,6 @@ To run it, use Launch Configuration `Report Behave Logic`:
 &nbsp;&nbsp;
 
 # Business Agility
-
 
 <figure><img src="https://github.com/valhuber/TDD/blob/main/images/business-agility.png?raw=true"></figure>
 
@@ -239,14 +237,11 @@ This project illustrates you can extract the logic from the Logic Log, and inser
 
 2. Click the __disclosure icons__ to see the rules actually used, including how they operate on the given scenario
 
-
-&nbsp;
-&nbsp;
-
+&nbsp;&nbsp;
 
 # TDD Report
-&nbsp;
-&nbsp;
+&nbsp;&nbsp;
+
    * [Feature: About Sample](#feature-about-sample)
       * [Scenario: Transaction Processing](#scenario-transaction-processing)
    * [Feature: Application Integration](#feature-application-integration)
@@ -261,6 +256,7 @@ This project illustrates you can extract the logic from the Logic Log, and inser
       * [Scenario: Reset Shipped - adjust logic reuse](#scenario-reset-shipped---adjust-logic-reuse)
    * [Feature: Salary Change](#feature-salary-change)
       * [Scenario: Audit Salary Change](#scenario-audit-salary-change)
+
 ## Feature: About Sample  
   
 &nbsp;
