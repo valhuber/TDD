@@ -15,6 +15,7 @@ tab = "&emsp;"
 debug_info = "# features"
 wiki_data = []
 debug_scenario = "Custom Service: add_order - good"
+logic_logs_dir = "scenario_logic_logs"
 
 
 def remove_trailer(line: str) -> str:
@@ -45,12 +46,12 @@ def get_current_readme():
 
 
 def show_logic(scenario: str):
-    """ insert results_when/scenario.log into wiki_data as disclosure area """
+    """ insert s{logic_logs_dir}/scenario.log into wiki_data as disclosure area """
     scenario_trunc = scenario
     if scenario_trunc is not None and len(scenario_trunc) >= 26:
         scenario_trunc = scenario[0:25]
     scenario_trunc = f'{str(scenario_trunc).replace(" ", "_")}'
-    logic_file_name = f'results_when/{scenario_trunc}.log'
+    logic_file_name = f'{logic_logs_dir}/{scenario_trunc}.log'
     logic_file_name_path = Path(logic_file_name)
     if not logic_file_name_path.is_file():  # debug code
         # wiki_data.append(f'unable to find Logic Log file: {logic_file_name}')
@@ -58,11 +59,11 @@ def show_logic(scenario: str):
             print(f'RELATIVE: {logic_file_name} in {os.getcwd()}')
             full_name = f'{os.getcwd()}/{logic_file_name}'
             print(f'..FULL: {os.getcwd()}/{logic_file_name}')
-            logic_file_name = 'results_when/test.log'
+            logic_file_name = '{logic_logs_dir}/test.log'
             with open(logic_file_name) as logic:
                 logic_lines = logic.readlines()
-            # finder:  /Users/val/dev/TDD/test/api_logic_server_behave/results_when
-            # seeking: /Users/val/dev/TDD/test/api_logic_server_behave/results_when/Custom Service: add_order - good.log
+            # finder:  /Users/val/dev/TDD/test/api_logic_server_behave/{logic_logs_dir}
+            # seeking: /Users/val/dev/TDD/test/api_logic_server_behave/{logic_logs_dir}/Custom Service: add_order - good.log
     else:
         logic_log = []
         rules_used = []

@@ -187,7 +187,7 @@ Next, we defined a custom service to add an order and it's Order Details, as [de
 
 Define and Run TDD Tests as shown below:
 
-<figure><img src="https://github.com/valhuber/TDD/blob/main/images/TDD-overview.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/TDD/blob/main/images/TDD-ide.png?raw=true"></figure>
 
 For more on TDD, [see here](https://github.com/valhuber/TDD/wiki/Stories-And-Behaviors).
 
