@@ -12,6 +12,47 @@ This project uses the sample app of [API Logic Server](https://github.com/valhub
   
 &nbsp;&nbsp;
 
+## Table of Contents
+
+* [Automation: Agile, TDD Process](#automation-agile-tdd-process)
+* [Sample Project](#sample-project)
+      * [Verify Installation](#verify-installation)
+* [Process Overview](#process-overview)
+   * [1. Create Api Logic Project](#1-create-api-logic-project)
+         * [1a. Creates Admin App](#1a-creates-admin-app)
+         * [1b. And <strong>API</strong>](#1b-and-api)
+   * [2. Collaborate using <strong>Admin App</strong>](#2-collaborate-using-admin-app)
+         * [2a. Iterate Data Model](#2a-iterate-data-model)
+         * [2b. Uncover TDD Scenarios](#2b-uncover-tdd-scenarios)
+   * [3. Define Scenarios in Behave](#3-define-scenarios-in-behave)
+      * [3a. Add Custom Service](#3a-add-custom-service)
+   * [4. Logic Specification](#4-logic-specification)
+   * [5. Declare Logic: 21 rules](#5-declare-logic-21-rules)
+   * [6. Code/Run TDD Tests](#6-coderun-tdd-tests)
+   * [7. <strong>Create TDD/Logic Reports</strong>](#7-create-tddlogic-reports)
+         * [Working with TDD](#working-with-tdd)
+* [Business Agility](#business-agility)
+      * [Increased Transparency: TDD Report, <em>with logic</em>](#increased-transparency-tdd-report-with-logic)
+* [TDD Report](#tdd-report)
+   * [Feature: About Sample](#feature-about-sample)
+      * [Scenario: Transaction Processing](#scenario-transaction-processing)
+   * [Feature: Application Integration](#feature-application-integration)
+      * [Scenario: GET Customer](#scenario-get-customer)
+      * [Scenario: GET Department](#scenario-get-department)
+   * [Feature: Place Order](#feature-place-order)
+      * [Scenario: Good Order Custom Service](#scenario-good-order-custom-service)
+      * [Scenario: Bad Order Custom Service](#scenario-bad-order-custom-service)
+      * [Scenario: Alter Item Qty to exceed credit](#scenario-alter-item-qty-to-exceed-credit)
+      * [Scenario: Alter Required Date - adjust logic pruned](#scenario-alter-required-date---adjust-logic-pruned)
+      * [Scenario: Set Shipped - adjust logic reuse](#scenario-set-shipped---adjust-logic-reuse)
+      * [Scenario: Reset Shipped - adjust logic reuse](#scenario-reset-shipped---adjust-logic-reuse)
+   * [Feature: Salary Change](#feature-salary-change)
+      * [Scenario: Audit Salary Change](#scenario-audit-salary-change)
+
+
+  
+&nbsp;&nbsp;
+
 # Sample Project
 
 This is the sample project from API Logic Server, based on the Northwind database (sqlite database located in the `database` folder - no installation required):
