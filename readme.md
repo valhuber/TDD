@@ -32,30 +32,8 @@ You can confirm its working by installing and running [as described here](https:
 The created project provides the User Interface and API described below, and implements the transactional logic described in the [TDD Report](#tdd-report).  It was created, customized and tested as described in the subsections below.
 
 <figure><img src="https://github.com/valhuber/TDD/blob/main/images/TDD-process.png"></figure>
-  
-&nbsp;&nbsp;
 
-## Table of Contents
-
-* [Process Overview](#process-overview)
-   * [1. Create Api Logic Project](#1-create-api-logic-project)
-         * [1a. Creates Admin App](#1a-creates-admin-app)
-         * [1b. And <strong>API</strong>](#1b-and-api)
-   * [2. Collaborate using <strong>Admin App</strong>](#2-collaborate-using-admin-app)
-         * [2a. Iterate Data Model](#2a-iterate-data-model)
-         * [2b. Uncover TDD Scenarios](#2b-uncover-tdd-scenarios)
-   * [3. Define Scenarios in Behave](#3-define-scenarios-in-behave)
-      * [3a. Add Custom Service](#3a-add-custom-service)
-   * [4. Logic Specification](#4-logic-specification)
-   * [5. Declare Logic: 21 rules](#5-declare-logic-21-rules)
-   * [6. Code/Run TDD Tests](#6-coderun-tdd-tests)
-   * [7. <strong>Create TDD/Logic Reports</strong>](#7-create-tddlogic-reports)
-         * [Working with TDD](#working-with-tdd)
-* [Business Agility](#business-agility)
-      * [Increased Transparency: TDD Report, <em>with logic</em>](#increased-transparency-tdd-report-with-logic)
-* [TDD Report](#tdd-report)
-
-&nbsp;&nbsp;
+nbsp;&nbsp;
 
 ## 1. Create Api Logic Project
 
