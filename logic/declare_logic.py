@@ -59,27 +59,27 @@ def declare_logic():
         OrderDetail.Amount = Quantity * UnitPrice
         OrderDetail.UnitPrice = copy from Product
     """
-
-    # get Product Price (e,g., on insert, or ProductId change)
-    Rule.copy(derive=models.OrderDetail.UnitPrice,
-        from_parent=models.Product.UnitPrice)
-
-    # compute price * qty
-    Rule.formula(derive=models.OrderDetail.Amount,
-        as_expression=lambda row: row.UnitPrice * row.Quantity)
-
-    # adjust AmountTotal iff Amount changes
-    Rule.sum(derive=models.Order.AmountTotal,
-        as_sum_of=models.OrderDetail.Amount)
+    
+    Rule.constraint(validate=models.Customer,
+                    as_condition=lambda row: row.Balance <= row.CreditLimit,
+                    error_msg="balance ({row.Balance}) exceeds credit ({row.CreditLimit})")
 
     # adjust Balance iff AmountTotal or ShippedDate or CustomerID changes
     Rule.sum(derive=models.Customer.Balance,
         as_sum_of=models.Order.AmountTotal,
         where=lambda row: row.ShippedDate is None)  # adjusts - *not* a sql select sum...
-    
-    Rule.constraint(validate=models.Customer,
-                    as_condition=lambda row: row.Balance <= row.CreditLimit,
-                    error_msg="balance ({row.Balance}) exceeds credit ({row.CreditLimit})")
+
+    # adjust AmountTotal iff Amount changes
+    Rule.sum(derive=models.Order.AmountTotal,
+        as_sum_of=models.OrderDetail.Amount)
+
+    # compute price * qty
+    Rule.formula(derive=models.OrderDetail.Amount,
+        as_expression=lambda row: row.UnitPrice * row.Quantity)
+
+    # get Product Price (e,g., on insert, or ProductId change)
+    Rule.copy(derive=models.OrderDetail.UnitPrice,
+        from_parent=models.Product.UnitPrice)
 
     """
         Demonstrate that logic == rules + Python

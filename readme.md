@@ -33,7 +33,7 @@ The created project provides the User Interface and API described below, and imp
 
 <figure><img src="https://github.com/valhuber/TDD/blob/main/images/TDD-process.png"></figure>
 
-nbsp;&nbsp;
+&nbsp;&nbsp;
 
 ## 1. Create Api Logic Project
 
@@ -112,7 +112,7 @@ User Interfaces also spark insight about the Features ("Place Order") and Scenar
 
 TDD is designed for business use collaboration by making Features and Scenarios transparent.  So, the start of Behave is to define one or more `.feature` files.  For example:
 
-< Figure TBD >
+<figure><img src="https://github.com/valhuber/TDD/blob/main/images/scenario.png"></figure>
 
 &nbsp;&nbsp;
 
@@ -150,7 +150,7 @@ So, API Logic Server provides Logic Automation, where logic is implemented as:
 
 So, [instead of several hundred lines of code](https://github.com/valhuber/LogicBank/wiki/by-code), we declared 21 rules [(more details here)](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#logic).  Rules are entered in Python, with code completion.  5 key rules are shown below:
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/declare-logic.png"></figure>
+<figure><img src="https://github.com/valhuber/TDD/blob/main/images/declare-logic.png"></figure>
 
 Unlike manual code, logic is 
 * **automatically reused** - it is enforced as part of the API, so automatically shared across *all* screens and services.
