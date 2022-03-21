@@ -31,7 +31,7 @@ You can confirm its working by installing and running [as described here](https:
 
 The created project provides the User Interface and API described below, and implements the transactional logic described in the [TDD Report](#tdd-report).  It was created, customized and tested as described in the subsections below.
 
-<figure><img src="https://github.com/valhuber/TDD/blob/main/images/TDD-process.png"></figure>
+<figure><img src="https://github.com/valhuber/TDD/blob/main/images/TDD-process.png?raw=true"></figure>
 
 &nbsp;&nbsp;
 
@@ -112,7 +112,7 @@ User Interfaces also spark insight about the Features ("Place Order") and Scenar
 
 TDD is designed for business use collaboration by making Features and Scenarios transparent.  So, the start of Behave is to define one or more `.feature` files.  For example:
 
-<figure><img src="https://github.com/valhuber/TDD/blob/main/images/scenario.png"></figure>
+<figure><img src="https://github.com/valhuber/TDD/blob/main/images/scenario.png?raw=true"></figure>
 
 &nbsp;&nbsp;
 
@@ -126,7 +126,7 @@ While the autmatically API is a great start, you may uncover a need for a custom
 
  ("cocktail napkin")
 
-<figure><img src="https://github.com/valhuber/TDD/blob/main/images/logic-spec.png"></figure>
+<figure><img src="https://github.com/valhuber/TDD/blob/main/images/logic-spec.png?raw=true"></figure>
   
 
 &nbsp;&nbsp;
@@ -150,7 +150,7 @@ So, API Logic Server provides Logic Automation, where logic is implemented as:
 
 So, [instead of several hundred lines of code](https://github.com/valhuber/LogicBank/wiki/by-code), we declared 21 rules [(more details here)](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#logic).  Rules are entered in Python, with code completion.  5 key rules are shown below:
 
-<figure><img src="https://github.com/valhuber/TDD/blob/main/images/declare-logic.png"></figure>
+<figure><img src="https://github.com/valhuber/TDD/blob/main/images/declare-logic.png?raw=true"></figure>
 
 Unlike manual code, logic is 
 * **automatically reused** - it is enforced as part of the API, so automatically shared across *all* screens and services.
