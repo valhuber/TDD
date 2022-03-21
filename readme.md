@@ -9,6 +9,27 @@ This project uses the sample app of [API Logic Server](https://github.com/valhub
 1. **Transparent TDD Testing:** using [behave](https://behave.readthedocs.io/en/stable/tutorial.html) (a [TDD](http://dannorth.net/introducing-bdd/) framework) for defining systems, to promote Agile collaboration with business users.  You define Features (aka Stories) and Scenarios (aka tests) in `behave`, with underlying Python test implementations.
 
 2. **Transparent Test / Logic Tracing:** further promote Agile collaboration, by making logic transparent and integrated with Testing, in this generated `readme.md` (see the [TDD Report,](#tdd-report) at end).
+
+  
+&nbsp;&nbsp;
+
+# Sample Project
+
+This is the sample project from API Logic Server, based on the Northwind database (sqlite database located in the `database` folder - no installation required):
+
+<figure><img src="https://github.com/valhuber/LogicBank/raw/main/images/nw.png"></figure>
+
+&nbsp;&nbsp;
+
+### Verify Installation
+
+You can confirm its working by installing and running [as described here](https://github.com/valhuber/TDD/wiki/Setup).
+
+&nbsp;&nbsp;
+
+# Process Overview
+
+The created project provides the User Interface and API described below, and implements the transactional logic described in the [TDD Report](#tdd-report).  It was created, customized and tested as described in the subsections below.
   
 &nbsp;&nbsp;
 
@@ -49,27 +70,6 @@ This project uses the sample app of [API Logic Server](https://github.com/valhub
    * [Feature: Salary Change](#feature-salary-change)
       * [Scenario: Audit Salary Change](#scenario-audit-salary-change)
 
-
-  
-&nbsp;&nbsp;
-
-# Sample Project
-
-This is the sample project from API Logic Server, based on the Northwind database (sqlite database located in the `database` folder - no installation required):
-
-<figure><img src="https://github.com/valhuber/LogicBank/raw/main/images/nw.png"></figure>
-
-&nbsp;&nbsp;
-
-### Verify Installation
-
-You can confirm its working by installing and running [as described here](https://github.com/valhuber/TDD/wiki/Setup).
-
-&nbsp;&nbsp;
-
-# Process Overview
-
-The created project provides the User Interface and API described below, and implements the transactional logic described in the [TDD Report](#tdd-report).  It was created, customized and tested as described in the subsections below.
 
 
 <figure><img src="https://github.com/valhuber/TDD/blob/main/images/TDD-process.png"></figure>
