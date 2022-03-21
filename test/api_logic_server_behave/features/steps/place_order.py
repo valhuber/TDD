@@ -117,12 +117,10 @@ def step_impl(context):
         }
     }
     scenario_name = 'Bad Order Custom Service'
-    test_utils.prt(f'\n\n\n{scenario_name} - verify credit check response...\n', scenario_name)
+    test_utils.prt(f'\n\n\n{scenario_name} - verify credit check response...\n', 
+        scenario_name)
     r = requests.post(url=add_order_uri, json=add_order_args)
     context.response_text = r.text
-    # https://stackoverflow.com/questions/25150404/how-can-i-see-print-statements-in-behave-bdd#:~:text=By%20default%2C%20behave%20does%20not%20display%20any%20output,is%20to%20change%20some%20of%20the%20default%20settings.
-    # print("here is some output\n\n\n")
-    # print(r.text, "\n\n")
 
 @then('Rejected per Credit Limit')
 def step_impl(context):

@@ -29,29 +29,29 @@ Feature: Place Order # features/place_order.feature:1
   Scenario: Bad Order Custom Service          # features/place_order.feature:11
     Given Customer Account: ALFKI             # features/steps/place_order.py:18
     When Order Placed with excessive quantity # features/steps/place_order.py:94
-    Then Rejected per Credit Limit            # features/steps/place_order.py:127
-    Then exceeds credit in response           # features/steps/place_order.py:134
+    Then Rejected per Credit Limit            # features/steps/place_order.py:125
+    Then exceeds credit in response           # features/steps/place_order.py:132
 
   Scenario: Alter Item Qty to exceed credit      # features/place_order.feature:18
     Given Customer Account: ALFKI                # features/steps/place_order.py:18
-    When Order Detail Quantity altered very high # features/steps/place_order.py:146
-    Then Rejected per Credit Limit               # features/steps/place_order.py:127
-    Then exceeds credit in response              # features/steps/place_order.py:134
+    When Order Detail Quantity altered very high # features/steps/place_order.py:144
+    Then Rejected per Credit Limit               # features/steps/place_order.py:125
+    Then exceeds credit in response              # features/steps/place_order.py:132
 
   Scenario: Alter Required Date - adjust logic pruned  # features/place_order.feature:25
     Given Customer Account: ALFKI                      # features/steps/place_order.py:18
-    When Order RequiredDate altered (2013-10-13)       # features/steps/place_order.py:167
-    Then Balance not adjusted                          # features/steps/place_order.py:185
+    When Order RequiredDate altered (2013-10-13)       # features/steps/place_order.py:165
+    Then Balance not adjusted                          # features/steps/place_order.py:183
 
   Scenario: Set Shipped - adjust logic reuse    # features/place_order.feature:31
     Given Customer Account: ALFKI               # features/steps/place_order.py:18
-    When Order ShippedDate altered (2013-10-13) # features/steps/place_order.py:196
-    Then Balance reduced 1086                   # features/steps/place_order.py:214
+    When Order ShippedDate altered (2013-10-13) # features/steps/place_order.py:194
+    Then Balance reduced 1086                   # features/steps/place_order.py:212
 
   Scenario: Reset Shipped - adjust logic reuse  # features/place_order.feature:37
-    Given Shipped Order                         # features/steps/place_order.py:224
-    When Order ShippedDate set to None          # features/steps/place_order.py:229
-    Then Logic adjusts Balance by -1086         # features/steps/place_order.py:247
+    Given Shipped Order                         # features/steps/place_order.py:222
+    When Order ShippedDate set to None          # features/steps/place_order.py:227
+    Then Logic adjusts Balance by -1086         # features/steps/place_order.py:245
 
 Feature: Salary Change # features/salary_change.feature:1
 
@@ -63,4 +63,4 @@ Feature: Salary Change # features/salary_change.feature:1
 4 features passed, 0 failed, 0 skipped
 10 scenarios passed, 0 failed, 0 skipped
 34 steps passed, 0 failed, 0 skipped, 0 undefined
-Took 0m1.562s
+Took 0m1.610s
