@@ -1,6 +1,6 @@
 # Automation: Agile, TDD Process
 
-This project uses the sample app of [API Logic Server](https://github.com/valhuber/ApiLogicServer/blob/main/README.md) to illustrate how Extensible Automation, coupled with an Agile (TDD) Process, can improve Time to Market and Reduce Risk:
+This project  illustrates how [API Logic Server](https://github.com/valhuber/ApiLogicServer/blob/main/README.md) Extensible Automation, coupled with an Agile (TDD) Process, can dramatically improve Time to Market and Reduce Risk:
 
 <figure><img src="https://github.com/valhuber/TDD/blob/main/images/introduction.png?raw=true"></figure>
   
