@@ -263,6 +263,12 @@ This project illustrates you can extract the logic from the Logic Log, and inser
 &nbsp;
 
 
+
+
+&nbsp;
+&nbsp;
+
+
 # TDD Report
 &nbsp;
 &nbsp;
@@ -361,7 +367,7 @@ We place an Order with an Order Detail.  It's one transaction.
 Note how the `Order.OrderTotal` and `Customer.Balance` are *adjusted* as Order Details are processed.
 Similarly, the `Product.UnitsShipped` is adjusted, and used to recompute `UnitsInStock`
 
-<figure><img src="https://github.com/valhuber/TDD/blob/main/images/declare_logic.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/TDD/blob/main/images/declare-logic.png?raw=true"></figure>
 
 > **Key Take-away:** sum/count aggregates (e.g., `Customer.Balance`) automate ***chain up*** multi-table transactions.
 
