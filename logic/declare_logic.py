@@ -138,11 +138,10 @@ def declare_logic():
                 copy_to_logic_row.link(to_parent=logic_row)
                 copy_to_logic_row.set_same_named_attributes(logic_row)
                 copy_to_logic_row.insert(reason="Manual Copy " + copy_to_logic_row.name)  # triggers rules...
-                # logic_row.log("audit_by_event (Manual Copy) complete")
 
     Rule.commit_row_event(on_class=models.Employee, calling=audit_by_event)
 
-    salary_audit = RuleExtension.copy_row(copy_from=models.Employee,
+    RuleExtension.copy_row(copy_from=models.Employee,
                            copy_to=models.EmployeeAudit,
                            copy_when=lambda logic_row: logic_row.are_attributes_changed([models.Employee.Salary, models.Employee.Title]))
 

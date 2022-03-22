@@ -20,7 +20,9 @@ def step_impl(context):
 
     Generic event handlers can also reduce redundant code, illustrated in the time/date stamping `handle_all` logic.
 
-    This is due to the `copy_row` rule.  Contrast this to the *tedious* `audit_by_event` alternative.
+    This is due to the `copy_row` rule.  Contrast this to the *tedious* `audit_by_event` alternative:
+
+    <figure><img src="https://github.com/valhuber/TDD/blob/main/images/salary_change.png?raw=true"></figure>
 
     > **Key Take-away:** use **extensible own rule types** to automate pattern you identify; events can result in tedious amounts of code.
 

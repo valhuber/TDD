@@ -251,6 +251,12 @@ This project illustrates you can extract the logic from the Logic Log, and inser
 &nbsp;
 
 
+
+
+&nbsp;
+&nbsp;
+
+
 # TDD Report
 &nbsp;
 &nbsp;
@@ -723,7 +729,9 @@ Observe the logic log to see that it creates audit rows:
 
 Generic event handlers can also reduce redundant code, illustrated in the time/date stamping `handle_all` logic.
 
-This is due to the `copy_row` rule.  Contrast this to the *tedious* `audit_by_event` alternative.
+This is due to the `copy_row` rule.  Contrast this to the *tedious* `audit_by_event` alternative:
+
+<figure><img src="https://github.com/valhuber/TDD/blob/main/images/salary_change.png?raw=true"></figure>
 
 > **Key Take-away:** use **extensible own rule types** to automate pattern you identify; events can result in tedious amounts of code.
 
