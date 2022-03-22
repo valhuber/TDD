@@ -23,6 +23,19 @@ def step_impl(context):
 
 @when('Good Order Placed')
 def step_impl(context):
+    """
+    got **string** line 1
+    closely followed line
+
+    line 2 after spacer
+
+    1. Number 1
+    2. Number 2
+       * dot 1
+       * dot 2
+
+    """
+    scenario_name = 'Good Order Custom Service'
     add_order_uri = f'http://localhost:5656/api/ServicesEndPoint/add_order'
     add_order_args = {
         "meta": {
@@ -46,7 +59,6 @@ def step_impl(context):
             }
         }
     }
-    scenario_name = 'Good Order Custom Service'
     test_utils.prt(f'\n\n\n{scenario_name} - verify adjustments...\n',\
         scenario_name)
     r = requests.post(url=add_order_uri, json=add_order_args)

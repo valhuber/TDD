@@ -1,6 +1,8 @@
 import requests
 from pathlib import Path
 import os
+import ast
+import sys
 
 """
 Creates wiki file from test/behave/behave.log, with rule use.
@@ -16,6 +18,9 @@ debug_info = "# features"
 wiki_data = []
 debug_scenario = "Custom Service: add_order - good"
 logic_logs_dir = "scenario_logic_logs"
+
+scenario_doc_strings = {}
+""" dict of scenario_name, array of strings """
 
 
 def remove_trailer(line: str) -> str:
@@ -70,6 +75,12 @@ def show_logic(scenario: str):
         wiki_data.append("<details>")
         wiki_data.append("<summary>Tests - and their logic - are transparent.. click to see Logic</summary>")
         line_spacer()
+        if scenario in scenario_doc_strings:
+            wiki_data.append(f'**Logic Doc** for scenario: {scenario}')
+            wiki_data.append("   ")
+            for each_doc_string_line in scenario_doc_strings[scenario]:
+                wiki_data.append(each_doc_string_line[0: -1])
+            line_spacer()
         wiki_data.append(f'**Rules Used** in Scenario: {scenario}')
         wiki_data.append("```")
         with open(logic_file_name) as logic:
@@ -98,7 +109,45 @@ def show_logic(scenario: str):
         wiki_data.append("</details>")
 
 
+def get_docStrings(steps_dir: str):
+    steps_dir_files = os.listdir(steps_dir)
+    indent = 4  # skip leading blanks
+    for each_steps_dir_file in steps_dir_files:
+        each_steps_dir_file_path = Path(steps_dir).joinpath(each_steps_dir_file)
+        if each_steps_dir_file_path.is_file():
+            with open(each_steps_dir_file_path) as f:
+                step_code = f.readlines()
+            print(f'Found File: {str(each_steps_dir_file_path)}')
+            for index, each_step_code_line in enumerate(step_code):
+                if each_step_code_line.startswith('@when'):
+                    comment_start = index + 2
+                    if '"""' in step_code[comment_start]:
+                        print("found doc string")
+                        doc_string_line = comment_start+1
+                        doc_string = []
+                        while (True):
+                            if '"""' in step_code[doc_string_line]:
+                                break
+                            doc_string.append(step_code[doc_string_line][indent:])
+                            doc_string_line += 1
+                        scenario_line = doc_string_line+1
+                        if 'scenario_name' not in step_code[scenario_line]:
+                            print(f'** Warning - scenario_name not found '\
+                                f'in file {str(each_steps_dir_file_path)}, '\
+                                f'after line {scenario_line} -- skipped')
+                        else:
+                            scenario_code_line = step_code[scenario_line]
+                            scenario_name_start = scenario_code_line.find("'") + 1
+                            scenario_name_end = scenario_code_line[scenario_name_start+1:].find("'")
+                            scenario_name = scenario_code_line[scenario_name_start: 
+                                scenario_name_end + scenario_name_start+1]
+                            scenario_doc_strings[scenario_name] = doc_string
+    print("that's all, folks")
+
+
 def main(behave_log: str):
+    get_docStrings(steps_dir="features/steps")
+
     get_current_readme()
 
     contents = None
