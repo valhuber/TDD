@@ -174,6 +174,11 @@ def after_step(context, step):
 
 @when('Order Detail Quantity altered very high')
 def step_impl(context):
+    """
+    Same constraint as above.
+
+    > **Key Take-away:** Automatic Reuse (_design one, solve many_)
+    """
     scenario_name = 'Alter Item Qty to exceed credit'
     test_utils.prt(f'\n\n\n{scenario_name} - verify credit check response...\n', scenario_name)
     patch_cust_uri = f'http://localhost:5656/api/OrderDetail/1040/'
@@ -239,6 +244,8 @@ def step_impl(context):
 
     > **Key Take-away:** parent references (e.g., `OrderDetail.ShippedDate`) automate ***chain-down*** multi-table transactions.
 
+    > **Key Take-away:** Automatic Reuse (_design one, solve many_)
+
     """
     scenario_name = 'Set Shipped - adjust logic reuse'
     test_utils.prt(f'\n\n\n{scenario_name}... observe rules pruned for Order.RequiredDate (2013-10-13) \n\n', scenario_name)
@@ -273,6 +280,11 @@ def step_impl(context):
 
 @when('Order ShippedDate set to None')
 def step_impl(context):
+    """
+    Same logic as above.
+
+    > **Key Take-away:** Automatic Reuse (_design one, solve many_)
+    """
     scenario_name = 'Reset Shipped - adjust logic reuse'
     test_utils.prt(f'\n\n\n{scenario_name}... observe rules pruned for Order.RequiredDate (2013-10-13) \n\n', scenario_name)
     patch_uri = f'http://localhost:5656/api/Order/10643/'

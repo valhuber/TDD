@@ -269,6 +269,12 @@ This project illustrates you can extract the logic from the Logic Log, and inser
 &nbsp;
 
 
+
+
+&nbsp;
+&nbsp;
+
+
 # TDD Report
 &nbsp;
 &nbsp;
@@ -505,6 +511,17 @@ Logic Phase:		ROW LOGIC(session=0x1048e20d0) (sqlalchemy before_flush)			 - 2022
 &nbsp;
 
 
+**Logic Doc** for scenario: Alter Item Qty to exceed credit
+   
+Same constraint as above.
+
+> **Key Take-away:** Automatic Reuse (_design one, solve many_)
+
+
+&nbsp;
+&nbsp;
+
+
 **Rules Used** in Scenario: Alter Item Qty to exceed credit
 ```
   Customer  
@@ -609,6 +626,8 @@ This cascades to the Order Details, where it adjusts the `Product.UnitsShipped` 
 
 > **Key Take-away:** parent references (e.g., `OrderDetail.ShippedDate`) automate ***chain-down*** multi-table transactions.
 
+> **Key Take-away:** Automatic Reuse (_design one, solve many_)
+
 
 
 &nbsp;
@@ -667,6 +686,17 @@ Logic Phase:		COMMIT(session=0x1048edc10)   										 - 2022-03-22 06:48:43,192
 &emsp;&emsp;    Then Logic adjusts Balance by -1086  
 <details>
 <summary>Tests - and their logic - are transparent.. click to see Logic</summary>
+
+
+&nbsp;
+&nbsp;
+
+
+**Logic Doc** for scenario: Reset Shipped - adjust logic reuse
+   
+Same logic as above.
+
+> **Key Take-away:** Automatic Reuse (_design one, solve many_)
 
 
 &nbsp;
