@@ -24,15 +24,28 @@ def step_impl(context):
 @when('Good Order Placed')
 def step_impl(context):
     """
-    got **string** line 1
-    closely followed line
+    We place an Order with an Order Detail.  It's one transaction.
 
-    line 2 after spacer
+    Note how the `Order.OrderTotal` and `Customer.Balance` are *adjusted* as Order Details are processed.
+    Similarly, the `Product.UnitsShipped` is adjusted, and used to recompute `UnitsInStock`
 
-    1. Number 1
-    2. Number 2
-       * dot 1
-       * dot 2
+    > **Key Take-away:** sum/count aggregates (e.g., `Customer.Balance`) automate ***chain up*** multi-table transactions.
+
+    Inspect the log for __send mail__. 
+    The `congratulate_sales_rep` event illustrates logic 
+    [Extensibility](https://github.com/valhuber/LogicBank/wiki/Rule-Extensibility) 
+    - using Python to provide logic not covered by rules, l
+    ike non-database operations such as sending email or messages.
+
+    There are actually multiple kinds of events:
+
+    * *Before* row logic
+    * *After* row logic
+    * On *commit,* after all row logic has completed (as here), so that your code "sees" the full logic results
+
+    Events are passed the `row` and `old_row`, as well as `logic_row` which enables you to test the actual operation, chaining nest level, etc.
+
+    You can set breakpoints in events, and inspect these.
 
     """
     scenario_name = 'Good Order Custom Service'
@@ -105,6 +118,10 @@ def step_impl(context):
 
 @when('Order Placed with excessive quantity')
 def step_impl(context):
+    """
+    Familiar logic pattern: constrain a derived result
+    """
+    scenario_name = "Bad Order Custom Service"
     add_order_uri = f'http://localhost:5656/api/ServicesEndPoint/add_order'
     add_order_args = {
         "meta": {
@@ -128,7 +145,6 @@ def step_impl(context):
             }
         }
     }
-    scenario_name = 'Bad Order Custom Service'
     test_utils.prt(f'\n\n\n{scenario_name} - verify credit check response...\n', 
         scenario_name)
     r = requests.post(url=add_order_uri, json=add_order_args)
@@ -176,6 +192,14 @@ def step_impl(context):
 
 @when('Order RequiredDate altered (2013-10-13)')
 def step_impl(context):
+    """
+    We set `Order.RequiredDate`.
+
+    This is a normal update.  Nothing depends on the columns altered, so this has no effect on the related Customer, Order Details or Products.  Contrast this to the *Cascade Update Test* and the *Custom Service* test, where logic chaining affects related rows.  Only the commit event fires.
+
+    > **Key Take-away:** rule pruning automatically avoids unnecessary SQL overhead.
+
+    """
     scenario_name = 'Alter Required Date - adjust logic pruned'
     test_utils.prt(f'\n\n\n{scenario_name}... observe rules pruned for Order.RequiredDate (2013-10-13) \n\n', scenario_name)
     patch_uri = f'http://localhost:5656/api/Order/10643/'
@@ -205,6 +229,14 @@ def step_impl(context):
 
 @when('Order ShippedDate altered (2013-10-13)')
 def step_impl(context):
+    """
+    We set `Order.ShippedDate`.
+
+    This cascades to the Order Details, where it adjusts the `Product.UnitsShipped` and recomputes `UnitsInStock`, as above
+
+    > **Key Take-away:** parent references (e.g., `OrderDetail.ShippedDate`) automate ***chain-down*** multi-table transactions.
+
+    """
     scenario_name = 'Set Shipped - adjust logic reuse'
     test_utils.prt(f'\n\n\n{scenario_name}... observe rules pruned for Order.RequiredDate (2013-10-13) \n\n', scenario_name)
     patch_uri = f'http://localhost:5656/api/Order/10643/'

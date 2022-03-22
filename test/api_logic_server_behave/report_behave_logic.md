@@ -338,15 +338,28 @@ Logic Bank - 21 rules loaded - 2022-03-21 12:52:03,963 - logic_logger - INF
 
 **Logic Doc** for scenario: Good Order Custom Service
    
-got **string** line 1
-closely followed line
+We place an Order with an Order Detail.  It's one transaction.
 
-line 2 after spacer
+Note how the `Order.OrderTotal` and `Customer.Balance` are *adjusted* as Order Details are processed.
+Similarly, the `Product.UnitsShipped` is adjusted, and used to recompute `UnitsInStock`
 
-1. Number 1
-2. Number 2
-   * dot 1
-   * dot 2
+> **Key Take-away:** sum/count aggregates (e.g., `Customer.Balance`) automate ***chain up*** multi-table transactions.
+
+Inspect the log for __send mail__. 
+The `congratulate_sales_rep` event illustrates logic 
+[Extensibility](https://github.com/valhuber/LogicBank/wiki/Rule-Extensibility) 
+- using Python to provide logic not covered by rules, l
+ike non-database operations such as sending email or messages.
+
+There are actually multiple kinds of events:
+
+* *Before* row logic
+* *After* row logic
+* On *commit,* after all row logic has completed (as here), so that your code "sees" the full logic results
+
+Events are passed the `row` and `old_row`, as well as `logic_row` which enables you to test the actual operation, chaining nest level, etc.
+
+You can set breakpoints in events, and inspect these.
 
 
 
@@ -503,6 +516,20 @@ Logic Phase:		ROW LOGIC(session=0x1104a19a0) (sqlalchemy before_flush)			 - 2022
 &nbsp;
 
 
+**Logic Doc** for scenario: Alter Required Date - adjust logic pruned
+   
+We set `Order.RequiredDate`.
+
+This is a normal update.  Nothing depends on the columns altered, so this has no effect on the related Customer, Order Details or Products.  Contrast this to the *Cascade Update Test* and the *Custom Service* test, where logic chaining affects related rows.  Only the commit event fires.
+
+> **Key Take-away:** rule pruning automatically avoids unnecessary SQL overhead.
+
+
+
+&nbsp;
+&nbsp;
+
+
 **Rules Used** in Scenario: Alter Required Date - adjust logic pruned
 ```
   Customer  
@@ -532,6 +559,20 @@ Logic Phase:		COMMIT(session=0x1104218b0)   										 - 2022-03-21 12:52:04,781
 &emsp;&emsp;    Then Balance reduced 1086  
 <details>
 <summary>Tests - and their logic - are transparent.. click to see Logic</summary>
+
+
+&nbsp;
+&nbsp;
+
+
+**Logic Doc** for scenario: Set Shipped - adjust logic reuse
+   
+We set `Order.ShippedDate`.
+
+This cascades to the Order Details, where it adjusts the `Product.UnitsShipped` and recomputes `UnitsInStock`, as above
+
+> **Key Take-away:** parent references (e.g., `OrderDetail.ShippedDate`) automate ***chain-down*** multi-table transactions.
+
 
 
 &nbsp;
