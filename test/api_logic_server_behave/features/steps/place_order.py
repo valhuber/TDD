@@ -29,13 +29,16 @@ def step_impl(context):
     Note how the `Order.OrderTotal` and `Customer.Balance` are *adjusted* as Order Details are processed.
     Similarly, the `Product.UnitsShipped` is adjusted, and used to recompute `UnitsInStock`
 
+    <figure><img src="https://github.com/valhuber/TDD/blob/main/images/declare_logic.png?raw=true"></figure>
+
     > **Key Take-away:** sum/count aggregates (e.g., `Customer.Balance`) automate ***chain up*** multi-table transactions.
 
     Inspect the log for __send mail__. 
+
     The `congratulate_sales_rep` event illustrates logic 
     [Extensibility](https://github.com/valhuber/LogicBank/wiki/Rule-Extensibility) 
-    - using Python to provide logic not covered by rules, l
-    ike non-database operations such as sending email or messages.
+    - using Python to provide logic not covered by rules, 
+    like non-database operations such as sending email or messages.
 
     There are actually multiple kinds of events:
 
