@@ -6,7 +6,7 @@ import test_utils
 host = "localhost"
 port = "5656"
 
-@given('Employee 5 with 95k salary')
+@given('Employee 5 (Buchanan) - Salary 95k')
 def step_impl(context):
     pass
 
@@ -26,7 +26,7 @@ def step_impl(context):
 
     """
     scenario_name = 'Audit Salary Change'
-    test_utils.prt(f'\n\n\n{test_name}... alter salary, ensure audit row created (also available in shell script\n\n', scenario_name)
+    test_utils.prt(f'\n\n\n{scenario_name}... alter salary, ensure audit row created (also available in shell script\n\n', scenario_name)
     patch_emp_uri = f'http://localhost:5656/api/Employee/5/'
     patch_args = \
         {
@@ -66,3 +66,34 @@ def step_impl(context):
             }}
     r = requests.patch(url=patch_emp_uri, json=patch_args)
     response_text = r.text
+
+
+
+@when('Patch Salary to 96k')
+def step_impl(context):
+    """
+    Observe the use of `old_row
+    `
+    > **Key Take-away:** State Transsition Logic enabled per `old_row`
+
+    """
+    scenario_name = 'Raise Must be Meaningful'
+    test_utils.prt(f'\n\n\n{scenario_name}... alter salary, ensure audit row created (also available in shell script\n\n', scenario_name)
+    patch_emp_uri = f'http://localhost:5656/api/Employee/5/'
+    patch_args = \
+        {
+            "data": {
+                "attributes": {
+                    "Salary": 96000,
+                    "Id": 5},
+                "type": "Employee",
+                "id": 5
+            }}
+    r = requests.patch(url=patch_emp_uri, json=patch_args)
+    context.response_text = r.text
+
+
+@then("Reject - Raise too small")
+def step_impl(context):
+    response_text = context.response_text
+    assert 'meaningful raise' in response_text, f'Error - "meaningful raise" not in response:\n{response_text}'
