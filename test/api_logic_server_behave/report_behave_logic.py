@@ -49,13 +49,18 @@ def get_current_readme():
     line_spacer()
     wiki_data.append("# TDD Report")
 
+def get_truncated_scenario_name(scenario_name: str) -> str:
+    """ address max file length (chop at 26), illegal characters """
+    scenario_trunc = scenario_name
+    if scenario_trunc is not None and len(scenario_trunc) >= 26:
+        scenario_trunc = scenario_name[0:25]
+    scenario_trunc = f'{str(scenario_trunc).replace(" ", "_")}'
+    return scenario_trunc
+
 
 def show_logic(scenario: str):
     """ insert s{logic_logs_dir}/scenario.log into wiki_data as disclosure area """
-    scenario_trunc = scenario
-    if scenario_trunc is not None and len(scenario_trunc) >= 26:
-        scenario_trunc = scenario[0:25]
-    scenario_trunc = f'{str(scenario_trunc).replace(" ", "_")}'
+    scenario_trunc = get_truncated_scenario_name(scenario)
     logic_file_name = f'{logic_logs_dir}/{scenario_trunc}.log'
     logic_file_name_path = Path(logic_file_name)
     if not logic_file_name_path.is_file():  # debug code
@@ -75,10 +80,11 @@ def show_logic(scenario: str):
         wiki_data.append("<details>")
         wiki_data.append("<summary>Tests - and their logic - are transparent.. click to see Logic</summary>")
         line_spacer()
-        if scenario in scenario_doc_strings:
+        scenario_trunc = get_truncated_scenario_name(scenario)
+        if scenario_trunc in scenario_doc_strings:
             wiki_data.append(f'**Logic Doc** for scenario: {scenario}')
             wiki_data.append("   ")
-            for each_doc_string_line in scenario_doc_strings[scenario]:
+            for each_doc_string_line in scenario_doc_strings[scenario_trunc]:
                 wiki_data.append(each_doc_string_line[0: -1])
             line_spacer()
         wiki_data.append(f'**Rules Used** in Scenario: {scenario}')
@@ -117,12 +123,12 @@ def get_docStrings(steps_dir: str):
         if each_steps_dir_file_path.is_file():
             with open(each_steps_dir_file_path) as f:
                 step_code = f.readlines()
-            print(f'Found File: {str(each_steps_dir_file_path)}')
+            # print(f'Found File: {str(each_steps_dir_file_path)}')
             for index, each_step_code_line in enumerate(step_code):
                 if each_step_code_line.startswith('@when'):
                     comment_start = index + 2
                     if '"""' in step_code[comment_start]:
-                        print("found doc string")
+                        # print(".. found doc string")
                         doc_string_line = comment_start+1
                         doc_string = []
                         while (True):
@@ -132,7 +138,7 @@ def get_docStrings(steps_dir: str):
                             doc_string_line += 1
                         scenario_line = doc_string_line+1
                         if 'scenario_name' not in step_code[scenario_line]:
-                            print(f'** Warning - scenario_name not found '\
+                            print(f'\n** Warning - scenario_name not found '\
                                 f'in file {str(each_steps_dir_file_path)}, '\
                                 f'after line {scenario_line} -- skipped')
                         else:
@@ -141,8 +147,10 @@ def get_docStrings(steps_dir: str):
                             scenario_name_end = scenario_code_line[scenario_name_start+1:].find("'")
                             scenario_name = scenario_code_line[scenario_name_start: 
                                 scenario_name_end + scenario_name_start+1]
-                            scenario_doc_strings[scenario_name] = doc_string
-    print("that's all, folks")
+                            scenario_trunc = get_truncated_scenario_name(scenario_name)
+                            # print(f'.... truncated scenario_name: {scenario_trunc} in {scenario_code_line}')
+                            scenario_doc_strings[scenario_trunc] = doc_string
+    # print("that's all, folks")
 
 
 def main(behave_log: str):

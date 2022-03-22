@@ -417,6 +417,15 @@ Logic Phase:		COMMIT(session=0x1103eb5b0)   										 - 2022-03-21 12:52:04,395
 &nbsp;
 
 
+**Logic Doc** for scenario: Bad Order Custom Service
+   
+Familiar logic pattern: constrain a derived result
+
+
+&nbsp;
+&nbsp;
+
+
 **Rules Used** in Scenario: Bad Order Custom Service
 ```
   Customer  
@@ -693,6 +702,25 @@ Logic Phase:		COMMIT(session=0x1105a6100)   										 - 2022-03-21 12:52:05,215
 &emsp;&emsp;    Then Salary_audit row created  
 <details>
 <summary>Tests - and their logic - are transparent.. click to see Logic</summary>
+
+
+&nbsp;
+&nbsp;
+
+
+**Logic Doc** for scenario: Audit Salary Change
+   
+Observe the logic log to see that it creates audit rows:
+
+1. **Discouraged:** you can implement auditing with events.  But auditing is a common pattern, and this can lead to repetitive, tedious code
+2. **Preferred:** approaches use [extensible rules](https://github.com/valhuber/LogicBank/wiki/Rule-Extensibility#generic-event-handlers).
+
+Generic event handlers can also reduce redundant code, illustrated in the time/date stamping `handle_all` logic.
+
+This is due to the `copy_row` rule.  Contrast this to the *tedious* `audit_by_event` alternative.
+
+> **Key Take-away:** use **extensible own rule types** to automate pattern you identify; events can result in tedious amounts of code.
+
 
 
 &nbsp;

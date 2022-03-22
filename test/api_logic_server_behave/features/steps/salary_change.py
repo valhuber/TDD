@@ -20,12 +20,12 @@ def step_impl(context):
 
     Generic event handlers can also reduce redundant code, illustrated in the time/date stamping `handle_all` logic.
 
-    This is due to the `copy_row`` rule.  Contrast this to the *tedious* `audit_by_event` alternative`.
+    This is due to the `copy_row` rule.  Contrast this to the *tedious* `audit_by_event` alternative.
 
     > **Key Take-away:** use **extensible own rule types** to automate pattern you identify; events can result in tedious amounts of code.
 
     """
-    scenario_name = "Audit Salary Change"
+    scenario_name = 'Audit Salary Change'
     test_utils.prt(f'\n\n\n{test_name}... alter salary, ensure audit row created (also available in shell script\n\n', scenario_name)
     patch_emp_uri = f'http://localhost:5656/api/Employee/5/'
     patch_args = \

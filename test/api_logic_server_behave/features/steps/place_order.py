@@ -121,7 +121,7 @@ def step_impl(context):
     """
     Familiar logic pattern: constrain a derived result
     """
-    scenario_name = "Bad Order Custom Service"
+    scenario_name = 'Bad Order Custom Service'
     add_order_uri = f'http://localhost:5656/api/ServicesEndPoint/add_order'
     add_order_args = {
         "meta": {
