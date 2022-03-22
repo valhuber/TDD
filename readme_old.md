@@ -239,24 +239,45 @@ This project illustrates you can extract the logic from the Logic Log, and inser
 
 &nbsp;&nbsp;
 
+
+
+&nbsp;
+&nbsp;
+
+
+
+
+&nbsp;
+&nbsp;
+
+
+
+
+&nbsp;
+&nbsp;
+
+
+
+
+&nbsp;
+&nbsp;
+
+
+
+
+&nbsp;
+&nbsp;
+
+
+
+
+&nbsp;
+&nbsp;
+
+
 # TDD Report
-&nbsp;&nbsp;
-
-   * [Feature: About Sample](#feature-about-sample)
-      * [Scenario: Transaction Processing](#scenario-transaction-processing)
-   * [Feature: Application Integration](#feature-application-integration)
-      * [Scenario: GET Customer](#scenario-get-customer)
-      * [Scenario: GET Department](#scenario-get-department)
-   * [Feature: Place Order](#feature-place-order)
-      * [Scenario: Good Order Custom Service](#scenario-good-order-custom-service)
-      * [Scenario: Bad Order Custom Service](#scenario-bad-order-custom-service)
-      * [Scenario: Alter Item Qty to exceed credit](#scenario-alter-item-qty-to-exceed-credit)
-      * [Scenario: Alter Required Date - adjust logic pruned](#scenario-alter-required-date---adjust-logic-pruned)
-      * [Scenario: Set Shipped - adjust logic reuse](#scenario-set-shipped---adjust-logic-reuse)
-      * [Scenario: Reset Shipped - adjust logic reuse](#scenario-reset-shipped---adjust-logic-reuse)
-   * [Feature: Salary Change](#feature-salary-change)
-      * [Scenario: Audit Salary Change](#scenario-audit-salary-change)
-
+&nbsp;
+&nbsp;
 ## Feature: About Sample  
   
 &nbsp;
@@ -279,28 +300,28 @@ This project illustrates you can extract the logic from the Logic Log, and inser
 ```
 **Logic Log** in Scenario: Transaction Processing
 ```
-AbstractRule Bank[0x108dfcaf0] (loaded 2022-03-20 06:19:51.851110
-Mapped Class[OrderDetail] rules
-  Derive OrderDetail.UnitPrice as Copy(Product.UnitPrice
-  Derive OrderDetail.Amount as Formula (1): as_expression=lambda row: row.UnitPrice * row.Qua [...
-  Derive OrderDetail.ShippedDate as Formula (2): row.Order.ShippedDat
+AbstractRule Bank[0x10409caf0] (loaded 2022-03-22 06:48:12.277266
+Mapped Class[Customer] rules
+  Constraint Function: None
+  Derive Customer.Balance as Sum(Order.AmountTotal Where <function declare_logic.<locals>.<lambda> at 0x104125940>
+  Derive Customer.UnpaidOrderCount as Count(<class 'database.models.Order'> Where <function declare_logic.<locals>.<lambda> at 0x1041fc310>
+  Derive Customer.OrderCount as Count(<class 'database.models.Order'> Where None
 Mapped Class[Order] rules
   Derive Order.AmountTotal as Sum(OrderDetail.Amount Where None
   RowEvent Order.congratulate_sales_rep()
   Derive Order.OrderDetailCount as Count(<class 'database.models.OrderDetail'> Where None
-Mapped Class[Customer] rules
-  Derive Customer.Balance as Sum(Order.AmountTotal Where <function declare_logic.<locals>.<lambda> at 0x108f528b0>
-  Constraint Function: None
-  Derive Customer.UnpaidOrderCount as Count(<class 'database.models.Order'> Where <function declare_logic.<locals>.<lambda> at 0x108f5d280>
-  Derive Customer.OrderCount as Count(<class 'database.models.Order'> Where None
+Mapped Class[OrderDetail] rules
+  Derive OrderDetail.Amount as Formula (1): as_expression=lambda row: row.UnitPrice * row.Qua [...
+  Derive OrderDetail.UnitPrice as Copy(Product.UnitPrice
+  Derive OrderDetail.ShippedDate as Formula (2): row.Order.ShippedDat
 Mapped Class[Product] rules
-  Derive Product.UnitsShipped as Sum(OrderDetail.Quantity Where <function declare_logic.<locals>.<lambda> at 0x108f5d160>
+  Derive Product.UnitsShipped as Sum(OrderDetail.Quantity Where <function declare_logic.<locals>.<lambda> at 0x1041fc1f0>
   Derive Product.UnitsInStock as Formula (1): <function
 Mapped Class[Employee] rules
-  Constraint Function: <function declare_logic.<locals>.raise_over_20_percent at 0x108f5d9d0>
+  Constraint Function: <function declare_logic.<locals>.raise_over_20_percent at 0x1041fca60>
   RowEvent Employee.audit_by_event()
   Copy to: EmployeeAudi
-Logic Bank - 21 rules loaded - 2022-03-20 06:21:27,941 - logic_logger - INF
+Logic Bank - 21 rules loaded - 2022-03-22 06:48:42,711 - logic_logger - INF
 ```
 </details>
   
@@ -345,36 +366,70 @@ Logic Bank - 21 rules loaded - 2022-03-20 06:21:27,941 - logic_logger - INF
 &nbsp;
 
 
+**Logic Doc** for scenario: Good Order Custom Service
+   
+We place an Order with an Order Detail.  It's one transaction.
+
+Note how the `Order.OrderTotal` and `Customer.Balance` are *adjusted* as Order Details are processed.
+Similarly, the `Product.UnitsShipped` is adjusted, and used to recompute `UnitsInStock`
+
+<figure><img src="https://github.com/valhuber/TDD/blob/main/images/declare-logic.png?raw=true"></figure>
+
+> **Key Take-away:** sum/count aggregates (e.g., `Customer.Balance`) automate ***chain up*** multi-table transactions.
+
+Inspect the log for __send mail__. 
+
+The `congratulate_sales_rep` event illustrates logic 
+[Extensibility](https://github.com/valhuber/LogicBank/wiki/Rule-Extensibility) 
+- using Python to provide logic not covered by rules, 
+like non-database operations such as sending email or messages.
+
+There are actually multiple kinds of events:
+
+* *Before* row logic
+* *After* row logic
+* On *commit,* after all row logic has completed (as here), so that your code "sees" the full logic results
+
+Events are passed the `row` and `old_row`, as well as `logic_row` which enables you to test the actual operation, chaining nest level, etc.
+
+You can set breakpoints in events, and inspect these.
+
+
+
+&nbsp;
+&nbsp;
+
+
 **Rules Used** in Scenario: Good Order Custom Service
 ```
   Customer  
-    1. Derive Customer.OrderCount as Count(<class 'database.models.Order'> Where None)  
-    2. Derive Customer.UnpaidOrderCount as Count(<class 'database.models.Order'> Where <function declare_logic.<locals>.<lambda> at 0x108f5d280>)  
-    3. Derive Customer.Balance as Sum(Order.AmountTotal Where <function declare_logic.<locals>.<lambda> at 0x108f528b0>)  
+    1. Derive Customer.UnpaidOrderCount as Count(<class 'database.models.Order'> Where <function declare_logic.<locals>.<lambda> at 0x1041fc310>)  
+    2. Derive Customer.OrderCount as Count(<class 'database.models.Order'> Where None)  
+    3. Derive Customer.Balance as Sum(Order.AmountTotal Where <function declare_logic.<locals>.<lambda> at 0x104125940>)  
   Order  
-    4. Derive Order.AmountTotal as Sum(OrderDetail.Amount Where None)  
-    5. Derive Order.OrderDetailCount as Count(<class 'database.models.OrderDetail'> Where None)  
-    6. RowEvent Order.congratulate_sales_rep()   
+    4. Derive Order.OrderDetailCount as Count(<class 'database.models.OrderDetail'> Where None)  
+    5. RowEvent Order.congratulate_sales_rep()   
+    6. Derive Order.AmountTotal as Sum(OrderDetail.Amount Where None)  
   Product  
-    7. Derive Product.UnitsShipped as Sum(OrderDetail.Quantity Where <function declare_logic.<locals>.<lambda> at 0x108f5d160>)  
+    7. Derive Product.UnitsShipped as Sum(OrderDetail.Quantity Where <function declare_logic.<locals>.<lambda> at 0x1041fc1f0>)  
     8. Derive Product.UnitsInStock as Formula (1): <function>  
   
 ```
 **Logic Log** in Scenario: Good Order Custom Service
 ```
-Logic Phase:		ROW LOGIC(session=0x1095f6790) (sqlalchemy before_flush)			 - 2022-03-20 06:21:28,140 - logic_logger - INF
-..Order[11115] {Delete - client} Id: 11115, CustomerId: ALFKI, EmployeeId: 1, OrderDate: None, RequiredDate: None, ShippedDate: None, ShipVia: None, Freight: 11.0000000000, ShipName: None, ShipAddress: None, ShipCity: None, ShipRegion: None, ShipPostalCode: None, ShipCountry: None, AmountTotal: 56.00, Country: None, City: None, Ready: True, OrderDetailCount: 2  row: 0x109592490  session: 0x1095f6790 - 2022-03-20 06:21:28,141 - logic_logger - INF
-....Customer[ALFKI] {Update - Adjusting Customer: Balance, UnpaidOrderCount, OrderCount} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance:  [2158.0000000000-->] 2102.0000000000, CreditLimit: 2300.0000000000, OrderCount:  [16-->] 15, UnpaidOrderCount:  [11-->] 10  row: 0x109624580  session: 0x1095f6790 - 2022-03-20 06:21:28,142 - logic_logger - INF
-..OrderDetail[2231] {Delete - client} Id: 2231, OrderId: 11115, ProductId: 1, UnitPrice: 18.0000000000, Quantity: 1, Discount: 0.0, Amount: 18.0000000000, ShippedDate: None  row: 0x109624340  session: 0x1095f6790 - 2022-03-20 06:21:28,143 - logic_logger - INF
-....Product[1] {Update - Adjusting Product: UnitsShipped} Id: 1, ProductName: Chai, SupplierId: 1, CategoryId: 1, QuantityPerUnit: 10 boxes x 20 bags, UnitPrice: 18.0000000000, UnitsInStock: 39, UnitsOnOrder: 0, ReorderLevel: 10, Discontinued: 0, UnitsShipped:  [0-->] -1  row: 0x10960dcd0  session: 0x1095f6790 - 2022-03-20 06:21:28,145 - logic_logger - INF
-....Product[1] {Formula UnitsInStock} Id: 1, ProductName: Chai, SupplierId: 1, CategoryId: 1, QuantityPerUnit: 10 boxes x 20 bags, UnitPrice: 18.0000000000, UnitsInStock:  [39-->] 40, UnitsOnOrder: 0, ReorderLevel: 10, Discontinued: 0, UnitsShipped:  [0-->] -1  row: 0x10960dcd0  session: 0x1095f6790 - 2022-03-20 06:21:28,145 - logic_logger - INF
-..OrderDetail[2231] {No adjustment on deleted parent: Order} Id: 2231, OrderId: 11115, ProductId: 1, UnitPrice: 18.0000000000, Quantity: 1, Discount: 0.0, Amount: 18.0000000000, ShippedDate: None  row: 0x109624340  session: 0x1095f6790 - 2022-03-20 06:21:28,146 - logic_logger - INF
-..OrderDetail[2232] {Delete - client} Id: 2232, OrderId: 11115, ProductId: 2, UnitPrice: 19.0000000000, Quantity: 2, Discount: 0.0, Amount: 38.0000000000, ShippedDate: None  row: 0x1096242e0  session: 0x1095f6790 - 2022-03-20 06:21:28,147 - logic_logger - INF
-....Product[2] {Update - Adjusting Product: UnitsShipped} Id: 2, ProductName: Chang, SupplierId: 1, CategoryId: 1, QuantityPerUnit: 24 - 12 oz bottles, UnitPrice: 19.0000000000, UnitsInStock: 15, UnitsOnOrder: 40, ReorderLevel: 25, Discontinued: 0, UnitsShipped:  [2-->] 0  row: 0x10962c880  session: 0x1095f6790 - 2022-03-20 06:21:28,148 - logic_logger - INF
-....Product[2] {Formula UnitsInStock} Id: 2, ProductName: Chang, SupplierId: 1, CategoryId: 1, QuantityPerUnit: 24 - 12 oz bottles, UnitPrice: 19.0000000000, UnitsInStock:  [15-->] 17, UnitsOnOrder: 40, ReorderLevel: 25, Discontinued: 0, UnitsShipped:  [2-->] 0  row: 0x10962c880  session: 0x1095f6790 - 2022-03-20 06:21:28,148 - logic_logger - INF
-..OrderDetail[2232] {No adjustment on deleted parent: Order} Id: 2232, OrderId: 11115, ProductId: 2, UnitPrice: 19.0000000000, Quantity: 2, Discount: 0.0, Amount: 38.0000000000, ShippedDate: None  row: 0x1096242e0  session: 0x1095f6790 - 2022-03-20 06:21:28,149 - logic_logger - INF
-Logic Phase:		COMMIT(session=0x1095f6790)   										 - 2022-03-20 06:21:28,149 - logic_logger - INF
-..Order[11115] {Commit Event} Id: 11115, CustomerId: ALFKI, EmployeeId: 1, OrderDate: None, RequiredDate: None, ShippedDate: None, ShipVia: None, Freight: 11.0000000000, ShipName: None, ShipAddress: None, ShipCity: None, ShipRegion: None, ShipPostalCode: None, ShipCountry: None, AmountTotal: 56.00, Country: None, City: None, Ready: True, OrderDetailCount: 2  row: 0x109592490  session: 0x1095f6790 - 2022-03-20 06:21:28,149 - logic_logger - INF
+Logic Phase:		ROW LOGIC(session=0x10487ff70) (sqlalchemy before_flush)			 - 2022-03-22 06:48:42,899 - logic_logger - INF
+..Order[11122] {Delete - client} Id: 11122, CustomerId: ALFKI, EmployeeId: 1, OrderDate: None, RequiredDate: None, ShippedDate: None, ShipVia: None, Freight: 11.0000000000, ShipName: None, ShipAddress: None, ShipCity: None, ShipRegion: None, ShipPostalCode: None, ShipCountry: None, AmountTotal: 56.00, Country: None, City: None, Ready: True, OrderDetailCount: 2  row: 0x104893130  session: 0x10487ff70 - 2022-03-22 06:48:42,899 - logic_logger - INF
+....Customer[ALFKI] {Update - Adjusting Customer: Balance, UnpaidOrderCount, OrderCount} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance:  [2158.0000000000-->] 2102.0000000000, CreditLimit: 2300.0000000000, OrderCount:  [16-->] 15, UnpaidOrderCount:  [11-->] 10  row: 0x1048c2100  session: 0x10487ff70 - 2022-03-22 06:48:42,901 - logic_logger - INF
+..OrderDetail[2245] {Delete - client} Id: 2245, OrderId: 11122, ProductId: 1, UnitPrice: 18.0000000000, Quantity: 1, Discount: 0.0, Amount: 18.0000000000, ShippedDate: None  row: 0x1048bac40  session: 0x10487ff70 - 2022-03-22 06:48:42,902 - logic_logger - INF
+....Product[1] {Update - Adjusting Product: UnitsShipped} Id: 1, ProductName: Chai, SupplierId: 1, CategoryId: 1, QuantityPerUnit: 10 boxes x 20 bags, UnitPrice: 18.0000000000, UnitsInStock: 39, UnitsOnOrder: 0, ReorderLevel: 10, Discontinued: 0, UnitsShipped:  [0-->] -1  row: 0x1048ad1c0  session: 0x10487ff70 - 2022-03-22 06:48:42,903 - logic_logger - INF
+....Product[1] {Formula UnitsInStock} Id: 1, ProductName: Chai, SupplierId: 1, CategoryId: 1, QuantityPerUnit: 10 boxes x 20 bags, UnitPrice: 18.0000000000, UnitsInStock:  [39-->] 40, UnitsOnOrder: 0, ReorderLevel: 10, Discontinued: 0, UnitsShipped:  [0-->] -1  row: 0x1048ad1c0  session: 0x10487ff70 - 2022-03-22 06:48:42,904 - logic_logger - INF
+..OrderDetail[2245] {No adjustment on deleted parent: Order} Id: 2245, OrderId: 11122, ProductId: 1, UnitPrice: 18.0000000000, Quantity: 1, Discount: 0.0, Amount: 18.0000000000, ShippedDate: None  row: 0x1048bac40  session: 0x10487ff70 - 2022-03-22 06:48:42,904 - logic_logger - INF
+..OrderDetail[2246] {Delete - client} Id: 2246, OrderId: 11122, ProductId: 2, UnitPrice: 19.0000000000, Quantity: 2, Discount: 0.0, Amount: 38.0000000000, ShippedDate: None  row: 0x1048babe0  session: 0x10487ff70 - 2022-03-22 06:48:42,905 - logic_logger - INF
+....Product[2] {Update - Adjusting Product: UnitsShipped} Id: 2, ProductName: Chang, SupplierId: 1, CategoryId: 1, QuantityPerUnit: 24 - 12 oz bottles, UnitPrice: 19.0000000000, UnitsInStock: 15, UnitsOnOrder: 40, ReorderLevel: 25, Discontinued: 0, UnitsShipped:  [2-->] 0  row: 0x1048ce100  session: 0x10487ff70 - 2022-03-22 06:48:42,906 - logic_logger - INF
+....Product[2] {Formula UnitsInStock} Id: 2, ProductName: Chang, SupplierId: 1, CategoryId: 1, QuantityPerUnit: 24 - 12 oz bottles, UnitPrice: 19.0000000000, UnitsInStock:  [15-->] 17, UnitsOnOrder: 40, ReorderLevel: 25, Discontinued: 0, UnitsShipped:  [2-->] 0  row: 0x1048ce100  session: 0x10487ff70 - 2022-03-22 06:48:42,906 - logic_logger - INF
+..OrderDetail[2246] {No adjustment on deleted parent: Order} Id: 2246, OrderId: 11122, ProductId: 2, UnitPrice: 19.0000000000, Quantity: 2, Discount: 0.0, Amount: 38.0000000000, ShippedDate: None  row: 0x1048babe0  session: 0x10487ff70 - 2022-03-22 06:48:42,907 - logic_logger - INF
+Logic Phase:		COMMIT(session=0x10487ff70)   										 - 2022-03-22 06:48:42,907 - logic_logger - INF
+..Order[11122] {Commit Event} Id: 11122, CustomerId: ALFKI, EmployeeId: 1, OrderDate: None, RequiredDate: None, ShippedDate: None, ShipVia: None, Freight: 11.0000000000, ShipName: None, ShipAddress: None, ShipCity: None, ShipRegion: None, ShipPostalCode: None, ShipCountry: None, AmountTotal: 56.00, Country: None, City: None, Ready: True, OrderDetailCount: 2  row: 0x104893130  session: 0x10487ff70 - 2022-03-22 06:48:42,907 - logic_logger - INF
 
 ```
 </details>
@@ -395,38 +450,47 @@ Logic Phase:		COMMIT(session=0x1095f6790)   										 - 2022-03-20 06:21:28,149
 &nbsp;
 
 
+**Logic Doc** for scenario: Bad Order Custom Service
+   
+Familiar logic pattern: constrain a derived result
+
+
+&nbsp;
+&nbsp;
+
+
 **Rules Used** in Scenario: Bad Order Custom Service
 ```
   Customer  
-    1. Derive Customer.OrderCount as Count(<class 'database.models.Order'> Where None)  
-    2. Derive Customer.UnpaidOrderCount as Count(<class 'database.models.Order'> Where <function declare_logic.<locals>.<lambda> at 0x108f5d280>)  
-    3. Derive Customer.Balance as Sum(Order.AmountTotal Where <function declare_logic.<locals>.<lambda> at 0x108f528b0>)  
-    4. Constraint Function: None   
+    1. Derive Customer.UnpaidOrderCount as Count(<class 'database.models.Order'> Where <function declare_logic.<locals>.<lambda> at 0x1041fc310>)  
+    2. Derive Customer.OrderCount as Count(<class 'database.models.Order'> Where None)  
+    3. Constraint Function: None   
+    4. Derive Customer.Balance as Sum(Order.AmountTotal Where <function declare_logic.<locals>.<lambda> at 0x104125940>)  
   Order  
-    5. Derive Order.AmountTotal as Sum(OrderDetail.Amount Where None)  
-    6. Derive Order.OrderDetailCount as Count(<class 'database.models.OrderDetail'> Where None)  
+    5. Derive Order.OrderDetailCount as Count(<class 'database.models.OrderDetail'> Where None)  
+    6. Derive Order.AmountTotal as Sum(OrderDetail.Amount Where None)  
   OrderDetail  
-    7. Derive OrderDetail.ShippedDate as Formula (2): row.Order.ShippedDate  
+    7. Derive OrderDetail.Amount as Formula (1): as_expression=lambda row: row.UnitPrice * row.Qua [...]  
     8. Derive OrderDetail.UnitPrice as Copy(Product.UnitPrice)  
-    9. Derive OrderDetail.Amount as Formula (1): as_expression=lambda row: row.UnitPrice * row.Qua [...]  
+    9. Derive OrderDetail.ShippedDate as Formula (2): row.Order.ShippedDate  
   Product  
-    10. Derive Product.UnitsShipped as Sum(OrderDetail.Quantity Where <function declare_logic.<locals>.<lambda> at 0x108f5d160>)  
+    10. Derive Product.UnitsShipped as Sum(OrderDetail.Quantity Where <function declare_logic.<locals>.<lambda> at 0x1041fc1f0>)  
     11. Derive Product.UnitsInStock as Formula (1): <function>  
   
 ```
 **Logic Log** in Scenario: Bad Order Custom Service
 ```
-Logic Phase:		ROW LOGIC(session=0x10962ce20) (sqlalchemy before_flush)			 - 2022-03-20 06:21:28,209 - logic_logger - INF
-..Order[None] {Insert - client} Id: None, CustomerId: ALFKI, EmployeeId: 1, OrderDate: None, RequiredDate: None, ShippedDate: None, ShipVia: None, Freight: 10, ShipName: None, ShipAddress: None, ShipCity: None, ShipRegion: None, ShipPostalCode: None, ShipCountry: None, AmountTotal: None, Country: None, City: None, Ready: None, OrderDetailCount: None  row: 0x10962c310  session: 0x10962ce20 - 2022-03-20 06:21:28,209 - logic_logger - INF
-....Customer[ALFKI] {Update - Adjusting Customer: UnpaidOrderCount, OrderCount} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance: 2102.0000000000, CreditLimit: 2300.0000000000, OrderCount:  [15-->] 16, UnpaidOrderCount:  [10-->] 11  row: 0x109646b80  session: 0x10962ce20 - 2022-03-20 06:21:28,212 - logic_logger - INF
-..OrderDetail[None] {Insert - client} Id: None, OrderId: None, ProductId: 1, UnitPrice: None, Quantity: 1111, Discount: 0, Amount: None, ShippedDate: None  row: 0x10962c5b0  session: 0x10962ce20 - 2022-03-20 06:21:28,213 - logic_logger - INF
-..OrderDetail[None] {copy_rules for role: Product - UnitPrice} Id: None, OrderId: None, ProductId: 1, UnitPrice: 18.0000000000, Quantity: 1111, Discount: 0, Amount: None, ShippedDate: None  row: 0x10962c5b0  session: 0x10962ce20 - 2022-03-20 06:21:28,215 - logic_logger - INF
-..OrderDetail[None] {Formula Amount} Id: None, OrderId: None, ProductId: 1, UnitPrice: 18.0000000000, Quantity: 1111, Discount: 0, Amount: 19998.0000000000, ShippedDate: None  row: 0x10962c5b0  session: 0x10962ce20 - 2022-03-20 06:21:28,215 - logic_logger - INF
-....Product[1] {Update - Adjusting Product: UnitsShipped} Id: 1, ProductName: Chai, SupplierId: 1, CategoryId: 1, QuantityPerUnit: 10 boxes x 20 bags, UnitPrice: 18.0000000000, UnitsInStock: 40, UnitsOnOrder: 0, ReorderLevel: 10, Discontinued: 0, UnitsShipped:  [-1-->] 1110  row: 0x109646040  session: 0x10962ce20 - 2022-03-20 06:21:28,215 - logic_logger - INF
-....Product[1] {Formula UnitsInStock} Id: 1, ProductName: Chai, SupplierId: 1, CategoryId: 1, QuantityPerUnit: 10 boxes x 20 bags, UnitPrice: 18.0000000000, UnitsInStock:  [40-->] -1071, UnitsOnOrder: 0, ReorderLevel: 10, Discontinued: 0, UnitsShipped:  [-1-->] 1110  row: 0x109646040  session: 0x10962ce20 - 2022-03-20 06:21:28,216 - logic_logger - INF
-....Order[None] {Update - Adjusting Order: AmountTotal, OrderDetailCount} Id: None, CustomerId: ALFKI, EmployeeId: 1, OrderDate: None, RequiredDate: None, ShippedDate: None, ShipVia: None, Freight: 10, ShipName: None, ShipAddress: None, ShipCity: None, ShipRegion: None, ShipPostalCode: None, ShipCountry: None, AmountTotal:  [None-->] 19998.0000000000, Country: None, City: None, Ready: None, OrderDetailCount:  [None-->] 1  row: 0x10962c310  session: 0x10962ce20 - 2022-03-20 06:21:28,217 - logic_logger - INF
-......Customer[ALFKI] {Update - Adjusting Customer: Balance} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance:  [2102.0000000000-->] 22100.0000000000, CreditLimit: 2300.0000000000, OrderCount: 16, UnpaidOrderCount: 11  row: 0x109646b80  session: 0x10962ce20 - 2022-03-20 06:21:28,218 - logic_logger - INF
-......Customer[ALFKI] {Constraint Failure: balance (22100.0000000000) exceeds credit (2300.0000000000)} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance:  [2102.0000000000-->] 22100.0000000000, CreditLimit: 2300.0000000000, OrderCount: 16, UnpaidOrderCount: 11  row: 0x109646b80  session: 0x10962ce20 - 2022-03-20 06:21:28,218 - logic_logger - INF
+Logic Phase:		ROW LOGIC(session=0x1048e20d0) (sqlalchemy before_flush)			 - 2022-03-22 06:48:42,965 - logic_logger - INF
+..Order[None] {Insert - client} Id: None, CustomerId: ALFKI, EmployeeId: 1, OrderDate: None, RequiredDate: None, ShippedDate: None, ShipVia: None, Freight: 10, ShipName: None, ShipAddress: None, ShipCity: None, ShipRegion: None, ShipPostalCode: None, ShipCountry: None, AmountTotal: None, Country: None, City: None, Ready: None, OrderDetailCount: None  row: 0x1048e2ca0  session: 0x1048e20d0 - 2022-03-22 06:48:42,965 - logic_logger - INF
+....Customer[ALFKI] {Update - Adjusting Customer: UnpaidOrderCount, OrderCount} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance: 2102.0000000000, CreditLimit: 2300.0000000000, OrderCount:  [15-->] 16, UnpaidOrderCount:  [10-->] 11  row: 0x1048ea4c0  session: 0x1048e20d0 - 2022-03-22 06:48:42,968 - logic_logger - INF
+..OrderDetail[None] {Insert - client} Id: None, OrderId: None, ProductId: 1, UnitPrice: None, Quantity: 1111, Discount: 0, Amount: None, ShippedDate: None  row: 0x1048e20a0  session: 0x1048e20d0 - 2022-03-22 06:48:42,969 - logic_logger - INF
+..OrderDetail[None] {copy_rules for role: Product - UnitPrice} Id: None, OrderId: None, ProductId: 1, UnitPrice: 18.0000000000, Quantity: 1111, Discount: 0, Amount: None, ShippedDate: None  row: 0x1048e20a0  session: 0x1048e20d0 - 2022-03-22 06:48:42,970 - logic_logger - INF
+..OrderDetail[None] {Formula Amount} Id: None, OrderId: None, ProductId: 1, UnitPrice: 18.0000000000, Quantity: 1111, Discount: 0, Amount: 19998.0000000000, ShippedDate: None  row: 0x1048e20a0  session: 0x1048e20d0 - 2022-03-22 06:48:42,970 - logic_logger - INF
+....Product[1] {Update - Adjusting Product: UnitsShipped} Id: 1, ProductName: Chai, SupplierId: 1, CategoryId: 1, QuantityPerUnit: 10 boxes x 20 bags, UnitPrice: 18.0000000000, UnitsInStock: 40, UnitsOnOrder: 0, ReorderLevel: 10, Discontinued: 0, UnitsShipped:  [-1-->] 1110  row: 0x1048eae50  session: 0x1048e20d0 - 2022-03-22 06:48:42,971 - logic_logger - INF
+....Product[1] {Formula UnitsInStock} Id: 1, ProductName: Chai, SupplierId: 1, CategoryId: 1, QuantityPerUnit: 10 boxes x 20 bags, UnitPrice: 18.0000000000, UnitsInStock:  [40-->] -1071, UnitsOnOrder: 0, ReorderLevel: 10, Discontinued: 0, UnitsShipped:  [-1-->] 1110  row: 0x1048eae50  session: 0x1048e20d0 - 2022-03-22 06:48:42,971 - logic_logger - INF
+....Order[None] {Update - Adjusting Order: AmountTotal, OrderDetailCount} Id: None, CustomerId: ALFKI, EmployeeId: 1, OrderDate: None, RequiredDate: None, ShippedDate: None, ShipVia: None, Freight: 10, ShipName: None, ShipAddress: None, ShipCity: None, ShipRegion: None, ShipPostalCode: None, ShipCountry: None, AmountTotal:  [None-->] 19998.0000000000, Country: None, City: None, Ready: None, OrderDetailCount:  [None-->] 1  row: 0x1048e2ca0  session: 0x1048e20d0 - 2022-03-22 06:48:42,972 - logic_logger - INF
+......Customer[ALFKI] {Update - Adjusting Customer: Balance} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance:  [2102.0000000000-->] 22100.0000000000, CreditLimit: 2300.0000000000, OrderCount: 16, UnpaidOrderCount: 11  row: 0x1048ea4c0  session: 0x1048e20d0 - 2022-03-22 06:48:42,973 - logic_logger - INF
+......Customer[ALFKI] {Constraint Failure: balance (22100.0000000000) exceeds credit (2300.0000000000)} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance:  [2102.0000000000-->] 22100.0000000000, CreditLimit: 2300.0000000000, OrderCount: 16, UnpaidOrderCount: 11  row: 0x1048ea4c0  session: 0x1048e20d0 - 2022-03-22 06:48:42,974 - logic_logger - INF
 
 ```
 </details>
@@ -447,34 +511,45 @@ Logic Phase:		ROW LOGIC(session=0x10962ce20) (sqlalchemy before_flush)			 - 2022
 &nbsp;
 
 
+**Logic Doc** for scenario: Alter Item Qty to exceed credit
+   
+Same constraint as above.
+
+> **Key Take-away:** Automatic Reuse (_design one, solve many_)
+
+
+&nbsp;
+&nbsp;
+
+
 **Rules Used** in Scenario: Alter Item Qty to exceed credit
 ```
   Customer  
-    1. Derive Customer.OrderCount as Count(<class 'database.models.Order'> Where None)  
-    2. Derive Customer.UnpaidOrderCount as Count(<class 'database.models.Order'> Where <function declare_logic.<locals>.<lambda> at 0x108f5d280>)  
-    3. Derive Customer.Balance as Sum(Order.AmountTotal Where <function declare_logic.<locals>.<lambda> at 0x108f528b0>)  
-    4. Constraint Function: None   
+    1. Derive Customer.UnpaidOrderCount as Count(<class 'database.models.Order'> Where <function declare_logic.<locals>.<lambda> at 0x1041fc310>)  
+    2. Derive Customer.OrderCount as Count(<class 'database.models.Order'> Where None)  
+    3. Constraint Function: None   
+    4. Derive Customer.Balance as Sum(Order.AmountTotal Where <function declare_logic.<locals>.<lambda> at 0x104125940>)  
   Order  
-    5. Derive Order.AmountTotal as Sum(OrderDetail.Amount Where None)  
-    6. Derive Order.OrderDetailCount as Count(<class 'database.models.OrderDetail'> Where None)  
+    5. Derive Order.OrderDetailCount as Count(<class 'database.models.OrderDetail'> Where None)  
+    6. Derive Order.AmountTotal as Sum(OrderDetail.Amount Where None)  
   OrderDetail  
     7. Derive OrderDetail.Amount as Formula (1): as_expression=lambda row: row.UnitPrice * row.Qua [...]  
   Product  
-    8. Derive Product.UnitsShipped as Sum(OrderDetail.Quantity Where <function declare_logic.<locals>.<lambda> at 0x108f5d160>)  
+    8. Derive Product.UnitsShipped as Sum(OrderDetail.Quantity Where <function declare_logic.<locals>.<lambda> at 0x1041fc1f0>)  
     9. Derive Product.UnitsInStock as Formula (1): <function>  
   
 ```
 **Logic Log** in Scenario: Alter Item Qty to exceed credit
 ```
-Logic Phase:		ROW LOGIC(session=0x10964fac0) (sqlalchemy before_flush)			 - 2022-03-20 06:21:28,270 - logic_logger - INF
-..OrderDetail[1040] {Update - client} Id: 1040, OrderId: 10643, ProductId: 28, UnitPrice: 45.6000000000, Quantity:  [15-->] 1110, Discount: 0.25, Amount: 684.0000000000, ShippedDate: None  row: 0x10964f460  session: 0x10964fac0 - 2022-03-20 06:21:28,270 - logic_logger - INF
-..OrderDetail[1040] {Formula Amount} Id: 1040, OrderId: 10643, ProductId: 28, UnitPrice: 45.6000000000, Quantity:  [15-->] 1110, Discount: 0.25, Amount:  [684.0000000000-->] 50616.0000000000, ShippedDate: None  row: 0x10964f460  session: 0x10964fac0 - 2022-03-20 06:21:28,271 - logic_logger - INF
-..OrderDetail[1040] {Prune Formula: ShippedDate [['Order.ShippedDate']]} Id: 1040, OrderId: 10643, ProductId: 28, UnitPrice: 45.6000000000, Quantity:  [15-->] 1110, Discount: 0.25, Amount:  [684.0000000000-->] 50616.0000000000, ShippedDate: None  row: 0x10964f460  session: 0x10964fac0 - 2022-03-20 06:21:28,271 - logic_logger - INF
-....Product[28] {Update - Adjusting Product: UnitsShipped} Id: 28, ProductName: Rössle Sauerkraut, SupplierId: 12, CategoryId: 7, QuantityPerUnit: 25 - 825 g cans, UnitPrice: 45.6000000000, UnitsInStock: 26, UnitsOnOrder: 0, ReorderLevel: 0, Discontinued: 1, UnitsShipped:  [0-->] 1095  row: 0x10964f910  session: 0x10964fac0 - 2022-03-20 06:21:28,272 - logic_logger - INF
-....Product[28] {Formula UnitsInStock} Id: 28, ProductName: Rössle Sauerkraut, SupplierId: 12, CategoryId: 7, QuantityPerUnit: 25 - 825 g cans, UnitPrice: 45.6000000000, UnitsInStock:  [26-->] -1069, UnitsOnOrder: 0, ReorderLevel: 0, Discontinued: 1, UnitsShipped:  [0-->] 1095  row: 0x10964f910  session: 0x10964fac0 - 2022-03-20 06:21:28,273 - logic_logger - INF
-....Order[10643] {Update - Adjusting Order: AmountTotal} Id: 10643, CustomerId: ALFKI, EmployeeId: 6, OrderDate: 2013-08-25, RequiredDate: 2013-10-13, ShippedDate: None, ShipVia: 1, Freight: 29.4600000000, ShipName: Alfreds Futterkiste, ShipAddress: Obere Str. 57, ShipCity: Berlin, ShipRegion: Western Europe, ShipPostalCode: 12209, ShipCountry: Germany, AmountTotal:  [1086.00-->] 51018.0000000000, Country: None, City: None, Ready: True, OrderDetailCount: 3  row: 0x109646d00  session: 0x10964fac0 - 2022-03-20 06:21:28,275 - logic_logger - INF
-......Customer[ALFKI] {Update - Adjusting Customer: Balance} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance:  [2102.0000000000-->] 52034.0000000000, CreditLimit: 2300.0000000000, OrderCount: 15, UnpaidOrderCount: 10  row: 0x109646c40  session: 0x10964fac0 - 2022-03-20 06:21:28,276 - logic_logger - INF
-......Customer[ALFKI] {Constraint Failure: balance (52034.0000000000) exceeds credit (2300.0000000000)} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance:  [2102.0000000000-->] 52034.0000000000, CreditLimit: 2300.0000000000, OrderCount: 15, UnpaidOrderCount: 10  row: 0x109646c40  session: 0x10964fac0 - 2022-03-20 06:21:28,277 - logic_logger - INF
+Logic Phase:		ROW LOGIC(session=0x1048edbe0) (sqlalchemy before_flush)			 - 2022-03-22 06:48:43,019 - logic_logger - INF
+..OrderDetail[1040] {Update - client} Id: 1040, OrderId: 10643, ProductId: 28, UnitPrice: 45.6000000000, Quantity:  [15-->] 1110, Discount: 0.25, Amount: 684.0000000000, ShippedDate: None  row: 0x1048ed910  session: 0x1048edbe0 - 2022-03-22 06:48:43,019 - logic_logger - INF
+..OrderDetail[1040] {Formula Amount} Id: 1040, OrderId: 10643, ProductId: 28, UnitPrice: 45.6000000000, Quantity:  [15-->] 1110, Discount: 0.25, Amount:  [684.0000000000-->] 50616.0000000000, ShippedDate: None  row: 0x1048ed910  session: 0x1048edbe0 - 2022-03-22 06:48:43,020 - logic_logger - INF
+..OrderDetail[1040] {Prune Formula: ShippedDate [['Order.ShippedDate']]} Id: 1040, OrderId: 10643, ProductId: 28, UnitPrice: 45.6000000000, Quantity:  [15-->] 1110, Discount: 0.25, Amount:  [684.0000000000-->] 50616.0000000000, ShippedDate: None  row: 0x1048ed910  session: 0x1048edbe0 - 2022-03-22 06:48:43,020 - logic_logger - INF
+....Product[28] {Update - Adjusting Product: UnitsShipped} Id: 28, ProductName: Rössle Sauerkraut, SupplierId: 12, CategoryId: 7, QuantityPerUnit: 25 - 825 g cans, UnitPrice: 45.6000000000, UnitsInStock: 26, UnitsOnOrder: 0, ReorderLevel: 0, Discontinued: 1, UnitsShipped:  [0-->] 1095  row: 0x10479a880  session: 0x1048edbe0 - 2022-03-22 06:48:43,021 - logic_logger - INF
+....Product[28] {Formula UnitsInStock} Id: 28, ProductName: Rössle Sauerkraut, SupplierId: 12, CategoryId: 7, QuantityPerUnit: 25 - 825 g cans, UnitPrice: 45.6000000000, UnitsInStock:  [26-->] -1069, UnitsOnOrder: 0, ReorderLevel: 0, Discontinued: 1, UnitsShipped:  [0-->] 1095  row: 0x10479a880  session: 0x1048edbe0 - 2022-03-22 06:48:43,021 - logic_logger - INF
+....Order[10643] {Update - Adjusting Order: AmountTotal} Id: 10643, CustomerId: ALFKI, EmployeeId: 6, OrderDate: 2013-08-25, RequiredDate: 2013-10-13, ShippedDate: None, ShipVia: 1, Freight: 29.4600000000, ShipName: Alfreds Futterkiste, ShipAddress: Obere Str. 57, ShipCity: Berlin, ShipRegion: Western Europe, ShipPostalCode: 12209, ShipCountry: Germany, AmountTotal:  [1086.00-->] 51018.0000000000, Country: None, City: None, Ready: True, OrderDetailCount: 3  row: 0x1048c2bb0  session: 0x1048edbe0 - 2022-03-22 06:48:43,024 - logic_logger - INF
+......Customer[ALFKI] {Update - Adjusting Customer: Balance} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance:  [2102.0000000000-->] 52034.0000000000, CreditLimit: 2300.0000000000, OrderCount: 15, UnpaidOrderCount: 10  row: 0x1048e2bb0  session: 0x1048edbe0 - 2022-03-22 06:48:43,025 - logic_logger - INF
+......Customer[ALFKI] {Constraint Failure: balance (52034.0000000000) exceeds credit (2300.0000000000)} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance:  [2102.0000000000-->] 52034.0000000000, CreditLimit: 2300.0000000000, OrderCount: 15, UnpaidOrderCount: 10  row: 0x1048e2bb0  session: 0x1048edbe0 - 2022-03-22 06:48:43,025 - logic_logger - INF
 
 ```
 </details>
@@ -494,11 +569,25 @@ Logic Phase:		ROW LOGIC(session=0x10964fac0) (sqlalchemy before_flush)			 - 2022
 &nbsp;
 
 
+**Logic Doc** for scenario: Alter Required Date - adjust logic pruned
+   
+We set `Order.RequiredDate`.
+
+This is a normal update.  Nothing depends on the columns altered, so this has no effect on the related Customer, Order Details or Products.  Contrast this to the *Cascade Update Test* and the *Custom Service* test, where logic chaining affects related rows.  Only the commit event fires.
+
+> **Key Take-away:** rule pruning automatically avoids unnecessary SQL overhead.
+
+
+
+&nbsp;
+&nbsp;
+
+
 **Rules Used** in Scenario: Alter Required Date - adjust logic pruned
 ```
   Customer  
-    1. Derive Customer.UnpaidOrderCount as Count(<class 'database.models.Order'> Where <function declare_logic.<locals>.<lambda> at 0x108f5d280>)  
-    2. Derive Customer.Balance as Sum(Order.AmountTotal Where <function declare_logic.<locals>.<lambda> at 0x108f528b0>)  
+    1. Derive Customer.UnpaidOrderCount as Count(<class 'database.models.Order'> Where <function declare_logic.<locals>.<lambda> at 0x1041fc310>)  
+    2. Derive Customer.Balance as Sum(Order.AmountTotal Where <function declare_logic.<locals>.<lambda> at 0x104125940>)  
     3. Derive Customer.OrderCount as Count(<class 'database.models.Order'> Where None)  
   Order  
     4. RowEvent Order.congratulate_sales_rep()   
@@ -506,10 +595,10 @@ Logic Phase:		ROW LOGIC(session=0x10964fac0) (sqlalchemy before_flush)			 - 2022
 ```
 **Logic Log** in Scenario: Alter Required Date - adjust logic pruned
 ```
-Logic Phase:		ROW LOGIC(session=0x109646bb0) (sqlalchemy before_flush)			 - 2022-03-20 06:21:28,325 - logic_logger - INF
-..Order[10643] {Update - client} Id: 10643, CustomerId: ALFKI, EmployeeId: 6, OrderDate: 2013-08-25, RequiredDate:  [2013-10-13-->] 2013-10-13 00:00:00, ShippedDate: None, ShipVia: 1, Freight: 29.4600000000, ShipName: Alfreds Futterkiste, ShipAddress: Obere Str. 57, ShipCity: Berlin, ShipRegion: Western Europe, ShipPostalCode: 12209, ShipCountry: Germany, AmountTotal: 1086.00, Country: None, City: None, Ready: True, OrderDetailCount: 3  row: 0x10964f460  session: 0x109646bb0 - 2022-03-20 06:21:28,326 - logic_logger - INF
-Logic Phase:		COMMIT(session=0x109646bb0)   										 - 2022-03-20 06:21:28,327 - logic_logger - INF
-..Order[10643] {Commit Event} Id: 10643, CustomerId: ALFKI, EmployeeId: 6, OrderDate: 2013-08-25, RequiredDate:  [2013-10-13-->] 2013-10-13 00:00:00, ShippedDate: None, ShipVia: 1, Freight: 29.4600000000, ShipName: Alfreds Futterkiste, ShipAddress: Obere Str. 57, ShipCity: Berlin, ShipRegion: Western Europe, ShipPostalCode: 12209, ShipCountry: Germany, AmountTotal: 1086.00, Country: None, City: None, Ready: True, OrderDetailCount: 3  row: 0x10964f460  session: 0x109646bb0 - 2022-03-20 06:21:28,327 - logic_logger - INF
+Logic Phase:		ROW LOGIC(session=0x1048eae80) (sqlalchemy before_flush)			 - 2022-03-22 06:48:43,073 - logic_logger - INF
+..Order[10643] {Update - client} Id: 10643, CustomerId: ALFKI, EmployeeId: 6, OrderDate: 2013-08-25, RequiredDate:  [2013-10-13-->] 2013-10-13 00:00:00, ShippedDate: None, ShipVia: 1, Freight: 29.4600000000, ShipName: Alfreds Futterkiste, ShipAddress: Obere Str. 57, ShipCity: Berlin, ShipRegion: Western Europe, ShipPostalCode: 12209, ShipCountry: Germany, AmountTotal: 1086.00, Country: None, City: None, Ready: True, OrderDetailCount: 3  row: 0x1048ea430  session: 0x1048eae80 - 2022-03-22 06:48:43,073 - logic_logger - INF
+Logic Phase:		COMMIT(session=0x1048eae80)   										 - 2022-03-22 06:48:43,074 - logic_logger - INF
+..Order[10643] {Commit Event} Id: 10643, CustomerId: ALFKI, EmployeeId: 6, OrderDate: 2013-08-25, RequiredDate:  [2013-10-13-->] 2013-10-13 00:00:00, ShippedDate: None, ShipVia: 1, Freight: 29.4600000000, ShipName: Alfreds Futterkiste, ShipAddress: Obere Str. 57, ShipCity: Berlin, ShipRegion: Western Europe, ShipPostalCode: 12209, ShipCountry: Germany, AmountTotal: 1086.00, Country: None, City: None, Ready: True, OrderDetailCount: 3  row: 0x1048ea430  session: 0x1048eae80 - 2022-03-22 06:48:43,075 - logic_logger - INF
 
 ```
 </details>
@@ -529,45 +618,61 @@ Logic Phase:		COMMIT(session=0x109646bb0)   										 - 2022-03-20 06:21:28,327
 &nbsp;
 
 
+**Logic Doc** for scenario: Set Shipped - adjust logic reuse
+   
+We set `Order.ShippedDate`.
+
+This cascades to the Order Details, where it adjusts the `Product.UnitsShipped` and recomputes `UnitsInStock`, as above
+
+> **Key Take-away:** parent references (e.g., `OrderDetail.ShippedDate`) automate ***chain-down*** multi-table transactions.
+
+> **Key Take-away:** Automatic Reuse (_design one, solve many_)
+
+
+
+&nbsp;
+&nbsp;
+
+
 **Rules Used** in Scenario: Set Shipped - adjust logic reuse
 ```
   Customer  
-    1. Derive Customer.OrderCount as Count(<class 'database.models.Order'> Where None)  
-    2. Derive Customer.UnpaidOrderCount as Count(<class 'database.models.Order'> Where <function declare_logic.<locals>.<lambda> at 0x108f5d280>)  
-    3. Derive Customer.Balance as Sum(Order.AmountTotal Where <function declare_logic.<locals>.<lambda> at 0x108f528b0>)  
+    1. Derive Customer.UnpaidOrderCount as Count(<class 'database.models.Order'> Where <function declare_logic.<locals>.<lambda> at 0x1041fc310>)  
+    2. Derive Customer.OrderCount as Count(<class 'database.models.Order'> Where None)  
+    3. Derive Customer.Balance as Sum(Order.AmountTotal Where <function declare_logic.<locals>.<lambda> at 0x104125940>)  
   Order  
-    4. Derive Order.AmountTotal as Sum(OrderDetail.Amount Where None)  
-    5. Derive Order.OrderDetailCount as Count(<class 'database.models.OrderDetail'> Where None)  
-    6. RowEvent Order.congratulate_sales_rep()   
+    4. Derive Order.OrderDetailCount as Count(<class 'database.models.OrderDetail'> Where None)  
+    5. RowEvent Order.congratulate_sales_rep()   
+    6. Derive Order.AmountTotal as Sum(OrderDetail.Amount Where None)  
   OrderDetail  
     7. Derive OrderDetail.ShippedDate as Formula (2): row.Order.ShippedDate  
   Product  
-    8. Derive Product.UnitsShipped as Sum(OrderDetail.Quantity Where <function declare_logic.<locals>.<lambda> at 0x108f5d160>)  
+    8. Derive Product.UnitsShipped as Sum(OrderDetail.Quantity Where <function declare_logic.<locals>.<lambda> at 0x1041fc1f0>)  
     9. Derive Product.UnitsInStock as Formula (1): <function>  
   
 ```
 **Logic Log** in Scenario: Set Shipped - adjust logic reuse
 ```
-Logic Phase:		ROW LOGIC(session=0x10964fe80) (sqlalchemy before_flush)			 - 2022-03-20 06:21:28,420 - logic_logger - INF
-..Order[10643] {Update - client} Id: 10643, CustomerId: ALFKI, EmployeeId: 6, OrderDate: 2013-08-25, RequiredDate: 2013-10-13, ShippedDate:  [None-->] 2013-10-13, ShipVia: 1, Freight: 29.4600000000, ShipName: Alfreds Futterkiste, ShipAddress: Obere Str. 57, ShipCity: Berlin, ShipRegion: Western Europe, ShipPostalCode: 12209, ShipCountry: Germany, AmountTotal: 1086.00, Country: None, City: None, Ready: True, OrderDetailCount: 3  row: 0x10960d4f0  session: 0x10964fe80 - 2022-03-20 06:21:28,421 - logic_logger - INF
-....Customer[ALFKI] {Update - Adjusting Customer: Balance, UnpaidOrderCount} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance:  [2102.0000000000-->] 1016.0000000000, CreditLimit: 2300.0000000000, OrderCount: 15, UnpaidOrderCount:  [10-->] 9  row: 0x1095ab1c0  session: 0x10964fe80 - 2022-03-20 06:21:28,422 - logic_logger - INF
-....OrderDetail[1040] {Update - Cascading Order.ShippedDate (,...)} Id: 1040, OrderId: 10643, ProductId: 28, UnitPrice: 45.6000000000, Quantity: 15, Discount: 0.25, Amount: 684.0000000000, ShippedDate: None  row: 0x109592f10  session: 0x10964fe80 - 2022-03-20 06:21:28,425 - logic_logger - INF
-....OrderDetail[1040] {Prune Formula: Amount [['UnitPrice', 'Quantity']]} Id: 1040, OrderId: 10643, ProductId: 28, UnitPrice: 45.6000000000, Quantity: 15, Discount: 0.25, Amount: 684.0000000000, ShippedDate: None  row: 0x109592f10  session: 0x10964fe80 - 2022-03-20 06:21:28,425 - logic_logger - INF
-....OrderDetail[1040] {Formula ShippedDate} Id: 1040, OrderId: 10643, ProductId: 28, UnitPrice: 45.6000000000, Quantity: 15, Discount: 0.25, Amount: 684.0000000000, ShippedDate:  [None-->] 2013-10-13  row: 0x109592f10  session: 0x10964fe80 - 2022-03-20 06:21:28,425 - logic_logger - INF
-......Product[28] {Update - Adjusting Product: UnitsShipped} Id: 28, ProductName: Rössle Sauerkraut, SupplierId: 12, CategoryId: 7, QuantityPerUnit: 25 - 825 g cans, UnitPrice: 45.6000000000, UnitsInStock: 26, UnitsOnOrder: 0, ReorderLevel: 0, Discontinued: 1, UnitsShipped:  [0-->] -15  row: 0x10964f340  session: 0x10964fe80 - 2022-03-20 06:21:28,426 - logic_logger - INF
-......Product[28] {Formula UnitsInStock} Id: 28, ProductName: Rössle Sauerkraut, SupplierId: 12, CategoryId: 7, QuantityPerUnit: 25 - 825 g cans, UnitPrice: 45.6000000000, UnitsInStock:  [26-->] 41, UnitsOnOrder: 0, ReorderLevel: 0, Discontinued: 1, UnitsShipped:  [0-->] -15  row: 0x10964f340  session: 0x10964fe80 - 2022-03-20 06:21:28,427 - logic_logger - INF
-....OrderDetail[1041] {Update - Cascading Order.ShippedDate (,...)} Id: 1041, OrderId: 10643, ProductId: 39, UnitPrice: 18.0000000000, Quantity: 21, Discount: 0.25, Amount: 378.0000000000, ShippedDate: None  row: 0x109592c40  session: 0x10964fe80 - 2022-03-20 06:21:28,428 - logic_logger - INF
-....OrderDetail[1041] {Prune Formula: Amount [['UnitPrice', 'Quantity']]} Id: 1041, OrderId: 10643, ProductId: 39, UnitPrice: 18.0000000000, Quantity: 21, Discount: 0.25, Amount: 378.0000000000, ShippedDate: None  row: 0x109592c40  session: 0x10964fe80 - 2022-03-20 06:21:28,428 - logic_logger - INF
-....OrderDetail[1041] {Formula ShippedDate} Id: 1041, OrderId: 10643, ProductId: 39, UnitPrice: 18.0000000000, Quantity: 21, Discount: 0.25, Amount: 378.0000000000, ShippedDate:  [None-->] 2013-10-13  row: 0x109592c40  session: 0x10964fe80 - 2022-03-20 06:21:28,428 - logic_logger - INF
-......Product[39] {Update - Adjusting Product: UnitsShipped} Id: 39, ProductName: Chartreuse verte, SupplierId: 18, CategoryId: 1, QuantityPerUnit: 750 cc per bottle, UnitPrice: 18.0000000000, UnitsInStock: 69, UnitsOnOrder: 0, ReorderLevel: 5, Discontinued: 0, UnitsShipped:  [0-->] -21  row: 0x1095925b0  session: 0x10964fe80 - 2022-03-20 06:21:28,430 - logic_logger - INF
-......Product[39] {Formula UnitsInStock} Id: 39, ProductName: Chartreuse verte, SupplierId: 18, CategoryId: 1, QuantityPerUnit: 750 cc per bottle, UnitPrice: 18.0000000000, UnitsInStock:  [69-->] 90, UnitsOnOrder: 0, ReorderLevel: 5, Discontinued: 0, UnitsShipped:  [0-->] -21  row: 0x1095925b0  session: 0x10964fe80 - 2022-03-20 06:21:28,430 - logic_logger - INF
-....OrderDetail[1042] {Update - Cascading Order.ShippedDate (,...)} Id: 1042, OrderId: 10643, ProductId: 46, UnitPrice: 12.0000000000, Quantity: 2, Discount: 0.25, Amount: 24.0000000000, ShippedDate: None  row: 0x109592e80  session: 0x10964fe80 - 2022-03-20 06:21:28,431 - logic_logger - INF
-....OrderDetail[1042] {Prune Formula: Amount [['UnitPrice', 'Quantity']]} Id: 1042, OrderId: 10643, ProductId: 46, UnitPrice: 12.0000000000, Quantity: 2, Discount: 0.25, Amount: 24.0000000000, ShippedDate: None  row: 0x109592e80  session: 0x10964fe80 - 2022-03-20 06:21:28,431 - logic_logger - INF
-....OrderDetail[1042] {Formula ShippedDate} Id: 1042, OrderId: 10643, ProductId: 46, UnitPrice: 12.0000000000, Quantity: 2, Discount: 0.25, Amount: 24.0000000000, ShippedDate:  [None-->] 2013-10-13  row: 0x109592e80  session: 0x10964fe80 - 2022-03-20 06:21:28,432 - logic_logger - INF
-......Product[46] {Update - Adjusting Product: UnitsShipped} Id: 46, ProductName: Spegesild, SupplierId: 21, CategoryId: 8, QuantityPerUnit: 4 - 450 g glasses, UnitPrice: 12.0000000000, UnitsInStock: 95, UnitsOnOrder: 0, ReorderLevel: 0, Discontinued: 0, UnitsShipped:  [0-->] -2  row: 0x109592580  session: 0x10964fe80 - 2022-03-20 06:21:28,433 - logic_logger - INF
-......Product[46] {Formula UnitsInStock} Id: 46, ProductName: Spegesild, SupplierId: 21, CategoryId: 8, QuantityPerUnit: 4 - 450 g glasses, UnitPrice: 12.0000000000, UnitsInStock:  [95-->] 97, UnitsOnOrder: 0, ReorderLevel: 0, Discontinued: 0, UnitsShipped:  [0-->] -2  row: 0x109592580  session: 0x10964fe80 - 2022-03-20 06:21:28,433 - logic_logger - INF
-Logic Phase:		COMMIT(session=0x10964fe80)   										 - 2022-03-20 06:21:28,434 - logic_logger - INF
-..Order[10643] {Commit Event} Id: 10643, CustomerId: ALFKI, EmployeeId: 6, OrderDate: 2013-08-25, RequiredDate: 2013-10-13, ShippedDate:  [None-->] 2013-10-13, ShipVia: 1, Freight: 29.4600000000, ShipName: Alfreds Futterkiste, ShipAddress: Obere Str. 57, ShipCity: Berlin, ShipRegion: Western Europe, ShipPostalCode: 12209, ShipCountry: Germany, AmountTotal: 1086.00, Country: None, City: None, Ready: True, OrderDetailCount: 3  row: 0x10960d4f0  session: 0x10964fe80 - 2022-03-20 06:21:28,434 - logic_logger - INF
+Logic Phase:		ROW LOGIC(session=0x1048edc10) (sqlalchemy before_flush)			 - 2022-03-22 06:48:43,178 - logic_logger - INF
+..Order[10643] {Update - client} Id: 10643, CustomerId: ALFKI, EmployeeId: 6, OrderDate: 2013-08-25, RequiredDate: 2013-10-13, ShippedDate:  [None-->] 2013-10-13, ShipVia: 1, Freight: 29.4600000000, ShipName: Alfreds Futterkiste, ShipAddress: Obere Str. 57, ShipCity: Berlin, ShipRegion: Western Europe, ShipPostalCode: 12209, ShipCountry: Germany, AmountTotal: 1086.00, Country: None, City: None, Ready: True, OrderDetailCount: 3  row: 0x1048ba850  session: 0x1048edc10 - 2022-03-22 06:48:43,179 - logic_logger - INF
+....Customer[ALFKI] {Update - Adjusting Customer: Balance, UnpaidOrderCount} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance:  [2102.0000000000-->] 1016.0000000000, CreditLimit: 2300.0000000000, OrderCount: 15, UnpaidOrderCount:  [10-->] 9  row: 0x1048bab80  session: 0x1048edc10 - 2022-03-22 06:48:43,180 - logic_logger - INF
+....OrderDetail[1040] {Update - Cascading Order.ShippedDate (,...)} Id: 1040, OrderId: 10643, ProductId: 28, UnitPrice: 45.6000000000, Quantity: 15, Discount: 0.25, Amount: 684.0000000000, ShippedDate: None  row: 0x104842340  session: 0x1048edc10 - 2022-03-22 06:48:43,182 - logic_logger - INF
+....OrderDetail[1040] {Prune Formula: Amount [['UnitPrice', 'Quantity']]} Id: 1040, OrderId: 10643, ProductId: 28, UnitPrice: 45.6000000000, Quantity: 15, Discount: 0.25, Amount: 684.0000000000, ShippedDate: None  row: 0x104842340  session: 0x1048edc10 - 2022-03-22 06:48:43,183 - logic_logger - INF
+....OrderDetail[1040] {Formula ShippedDate} Id: 1040, OrderId: 10643, ProductId: 28, UnitPrice: 45.6000000000, Quantity: 15, Discount: 0.25, Amount: 684.0000000000, ShippedDate:  [None-->] 2013-10-13  row: 0x104842340  session: 0x1048edc10 - 2022-03-22 06:48:43,183 - logic_logger - INF
+......Product[28] {Update - Adjusting Product: UnitsShipped} Id: 28, ProductName: Rössle Sauerkraut, SupplierId: 12, CategoryId: 7, QuantityPerUnit: 25 - 825 g cans, UnitPrice: 45.6000000000, UnitsInStock: 26, UnitsOnOrder: 0, ReorderLevel: 0, Discontinued: 1, UnitsShipped:  [0-->] -15  row: 0x1048baaf0  session: 0x1048edc10 - 2022-03-22 06:48:43,184 - logic_logger - INF
+......Product[28] {Formula UnitsInStock} Id: 28, ProductName: Rössle Sauerkraut, SupplierId: 12, CategoryId: 7, QuantityPerUnit: 25 - 825 g cans, UnitPrice: 45.6000000000, UnitsInStock:  [26-->] 41, UnitsOnOrder: 0, ReorderLevel: 0, Discontinued: 1, UnitsShipped:  [0-->] -15  row: 0x1048baaf0  session: 0x1048edc10 - 2022-03-22 06:48:43,185 - logic_logger - INF
+....OrderDetail[1041] {Update - Cascading Order.ShippedDate (,...)} Id: 1041, OrderId: 10643, ProductId: 39, UnitPrice: 18.0000000000, Quantity: 21, Discount: 0.25, Amount: 378.0000000000, ShippedDate: None  row: 0x104842730  session: 0x1048edc10 - 2022-03-22 06:48:43,186 - logic_logger - INF
+....OrderDetail[1041] {Prune Formula: Amount [['UnitPrice', 'Quantity']]} Id: 1041, OrderId: 10643, ProductId: 39, UnitPrice: 18.0000000000, Quantity: 21, Discount: 0.25, Amount: 378.0000000000, ShippedDate: None  row: 0x104842730  session: 0x1048edc10 - 2022-03-22 06:48:43,186 - logic_logger - INF
+....OrderDetail[1041] {Formula ShippedDate} Id: 1041, OrderId: 10643, ProductId: 39, UnitPrice: 18.0000000000, Quantity: 21, Discount: 0.25, Amount: 378.0000000000, ShippedDate:  [None-->] 2013-10-13  row: 0x104842730  session: 0x1048edc10 - 2022-03-22 06:48:43,186 - logic_logger - INF
+......Product[39] {Update - Adjusting Product: UnitsShipped} Id: 39, ProductName: Chartreuse verte, SupplierId: 18, CategoryId: 1, QuantityPerUnit: 750 cc per bottle, UnitPrice: 18.0000000000, UnitsInStock: 69, UnitsOnOrder: 0, ReorderLevel: 5, Discontinued: 0, UnitsShipped:  [0-->] -21  row: 0x1048baca0  session: 0x1048edc10 - 2022-03-22 06:48:43,188 - logic_logger - INF
+......Product[39] {Formula UnitsInStock} Id: 39, ProductName: Chartreuse verte, SupplierId: 18, CategoryId: 1, QuantityPerUnit: 750 cc per bottle, UnitPrice: 18.0000000000, UnitsInStock:  [69-->] 90, UnitsOnOrder: 0, ReorderLevel: 5, Discontinued: 0, UnitsShipped:  [0-->] -21  row: 0x1048baca0  session: 0x1048edc10 - 2022-03-22 06:48:43,188 - logic_logger - INF
+....OrderDetail[1042] {Update - Cascading Order.ShippedDate (,...)} Id: 1042, OrderId: 10643, ProductId: 46, UnitPrice: 12.0000000000, Quantity: 2, Discount: 0.25, Amount: 24.0000000000, ShippedDate: None  row: 0x104842af0  session: 0x1048edc10 - 2022-03-22 06:48:43,189 - logic_logger - INF
+....OrderDetail[1042] {Prune Formula: Amount [['UnitPrice', 'Quantity']]} Id: 1042, OrderId: 10643, ProductId: 46, UnitPrice: 12.0000000000, Quantity: 2, Discount: 0.25, Amount: 24.0000000000, ShippedDate: None  row: 0x104842af0  session: 0x1048edc10 - 2022-03-22 06:48:43,189 - logic_logger - INF
+....OrderDetail[1042] {Formula ShippedDate} Id: 1042, OrderId: 10643, ProductId: 46, UnitPrice: 12.0000000000, Quantity: 2, Discount: 0.25, Amount: 24.0000000000, ShippedDate:  [None-->] 2013-10-13  row: 0x104842af0  session: 0x1048edc10 - 2022-03-22 06:48:43,190 - logic_logger - INF
+......Product[46] {Update - Adjusting Product: UnitsShipped} Id: 46, ProductName: Spegesild, SupplierId: 21, CategoryId: 8, QuantityPerUnit: 4 - 450 g glasses, UnitPrice: 12.0000000000, UnitsInStock: 95, UnitsOnOrder: 0, ReorderLevel: 0, Discontinued: 0, UnitsShipped:  [0-->] -2  row: 0x1048bac70  session: 0x1048edc10 - 2022-03-22 06:48:43,191 - logic_logger - INF
+......Product[46] {Formula UnitsInStock} Id: 46, ProductName: Spegesild, SupplierId: 21, CategoryId: 8, QuantityPerUnit: 4 - 450 g glasses, UnitPrice: 12.0000000000, UnitsInStock:  [95-->] 97, UnitsOnOrder: 0, ReorderLevel: 0, Discontinued: 0, UnitsShipped:  [0-->] -2  row: 0x1048bac70  session: 0x1048edc10 - 2022-03-22 06:48:43,191 - logic_logger - INF
+Logic Phase:		COMMIT(session=0x1048edc10)   										 - 2022-03-22 06:48:43,192 - logic_logger - INF
+..Order[10643] {Commit Event} Id: 10643, CustomerId: ALFKI, EmployeeId: 6, OrderDate: 2013-08-25, RequiredDate: 2013-10-13, ShippedDate:  [None-->] 2013-10-13, ShipVia: 1, Freight: 29.4600000000, ShipName: Alfreds Futterkiste, ShipAddress: Obere Str. 57, ShipCity: Berlin, ShipRegion: Western Europe, ShipPostalCode: 12209, ShipCountry: Germany, AmountTotal: 1086.00, Country: None, City: None, Ready: True, OrderDetailCount: 3  row: 0x1048ba850  session: 0x1048edc10 - 2022-03-22 06:48:43,193 - logic_logger - INF
 
 ```
 </details>
@@ -587,45 +692,56 @@ Logic Phase:		COMMIT(session=0x10964fe80)   										 - 2022-03-20 06:21:28,434
 &nbsp;
 
 
+**Logic Doc** for scenario: Reset Shipped - adjust logic reuse
+   
+Same logic as above.
+
+> **Key Take-away:** Automatic Reuse (_design one, solve many_)
+
+
+&nbsp;
+&nbsp;
+
+
 **Rules Used** in Scenario: Reset Shipped - adjust logic reuse
 ```
   Customer  
-    1. Derive Customer.OrderCount as Count(<class 'database.models.Order'> Where None)  
-    2. Derive Customer.UnpaidOrderCount as Count(<class 'database.models.Order'> Where <function declare_logic.<locals>.<lambda> at 0x108f5d280>)  
-    3. Derive Customer.Balance as Sum(Order.AmountTotal Where <function declare_logic.<locals>.<lambda> at 0x108f528b0>)  
+    1. Derive Customer.UnpaidOrderCount as Count(<class 'database.models.Order'> Where <function declare_logic.<locals>.<lambda> at 0x1041fc310>)  
+    2. Derive Customer.OrderCount as Count(<class 'database.models.Order'> Where None)  
+    3. Derive Customer.Balance as Sum(Order.AmountTotal Where <function declare_logic.<locals>.<lambda> at 0x104125940>)  
   Order  
-    4. Derive Order.AmountTotal as Sum(OrderDetail.Amount Where None)  
-    5. Derive Order.OrderDetailCount as Count(<class 'database.models.OrderDetail'> Where None)  
-    6. RowEvent Order.congratulate_sales_rep()   
+    4. Derive Order.OrderDetailCount as Count(<class 'database.models.OrderDetail'> Where None)  
+    5. RowEvent Order.congratulate_sales_rep()   
+    6. Derive Order.AmountTotal as Sum(OrderDetail.Amount Where None)  
   OrderDetail  
     7. Derive OrderDetail.ShippedDate as Formula (2): row.Order.ShippedDate  
   Product  
-    8. Derive Product.UnitsShipped as Sum(OrderDetail.Quantity Where <function declare_logic.<locals>.<lambda> at 0x108f5d160>)  
+    8. Derive Product.UnitsShipped as Sum(OrderDetail.Quantity Where <function declare_logic.<locals>.<lambda> at 0x1041fc1f0>)  
     9. Derive Product.UnitsInStock as Formula (1): <function>  
   
 ```
 **Logic Log** in Scenario: Reset Shipped - adjust logic reuse
 ```
-Logic Phase:		ROW LOGIC(session=0x1096466d0) (sqlalchemy before_flush)			 - 2022-03-20 06:21:28,530 - logic_logger - INF
-..Order[10643] {Update - client} Id: 10643, CustomerId: ALFKI, EmployeeId: 6, OrderDate: 2013-08-25, RequiredDate: 2013-10-13, ShippedDate:  [2013-10-13-->] None, ShipVia: 1, Freight: 29.4600000000, ShipName: Alfreds Futterkiste, ShipAddress: Obere Str. 57, ShipCity: Berlin, ShipRegion: Western Europe, ShipPostalCode: 12209, ShipCountry: Germany, AmountTotal: 1086.00, Country: None, City: None, Ready: True, OrderDetailCount: 3  row: 0x10956dac0  session: 0x1096466d0 - 2022-03-20 06:21:28,530 - logic_logger - INF
-....Customer[ALFKI] {Update - Adjusting Customer: Balance, UnpaidOrderCount} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance:  [1016.0000000000-->] 2102.0000000000, CreditLimit: 2300.0000000000, OrderCount: 15, UnpaidOrderCount:  [9-->] 10  row: 0x1096e45b0  session: 0x1096466d0 - 2022-03-20 06:21:28,531 - logic_logger - INF
-....OrderDetail[1040] {Update - Cascading Order.ShippedDate (,...)} Id: 1040, OrderId: 10643, ProductId: 28, UnitPrice: 45.6000000000, Quantity: 15, Discount: 0.25, Amount: 684.0000000000, ShippedDate: 2013-10-13  row: 0x1096e4cd0  session: 0x1096466d0 - 2022-03-20 06:21:28,533 - logic_logger - INF
-....OrderDetail[1040] {Prune Formula: Amount [['UnitPrice', 'Quantity']]} Id: 1040, OrderId: 10643, ProductId: 28, UnitPrice: 45.6000000000, Quantity: 15, Discount: 0.25, Amount: 684.0000000000, ShippedDate: 2013-10-13  row: 0x1096e4cd0  session: 0x1096466d0 - 2022-03-20 06:21:28,534 - logic_logger - INF
-....OrderDetail[1040] {Formula ShippedDate} Id: 1040, OrderId: 10643, ProductId: 28, UnitPrice: 45.6000000000, Quantity: 15, Discount: 0.25, Amount: 684.0000000000, ShippedDate:  [2013-10-13-->] None  row: 0x1096e4cd0  session: 0x1096466d0 - 2022-03-20 06:21:28,534 - logic_logger - INF
-......Product[28] {Update - Adjusting Product: UnitsShipped} Id: 28, ProductName: Rössle Sauerkraut, SupplierId: 12, CategoryId: 7, QuantityPerUnit: 25 - 825 g cans, UnitPrice: 45.6000000000, UnitsInStock: 41, UnitsOnOrder: 0, ReorderLevel: 0, Discontinued: 1, UnitsShipped:  [-15-->] 0  row: 0x109646040  session: 0x1096466d0 - 2022-03-20 06:21:28,535 - logic_logger - INF
-......Product[28] {Formula UnitsInStock} Id: 28, ProductName: Rössle Sauerkraut, SupplierId: 12, CategoryId: 7, QuantityPerUnit: 25 - 825 g cans, UnitPrice: 45.6000000000, UnitsInStock:  [41-->] 26, UnitsOnOrder: 0, ReorderLevel: 0, Discontinued: 1, UnitsShipped:  [-15-->] 0  row: 0x109646040  session: 0x1096466d0 - 2022-03-20 06:21:28,535 - logic_logger - INF
-....OrderDetail[1041] {Update - Cascading Order.ShippedDate (,...)} Id: 1041, OrderId: 10643, ProductId: 39, UnitPrice: 18.0000000000, Quantity: 21, Discount: 0.25, Amount: 378.0000000000, ShippedDate: 2013-10-13  row: 0x1096e4d30  session: 0x1096466d0 - 2022-03-20 06:21:28,536 - logic_logger - INF
-....OrderDetail[1041] {Prune Formula: Amount [['UnitPrice', 'Quantity']]} Id: 1041, OrderId: 10643, ProductId: 39, UnitPrice: 18.0000000000, Quantity: 21, Discount: 0.25, Amount: 378.0000000000, ShippedDate: 2013-10-13  row: 0x1096e4d30  session: 0x1096466d0 - 2022-03-20 06:21:28,537 - logic_logger - INF
-....OrderDetail[1041] {Formula ShippedDate} Id: 1041, OrderId: 10643, ProductId: 39, UnitPrice: 18.0000000000, Quantity: 21, Discount: 0.25, Amount: 378.0000000000, ShippedDate:  [2013-10-13-->] None  row: 0x1096e4d30  session: 0x1096466d0 - 2022-03-20 06:21:28,537 - logic_logger - INF
-......Product[39] {Update - Adjusting Product: UnitsShipped} Id: 39, ProductName: Chartreuse verte, SupplierId: 18, CategoryId: 1, QuantityPerUnit: 750 cc per bottle, UnitPrice: 18.0000000000, UnitsInStock: 90, UnitsOnOrder: 0, ReorderLevel: 5, Discontinued: 0, UnitsShipped:  [-21-->] 0  row: 0x109624160  session: 0x1096466d0 - 2022-03-20 06:21:28,538 - logic_logger - INF
-......Product[39] {Formula UnitsInStock} Id: 39, ProductName: Chartreuse verte, SupplierId: 18, CategoryId: 1, QuantityPerUnit: 750 cc per bottle, UnitPrice: 18.0000000000, UnitsInStock:  [90-->] 69, UnitsOnOrder: 0, ReorderLevel: 5, Discontinued: 0, UnitsShipped:  [-21-->] 0  row: 0x109624160  session: 0x1096466d0 - 2022-03-20 06:21:28,538 - logic_logger - INF
-....OrderDetail[1042] {Update - Cascading Order.ShippedDate (,...)} Id: 1042, OrderId: 10643, ProductId: 46, UnitPrice: 12.0000000000, Quantity: 2, Discount: 0.25, Amount: 24.0000000000, ShippedDate: 2013-10-13  row: 0x1096e4c70  session: 0x1096466d0 - 2022-03-20 06:21:28,539 - logic_logger - INF
-....OrderDetail[1042] {Prune Formula: Amount [['UnitPrice', 'Quantity']]} Id: 1042, OrderId: 10643, ProductId: 46, UnitPrice: 12.0000000000, Quantity: 2, Discount: 0.25, Amount: 24.0000000000, ShippedDate: 2013-10-13  row: 0x1096e4c70  session: 0x1096466d0 - 2022-03-20 06:21:28,539 - logic_logger - INF
-....OrderDetail[1042] {Formula ShippedDate} Id: 1042, OrderId: 10643, ProductId: 46, UnitPrice: 12.0000000000, Quantity: 2, Discount: 0.25, Amount: 24.0000000000, ShippedDate:  [2013-10-13-->] None  row: 0x1096e4c70  session: 0x1096466d0 - 2022-03-20 06:21:28,540 - logic_logger - INF
-......Product[46] {Update - Adjusting Product: UnitsShipped} Id: 46, ProductName: Spegesild, SupplierId: 21, CategoryId: 8, QuantityPerUnit: 4 - 450 g glasses, UnitPrice: 12.0000000000, UnitsInStock: 97, UnitsOnOrder: 0, ReorderLevel: 0, Discontinued: 0, UnitsShipped:  [-2-->] 0  row: 0x109624610  session: 0x1096466d0 - 2022-03-20 06:21:28,541 - logic_logger - INF
-......Product[46] {Formula UnitsInStock} Id: 46, ProductName: Spegesild, SupplierId: 21, CategoryId: 8, QuantityPerUnit: 4 - 450 g glasses, UnitPrice: 12.0000000000, UnitsInStock:  [97-->] 95, UnitsOnOrder: 0, ReorderLevel: 0, Discontinued: 0, UnitsShipped:  [-2-->] 0  row: 0x109624610  session: 0x1096466d0 - 2022-03-20 06:21:28,541 - logic_logger - INF
-Logic Phase:		COMMIT(session=0x1096466d0)   										 - 2022-03-20 06:21:28,542 - logic_logger - INF
-..Order[10643] {Commit Event} Id: 10643, CustomerId: ALFKI, EmployeeId: 6, OrderDate: 2013-08-25, RequiredDate: 2013-10-13, ShippedDate:  [2013-10-13-->] None, ShipVia: 1, Freight: 29.4600000000, ShipName: Alfreds Futterkiste, ShipAddress: Obere Str. 57, ShipCity: Berlin, ShipRegion: Western Europe, ShipPostalCode: 12209, ShipCountry: Germany, AmountTotal: 1086.00, Country: None, City: None, Ready: True, OrderDetailCount: 3  row: 0x10956dac0  session: 0x1096466d0 - 2022-03-20 06:21:28,542 - logic_logger - INF
+Logic Phase:		ROW LOGIC(session=0x1048ba9a0) (sqlalchemy before_flush)			 - 2022-03-22 06:48:43,291 - logic_logger - INF
+..Order[10643] {Update - client} Id: 10643, CustomerId: ALFKI, EmployeeId: 6, OrderDate: 2013-08-25, RequiredDate: 2013-10-13, ShippedDate:  [2013-10-13-->] None, ShipVia: 1, Freight: 29.4600000000, ShipName: Alfreds Futterkiste, ShipAddress: Obere Str. 57, ShipCity: Berlin, ShipRegion: Western Europe, ShipPostalCode: 12209, ShipCountry: Germany, AmountTotal: 1086.00, Country: None, City: None, Ready: True, OrderDetailCount: 3  row: 0x104856370  session: 0x1048ba9a0 - 2022-03-22 06:48:43,292 - logic_logger - INF
+....Customer[ALFKI] {Update - Adjusting Customer: Balance, UnpaidOrderCount} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance:  [1016.0000000000-->] 2102.0000000000, CreditLimit: 2300.0000000000, OrderCount: 15, UnpaidOrderCount:  [9-->] 10  row: 0x10487fcd0  session: 0x1048ba9a0 - 2022-03-22 06:48:43,293 - logic_logger - INF
+....OrderDetail[1040] {Update - Cascading Order.ShippedDate (,...)} Id: 1040, OrderId: 10643, ProductId: 28, UnitPrice: 45.6000000000, Quantity: 15, Discount: 0.25, Amount: 684.0000000000, ShippedDate: 2013-10-13  row: 0x104985850  session: 0x1048ba9a0 - 2022-03-22 06:48:43,295 - logic_logger - INF
+....OrderDetail[1040] {Prune Formula: Amount [['UnitPrice', 'Quantity']]} Id: 1040, OrderId: 10643, ProductId: 28, UnitPrice: 45.6000000000, Quantity: 15, Discount: 0.25, Amount: 684.0000000000, ShippedDate: 2013-10-13  row: 0x104985850  session: 0x1048ba9a0 - 2022-03-22 06:48:43,295 - logic_logger - INF
+....OrderDetail[1040] {Formula ShippedDate} Id: 1040, OrderId: 10643, ProductId: 28, UnitPrice: 45.6000000000, Quantity: 15, Discount: 0.25, Amount: 684.0000000000, ShippedDate:  [2013-10-13-->] None  row: 0x104985850  session: 0x1048ba9a0 - 2022-03-22 06:48:43,296 - logic_logger - INF
+......Product[28] {Update - Adjusting Product: UnitsShipped} Id: 28, ProductName: Rössle Sauerkraut, SupplierId: 12, CategoryId: 7, QuantityPerUnit: 25 - 825 g cans, UnitPrice: 45.6000000000, UnitsInStock: 41, UnitsOnOrder: 0, ReorderLevel: 0, Discontinued: 1, UnitsShipped:  [-15-->] 0  row: 0x1048baf10  session: 0x1048ba9a0 - 2022-03-22 06:48:43,297 - logic_logger - INF
+......Product[28] {Formula UnitsInStock} Id: 28, ProductName: Rössle Sauerkraut, SupplierId: 12, CategoryId: 7, QuantityPerUnit: 25 - 825 g cans, UnitPrice: 45.6000000000, UnitsInStock:  [41-->] 26, UnitsOnOrder: 0, ReorderLevel: 0, Discontinued: 1, UnitsShipped:  [-15-->] 0  row: 0x1048baf10  session: 0x1048ba9a0 - 2022-03-22 06:48:43,297 - logic_logger - INF
+....OrderDetail[1041] {Update - Cascading Order.ShippedDate (,...)} Id: 1041, OrderId: 10643, ProductId: 39, UnitPrice: 18.0000000000, Quantity: 21, Discount: 0.25, Amount: 378.0000000000, ShippedDate: 2013-10-13  row: 0x1049858b0  session: 0x1048ba9a0 - 2022-03-22 06:48:43,298 - logic_logger - INF
+....OrderDetail[1041] {Prune Formula: Amount [['UnitPrice', 'Quantity']]} Id: 1041, OrderId: 10643, ProductId: 39, UnitPrice: 18.0000000000, Quantity: 21, Discount: 0.25, Amount: 378.0000000000, ShippedDate: 2013-10-13  row: 0x1049858b0  session: 0x1048ba9a0 - 2022-03-22 06:48:43,298 - logic_logger - INF
+....OrderDetail[1041] {Formula ShippedDate} Id: 1041, OrderId: 10643, ProductId: 39, UnitPrice: 18.0000000000, Quantity: 21, Discount: 0.25, Amount: 378.0000000000, ShippedDate:  [2013-10-13-->] None  row: 0x1049858b0  session: 0x1048ba9a0 - 2022-03-22 06:48:43,299 - logic_logger - INF
+......Product[39] {Update - Adjusting Product: UnitsShipped} Id: 39, ProductName: Chartreuse verte, SupplierId: 18, CategoryId: 1, QuantityPerUnit: 750 cc per bottle, UnitPrice: 18.0000000000, UnitsInStock: 90, UnitsOnOrder: 0, ReorderLevel: 5, Discontinued: 0, UnitsShipped:  [-21-->] 0  row: 0x1048ea2b0  session: 0x1048ba9a0 - 2022-03-22 06:48:43,299 - logic_logger - INF
+......Product[39] {Formula UnitsInStock} Id: 39, ProductName: Chartreuse verte, SupplierId: 18, CategoryId: 1, QuantityPerUnit: 750 cc per bottle, UnitPrice: 18.0000000000, UnitsInStock:  [90-->] 69, UnitsOnOrder: 0, ReorderLevel: 5, Discontinued: 0, UnitsShipped:  [-21-->] 0  row: 0x1048ea2b0  session: 0x1048ba9a0 - 2022-03-22 06:48:43,300 - logic_logger - INF
+....OrderDetail[1042] {Update - Cascading Order.ShippedDate (,...)} Id: 1042, OrderId: 10643, ProductId: 46, UnitPrice: 12.0000000000, Quantity: 2, Discount: 0.25, Amount: 24.0000000000, ShippedDate: 2013-10-13  row: 0x1049857f0  session: 0x1048ba9a0 - 2022-03-22 06:48:43,301 - logic_logger - INF
+....OrderDetail[1042] {Prune Formula: Amount [['UnitPrice', 'Quantity']]} Id: 1042, OrderId: 10643, ProductId: 46, UnitPrice: 12.0000000000, Quantity: 2, Discount: 0.25, Amount: 24.0000000000, ShippedDate: 2013-10-13  row: 0x1049857f0  session: 0x1048ba9a0 - 2022-03-22 06:48:43,301 - logic_logger - INF
+....OrderDetail[1042] {Formula ShippedDate} Id: 1042, OrderId: 10643, ProductId: 46, UnitPrice: 12.0000000000, Quantity: 2, Discount: 0.25, Amount: 24.0000000000, ShippedDate:  [2013-10-13-->] None  row: 0x1049857f0  session: 0x1048ba9a0 - 2022-03-22 06:48:43,301 - logic_logger - INF
+......Product[46] {Update - Adjusting Product: UnitsShipped} Id: 46, ProductName: Spegesild, SupplierId: 21, CategoryId: 8, QuantityPerUnit: 4 - 450 g glasses, UnitPrice: 12.0000000000, UnitsInStock: 97, UnitsOnOrder: 0, ReorderLevel: 0, Discontinued: 0, UnitsShipped:  [-2-->] 0  row: 0x1048ea460  session: 0x1048ba9a0 - 2022-03-22 06:48:43,302 - logic_logger - INF
+......Product[46] {Formula UnitsInStock} Id: 46, ProductName: Spegesild, SupplierId: 21, CategoryId: 8, QuantityPerUnit: 4 - 450 g glasses, UnitPrice: 12.0000000000, UnitsInStock:  [97-->] 95, UnitsOnOrder: 0, ReorderLevel: 0, Discontinued: 0, UnitsShipped:  [-2-->] 0  row: 0x1048ea460  session: 0x1048ba9a0 - 2022-03-22 06:48:43,302 - logic_logger - INF
+Logic Phase:		COMMIT(session=0x1048ba9a0)   										 - 2022-03-22 06:48:43,303 - logic_logger - INF
+..Order[10643] {Commit Event} Id: 10643, CustomerId: ALFKI, EmployeeId: 6, OrderDate: 2013-08-25, RequiredDate: 2013-10-13, ShippedDate:  [2013-10-13-->] None, ShipVia: 1, Freight: 29.4600000000, ShipName: Alfreds Futterkiste, ShipAddress: Obere Str. 57, ShipCity: Berlin, ShipRegion: Western Europe, ShipPostalCode: 12209, ShipCountry: Germany, AmountTotal: 1086.00, Country: None, City: None, Ready: True, OrderDetailCount: 3  row: 0x104856370  session: 0x1048ba9a0 - 2022-03-22 06:48:43,304 - logic_logger - INF
 
 ```
 </details>
@@ -638,11 +754,32 @@ Logic Phase:		COMMIT(session=0x1096466d0)   										 - 2022-03-20 06:21:28,542
 &nbsp;
 ### Scenario: Audit Salary Change
 &emsp;  Scenario: Audit Salary Change  
-&emsp;&emsp;    Given Customer Account: VINET  
+&emsp;&emsp;    Given Employee 5 (Buchanan) - Salary 95k  
 &emsp;&emsp;    When Patch Salary to 200k  
 &emsp;&emsp;    Then Salary_audit row created  
 <details>
 <summary>Tests - and their logic - are transparent.. click to see Logic</summary>
+
+
+&nbsp;
+&nbsp;
+
+
+**Logic Doc** for scenario: Audit Salary Change
+   
+Observe the logic log to see that it creates audit rows:
+
+1. **Discouraged:** you can implement auditing with events.  But auditing is a common pattern, and this can lead to repetitive, tedious code
+2. **Preferred:** approaches use [extensible rules](https://github.com/valhuber/LogicBank/wiki/Rule-Extensibility#generic-event-handlers).
+
+Generic event handlers can also reduce redundant code, illustrated in the time/date stamping `handle_all` logic.
+
+This is due to the `copy_row` rule.  Contrast this to the *tedious* `audit_by_event` alternative:
+
+<figure><img src="https://github.com/valhuber/TDD/blob/main/images/salary_change.png?raw=true"></figure>
+
+> **Key Take-away:** use **extensible own rule types** to automate pattern you identify; events can result in tedious amounts of code.
+
 
 
 &nbsp;
@@ -657,18 +794,60 @@ Logic Phase:		COMMIT(session=0x1096466d0)   										 - 2022-03-20 06:21:28,542
 ```
 **Logic Log** in Scenario: Audit Salary Change
 ```
-Logic Phase:		ROW LOGIC(session=0x1096e4610) (sqlalchemy before_flush)			 - 2022-03-20 06:21:28,590 - logic_logger - INF
-..Employee[5] {Update - client} Id: 5, LastName: Buchanan, FirstName: Steven, Title: Sales Manager, TitleOfCourtesy: Mr., BirthDate: 1987-03-04, HireDate: 2025-10-17, Address: 14 Garrett Hill, City: London, Region: British Isles, PostalCode: SW1 8JR, Country: UK, HomePhone: (71) 555-4848, Extension: 3453, Photo: None, Notes: Steven Buchanan graduated from St. Andrews University, Scotland, with a BSC degree in 1976.  Upon joining the company as a sales representative in 1992, he spent 6 months in an orientation program at the Seattle office and then returned to his permanent post in London.  He was promoted to sales manager in March 1993.  Mr. Buchanan has completed the courses 'Successful Telemarketing' and 'International Sales Management.'  He is fluent in French., ReportsTo: 2, PhotoPath: http://accweb/emmployees/buchanan.bmp, IsCommissioned: 0, Salary:  [95000.0000000000-->] 200000, WorksForDepartmentId: 3, OnLoanDepartmentId: None  row: 0x1096e4520  session: 0x1096e4610 - 2022-03-20 06:21:28,590 - logic_logger - INF
-..Employee[5] {BEGIN Copy to: EmployeeAudit} Id: 5, LastName: Buchanan, FirstName: Steven, Title: Sales Manager, TitleOfCourtesy: Mr., BirthDate: 1987-03-04, HireDate: 2025-10-17, Address: 14 Garrett Hill, City: London, Region: British Isles, PostalCode: SW1 8JR, Country: UK, HomePhone: (71) 555-4848, Extension: 3453, Photo: None, Notes: Steven Buchanan graduated from St. Andrews University, Scotland, with a BSC degree in 1976.  Upon joining the company as a sales representative in 1992, he spent 6 months in an orientation program at the Seattle office and then returned to his permanent post in London.  He was promoted to sales manager in March 1993.  Mr. Buchanan has completed the courses 'Successful Telemarketing' and 'International Sales Management.'  He is fluent in French., ReportsTo: 2, PhotoPath: http://accweb/emmployees/buchanan.bmp, IsCommissioned: 0, Salary:  [95000.0000000000-->] 200000, WorksForDepartmentId: 3, OnLoanDepartmentId: None  row: 0x1096e4520  session: 0x1096e4610 - 2022-03-20 06:21:28,592 - logic_logger - INF
-....EmployeeAudit[None] {Insert - Copy EmployeeAudit} Id: None, Title: Sales Manager, Salary: 200000, LastName: Buchanan, FirstName: Steven, EmployeeId: None, CreatedOn: None  row: 0x1096e41f0  session: 0x1096e4610 - 2022-03-20 06:21:28,593 - logic_logger - INF
-....EmployeeAudit[None] {early_row_event_all_classes - handle_all sets 'Created_on} Id: None, Title: Sales Manager, Salary: 200000, LastName: Buchanan, FirstName: Steven, EmployeeId: None, CreatedOn: 2022-03-20 06:21:28.593443  row: 0x1096e41f0  session: 0x1096e4610 - 2022-03-20 06:21:28,593 - logic_logger - INF
-Logic Phase:		COMMIT(session=0x1096e4610)   										 - 2022-03-20 06:21:28,593 - logic_logger - INF
-..Employee[5] {Commit Event} Id: 5, LastName: Buchanan, FirstName: Steven, Title: Sales Manager, TitleOfCourtesy: Mr., BirthDate: 1987-03-04, HireDate: 2025-10-17, Address: 14 Garrett Hill, City: London, Region: British Isles, PostalCode: SW1 8JR, Country: UK, HomePhone: (71) 555-4848, Extension: 3453, Photo: None, Notes: Steven Buchanan graduated from St. Andrews University, Scotland, with a BSC degree in 1976.  Upon joining the company as a sales representative in 1992, he spent 6 months in an orientation program at the Seattle office and then returned to his permanent post in London.  He was promoted to sales manager in March 1993.  Mr. Buchanan has completed the courses 'Successful Telemarketing' and 'International Sales Management.'  He is fluent in French., ReportsTo: 2, PhotoPath: http://accweb/emmployees/buchanan.bmp, IsCommissioned: 0, Salary:  [95000.0000000000-->] 200000, WorksForDepartmentId: 3, OnLoanDepartmentId: None  row: 0x1096e4520  session: 0x1096e4610 - 2022-03-20 06:21:28,594 - logic_logger - INF
+Logic Phase:		ROW LOGIC(session=0x104985c10) (sqlalchemy before_flush)			 - 2022-03-22 06:48:43,353 - logic_logger - INF
+..Employee[5] {Update - client} Id: 5, LastName: Buchanan, FirstName: Steven, Title: Sales Manager, TitleOfCourtesy: Mr., BirthDate: 1987-03-04, HireDate: 2025-10-17, Address: 14 Garrett Hill, City: London, Region: British Isles, PostalCode: SW1 8JR, Country: UK, HomePhone: (71) 555-4848, Extension: 3453, Photo: None, Notes: Steven Buchanan graduated from St. Andrews University, Scotland, with a BSC degree in 1976.  Upon joining the company as a sales representative in 1992, he spent 6 months in an orientation program at the Seattle office and then returned to his permanent post in London.  He was promoted to sales manager in March 1993.  Mr. Buchanan has completed the courses 'Successful Telemarketing' and 'International Sales Management.'  He is fluent in French., ReportsTo: 2, PhotoPath: http://accweb/emmployees/buchanan.bmp, IsCommissioned: 0, Salary:  [95000.0000000000-->] 200000, WorksForDepartmentId: 3, OnLoanDepartmentId: None  row: 0x1049859a0  session: 0x104985c10 - 2022-03-22 06:48:43,353 - logic_logger - INF
+..Employee[5] {BEGIN Copy to: EmployeeAudit} Id: 5, LastName: Buchanan, FirstName: Steven, Title: Sales Manager, TitleOfCourtesy: Mr., BirthDate: 1987-03-04, HireDate: 2025-10-17, Address: 14 Garrett Hill, City: London, Region: British Isles, PostalCode: SW1 8JR, Country: UK, HomePhone: (71) 555-4848, Extension: 3453, Photo: None, Notes: Steven Buchanan graduated from St. Andrews University, Scotland, with a BSC degree in 1976.  Upon joining the company as a sales representative in 1992, he spent 6 months in an orientation program at the Seattle office and then returned to his permanent post in London.  He was promoted to sales manager in March 1993.  Mr. Buchanan has completed the courses 'Successful Telemarketing' and 'International Sales Management.'  He is fluent in French., ReportsTo: 2, PhotoPath: http://accweb/emmployees/buchanan.bmp, IsCommissioned: 0, Salary:  [95000.0000000000-->] 200000, WorksForDepartmentId: 3, OnLoanDepartmentId: None  row: 0x1049859a0  session: 0x104985c10 - 2022-03-22 06:48:43,355 - logic_logger - INF
+....EmployeeAudit[None] {Insert - Copy EmployeeAudit} Id: None, Title: Sales Manager, Salary: 200000, LastName: Buchanan, FirstName: Steven, EmployeeId: None, CreatedOn: None  row: 0x104985dc0  session: 0x104985c10 - 2022-03-22 06:48:43,356 - logic_logger - INF
+....EmployeeAudit[None] {early_row_event_all_classes - handle_all sets 'Created_on} Id: None, Title: Sales Manager, Salary: 200000, LastName: Buchanan, FirstName: Steven, EmployeeId: None, CreatedOn: 2022-03-22 06:48:43.356333  row: 0x104985dc0  session: 0x104985c10 - 2022-03-22 06:48:43,356 - logic_logger - INF
+Logic Phase:		COMMIT(session=0x104985c10)   										 - 2022-03-22 06:48:43,356 - logic_logger - INF
+..Employee[5] {Commit Event} Id: 5, LastName: Buchanan, FirstName: Steven, Title: Sales Manager, TitleOfCourtesy: Mr., BirthDate: 1987-03-04, HireDate: 2025-10-17, Address: 14 Garrett Hill, City: London, Region: British Isles, PostalCode: SW1 8JR, Country: UK, HomePhone: (71) 555-4848, Extension: 3453, Photo: None, Notes: Steven Buchanan graduated from St. Andrews University, Scotland, with a BSC degree in 1976.  Upon joining the company as a sales representative in 1992, he spent 6 months in an orientation program at the Seattle office and then returned to his permanent post in London.  He was promoted to sales manager in March 1993.  Mr. Buchanan has completed the courses 'Successful Telemarketing' and 'International Sales Management.'  He is fluent in French., ReportsTo: 2, PhotoPath: http://accweb/emmployees/buchanan.bmp, IsCommissioned: 0, Salary:  [95000.0000000000-->] 200000, WorksForDepartmentId: 3, OnLoanDepartmentId: None  row: 0x1049859a0  session: 0x104985c10 - 2022-03-22 06:48:43,357 - logic_logger - INF
+
+```
+</details>
+  
+&nbsp;
+&nbsp;
+### Scenario: Raise Must be Meaningful
+&emsp;  Scenario: Raise Must be Meaningful  
+&emsp;&emsp;    Given Employee 5 (Buchanan) - Salary 95k  
+&emsp;&emsp;    When Patch Salary to 96k  
+&emsp;&emsp;    Then Reject - Raise too small  
+<details>
+<summary>Tests - and their logic - are transparent.. click to see Logic</summary>
+
+
+&nbsp;
+&nbsp;
+
+
+**Logic Doc** for scenario: Raise Must be Meaningful
+   
+Observe the use of `old_row
+`
+> **Key Take-away:** State Transsition Logic enabled per `old_row`
+
+
+
+&nbsp;
+&nbsp;
+
+
+**Rules Used** in Scenario: Raise Must be Meaningful
+```
+  Employee  
+    1. Constraint Function: <function declare_logic.<locals>.raise_over_20_percent at 0x1041fca60>   
+  
+```
+**Logic Log** in Scenario: Raise Must be Meaningful
+```
+Logic Phase:		ROW LOGIC(session=0x1049e2df0) (sqlalchemy before_flush)			 - 2022-03-22 06:48:43,531 - logic_logger - INF
+..Employee[5] {Update - client} Id: 5, LastName: Buchanan, FirstName: Steven, Title: Sales Manager, TitleOfCourtesy: Mr., BirthDate: 1987-03-04, HireDate: 2025-10-17, Address: 14 Garrett Hill, City: London, Region: British Isles, PostalCode: SW1 8JR, Country: UK, HomePhone: (71) 555-4848, Extension: 3453, Photo: None, Notes: Steven Buchanan graduated from St. Andrews University, Scotland, with a BSC degree in 1976.  Upon joining the company as a sales representative in 1992, he spent 6 months in an orientation program at the Seattle office and then returned to his permanent post in London.  He was promoted to sales manager in March 1993.  Mr. Buchanan has completed the courses 'Successful Telemarketing' and 'International Sales Management.'  He is fluent in French., ReportsTo: 2, PhotoPath: http://accweb/emmployees/buchanan.bmp, IsCommissioned: 0, Salary:  [95000.0000000000-->] 96000, WorksForDepartmentId: 3, OnLoanDepartmentId: None  row: 0x1049852e0  session: 0x1049e2df0 - 2022-03-22 06:48:43,532 - logic_logger - INF
+..Employee[5] {Constraint Failure: Buchanan needs a more meaningful raise} Id: 5, LastName: Buchanan, FirstName: Steven, Title: Sales Manager, TitleOfCourtesy: Mr., BirthDate: 1987-03-04, HireDate: 2025-10-17, Address: 14 Garrett Hill, City: London, Region: British Isles, PostalCode: SW1 8JR, Country: UK, HomePhone: (71) 555-4848, Extension: 3453, Photo: None, Notes: Steven Buchanan graduated from St. Andrews University, Scotland, with a BSC degree in 1976.  Upon joining the company as a sales representative in 1992, he spent 6 months in an orientation program at the Seattle office and then returned to his permanent post in London.  He was promoted to sales manager in March 1993.  Mr. Buchanan has completed the courses 'Successful Telemarketing' and 'International Sales Management.'  He is fluent in French., ReportsTo: 2, PhotoPath: http://accweb/emmployees/buchanan.bmp, IsCommissioned: 0, Salary:  [95000.0000000000-->] 96000, WorksForDepartmentId: 3, OnLoanDepartmentId: None  row: 0x1049852e0  session: 0x1049e2df0 - 2022-03-22 06:48:43,533 - logic_logger - INF
 
 ```
 </details>
   
 4 features passed, 0 failed, 0 skipped  
-10 scenarios passed, 0 failed, 0 skipped  
-34 steps passed, 0 failed, 0 skipped, 0 undefined  
-Took 0m0.809s  
+11 scenarios passed, 0 failed, 0 skipped  
+37 steps passed, 0 failed, 0 skipped, 0 undefined  
+Took 0m0.830s  

@@ -1,14 +1,16 @@
 # Automation: Agile, TDD Process
 
-This project uses the sample app of [API Logic Server](https://github.com/valhuber/ApiLogicServer/blob/main/README.md) to illustrate:
+This project uses the sample app of [API Logic Server](https://github.com/valhuber/ApiLogicServer/blob/main/README.md) to illustrate how Extensible Automation, coupled with an Agile (TDD) Process, can improve Time to Market and Reduce Risk:
+
+<figure><img src="https://github.com/valhuber/TDD/blob/main/images/introduction.png?raw=true"></figure>
   
-1. **Rapid project creation and customization:** using API Logic Server, for 1-command creation of projects that provide User Interfaces and APIs from a database.  Runnng screens are an excellent way to engage business user collaboration.
+1. **Instant App:** API Logic Server creates an Admin App (and underlying API) with a single command
 
-1. **Logic Automation:** using spreadsheet-like rules to dramatically reduce backend code, and make logic transparent to the team.
+1. **Collaboration:** the app drives collaboration, resulting in Design Specifications that are automated as executable rules.   These can be easily altered as further collaboration uncovers clarifications.
 
-1. **Transparent TDD Testing:** using [behave](https://behave.readthedocs.io/en/stable/tutorial.html) (a [TDD](http://dannorth.net/introducing-bdd/) framework) for defining systems, to promote Agile collaboration with business users.  You define Features (aka Stories) and Scenarios (aka tests) in `behave`, with underlying Python test implementations.
+1. **Iteration:** the Design Specifications translate directly into Rules, automated in API Logic Server.
 
-2. **Transparent Test / Logic Tracing:** further promote Agile collaboration, by making logic transparent and integrated with Testing, in this generated `readme.md` (see the [TDD Report,](#tdd-report) at end).
+2. **Transparency:** the [TDD Report](#tdd-report) captures the Features (Stories) and Scenarios (tests) to document the functionality of the system, and confirm its operation.  The report includes the underlying Rules, increasing transparency to the implementation level.
 
   
 &nbsp;&nbsp;
