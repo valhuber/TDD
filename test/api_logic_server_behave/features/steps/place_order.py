@@ -31,7 +31,7 @@ def step_impl(context):
 
     <figure><img src="https://github.com/valhuber/TDD/blob/main/images/declare-logic.png?raw=true"></figure>
 
-    > **Key Take-away:** sum/count aggregates (e.g., `Customer.Balance`) automate ***chain up*** multi-table transactions.
+    > **Key Takeaway:** sum/count aggregates (e.g., `Customer.Balance`) automate ***chain up*** multi-table transactions.
 
     Inspect the log for __send mail__. 
 
@@ -177,7 +177,7 @@ def step_impl(context):
     """
     Same constraint as above.
 
-    > **Key Take-away:** Automatic Reuse (_design one, solve many_)
+    > **Key Takeaway:** Automatic Reuse (_design one, solve many_)
     """
     scenario_name = 'Alter Item Qty to exceed credit'
     test_utils.prt(f'\n\n\n{scenario_name} - verify credit check response...\n', scenario_name)
@@ -205,7 +205,7 @@ def step_impl(context):
 
     This is a normal update.  Nothing depends on the columns altered, so this has no effect on the related Customer, Order Details or Products.  Contrast this to the *Cascade Update Test* and the *Custom Service* test, where logic chaining affects related rows.  Only the commit event fires.
 
-    > **Key Take-away:** rule pruning automatically avoids unnecessary SQL overhead.
+    > **Key Takeaway:** rule pruning automatically avoids unnecessary SQL overhead.
 
     """
     scenario_name = 'Alter Required Date - adjust logic pruned'
@@ -242,9 +242,9 @@ def step_impl(context):
 
     This cascades to the Order Details, where it adjusts the `Product.UnitsShipped` and recomputes `UnitsInStock`, as above
 
-    > **Key Take-away:** parent references (e.g., `OrderDetail.ShippedDate`) automate ***chain-down*** multi-table transactions.
+    > **Key Takeaway:** parent references (e.g., `OrderDetail.ShippedDate`) automate ***chain-down*** multi-table transactions.
 
-    > **Key Take-away:** Automatic Reuse (_design one, solve many_)
+    > **Key Takeaway:** Automatic Reuse (_design one, solve many_)
 
     """
     scenario_name = 'Set Shipped - adjust logic reuse'
@@ -283,7 +283,7 @@ def step_impl(context):
     """
     Same logic as above.
 
-    > **Key Take-away:** Automatic Reuse (_design one, solve many_)
+    > **Key Takeaway:** Automatic Reuse (_design one, solve many_)
     """
     scenario_name = 'Reset Shipped - adjust logic reuse'
     test_utils.prt(f'\n\n\n{scenario_name}... observe rules pruned for Order.RequiredDate (2013-10-13) \n\n', scenario_name)

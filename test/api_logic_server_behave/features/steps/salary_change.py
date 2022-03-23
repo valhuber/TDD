@@ -24,7 +24,7 @@ def step_impl(context):
 
     <figure><img src="https://github.com/valhuber/TDD/blob/main/images/salary_change.png?raw=true"></figure>
 
-    > **Key Take-away:** use **extensible own rule types** to automate pattern you identify; events can result in tedious amounts of code.
+    > **Key Takeaway:** use **extensible own rule types** to automate pattern you identify; events can result in tedious amounts of code.
 
     """
     scenario_name = 'Audit Salary Change'
@@ -76,7 +76,7 @@ def step_impl(context):
     """
     Observe the use of `old_row
     `
-    > **Key Take-away:** State Transsition Logic enabled per `old_row`
+    > **Key Takeaway:** State Transsition Logic enabled per `old_row`
 
     """
     scenario_name = 'Raise Must be Meaningful'
