@@ -47,12 +47,12 @@ API Logic Server is used once you have a preliminary database design.  Use your 
 Then (presuming API Logic Server [is installed](https://github.com/valhuber/ApiLogicServer/blob/main/README.md)), create the project with this command, using `venv` based installs:
 
 ```
-ApiLogicServer create db_url= project_name=TDD
+ApiLogicServer create  --db_url= --project_name=TDD
 ```
 
 or, like this, using docker-based installs:
 ```
-ApiLogicServer create-and-run --project_name=/localhost/ApiLogicProject --db_url=
+ApiLogicServer create --db_url= --project_name=/localhost/TDD
 ```
 
 &nbsp;&nbsp;
