@@ -10,7 +10,7 @@ This project  illustrates how [API Logic Server](https://github.com/valhuber/Api
 
 1. **Iteration:** the Design Specifications translate directly into Rules, automated in API Logic Server.
 
-2. **Transparency:** the [TDD Report](#tdd-report) captures the Features (Stories) and Scenarios (tests) to document the functionality of the system, and confirm its operation.  The report includes the underlying Rules, increasing transparency to the implementation level.
+2. **Transparency:** the [**TDD** (Test Driven Development) Report](#tdd-report) captures the Features (Stories) and Scenarios (tests) to document the functionality of the system, as tests that confirm its operation.  The report includes the underlying Rules, increasing transparency to the implementation level.
 
   
 &nbsp;&nbsp;
@@ -68,6 +68,9 @@ You can [customize it](https://github.com/valhuber/ApiLogicServer#admin-app-cust
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/ui-admin/run-admin-app.png?raw=true"></figure>
 
+&nbsp;&nbsp;
+
+>  **Key Takeaway:** Admin App Automation enables collaboration, instantly.
 
 &nbsp;&nbsp;
 
@@ -83,6 +86,10 @@ The [created project is customizable,](https://github.com/valhuber/ApiLogicServe
 
 &nbsp;&nbsp;
 
+>  **Key Takeaway:** automatic API creation, with support for related data, pagination, filtering and sorting.
+
+&nbsp;&nbsp;
+
 ## 2. Collaborate using **Admin App**
 
 As noted above, running screens are an excellent way to engage business user collaboration and ensure the system meets actual user needs.  Such collaboration typically leads in two important directions, as described below.
@@ -93,7 +100,7 @@ As noted above, running screens are an excellent way to engage business user col
 
 You may discover that the data model is incorrect (_"Wait!  Customers have multiple addresses!!"_).  
 
-In a conventional system, this would mean revising the API and App.  However, since these are created instantly through automation, such iterations are trivial.
+In a conventional system, this would mean revising the API and App.  However, since these are created instantly through automation, such iterations are trivial.  Just rebuild.
 
 &nbsp;&nbsp;
 
@@ -113,11 +120,13 @@ For example, see the `place_order.feature`, as tested by the `Bad Order: Custom 
 
 <figure><img src="https://github.com/valhuber/TDD/blob/main/images/scenario.png?raw=true"></figure>
 
+For more on TDD, [see here](https://github.com/valhuber/TDD/wiki/Stories-And-Behaviors).
+
 &nbsp;&nbsp;
 
 #### Add Custom Service
 
-While the automatically-created API is a great start, you may uncover a need for a custom service.  This is easy to add - it's only about 10 lines of Python (`api/customize_api.py`), since the logic (discussed below) is enforced by the underlying data access.  For details, [see here](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#api-customization).
+While the automatically-created API is a great start, you may uncover a need for a custom service.  This is easy to add - it's only about 10 lines of Python (`api/customize_api.py`), since the logic (discussed below) is enforced in the underlying data access.  For details, [see here](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#api-customization).
 
 &nbsp;&nbsp;
 
@@ -125,7 +134,7 @@ While the automatically-created API is a great start, you may uncover a need for
 
 We now choose a scenario (e.g, `Bad Order`), and engage business users for a clear understanding of _check credit_.  This follows a familiar step-wise definition of terms, which we capture in text as shown below.
 
-Note this "cocktail napkin spec" is short, yet clear.  That's because instead of diving unto unecessary technical detail of _how_ (such as pseudoode), it focuses on ***what***.
+Note this "cocktail napkin spec" is short, yet clear.  That's because instead of diving unto unecessary technical detail of _how_ (such as pseudocode), it focuses on ***what***.
 
 <figure><img src="https://github.com/valhuber/TDD/blob/main/images/logic-spec.png?raw=true"></figure>
   
@@ -139,7 +148,7 @@ Business Logic is the heart of the system, enforcing our business policies.  The
 It's generally accepted that such domain-specific logic _must_ require domain-specific code.  The problem is that this is:
 * **slow** (it's often nearly half the system)
 * **opaque** to business users
-* **painful to maintain** - it's no secret that developers hate maintenance, since it's less coding than the "archaeology" of first understanding existing code to understand where to insert the new logic
+* **painful to maintain** - it's no secret that developers hate maintenance, since it's less coding than _"archaeology":_ read the existing code to understand where to insert the new logic
 
 Ideally, our _logic specification is executable._  
 
@@ -167,13 +176,15 @@ Unlike manual code, logic is ***declarative:***
 
 &nbsp;&nbsp;
 
+>  Key Take-away: keep your Logic Specification high level (_what_ not _how_ -- think spreadsheet), and your specification will often map directly to executable rules. 
+
+&nbsp;&nbsp;
+
 ## 6. Code/Run TDD Scenarios
 
-Implement the actual scenarios (tests) in Python (`place_order.tdd`), using annotations (`when`) to match scenarios and implementations.  In this project, the implementation is basically calling APIs to get old data, run transactions, and check results.
+Implement the actual scenarios (tests) in Python (`place_order.py`), using annotations (`@when`) to match scenarios and implementations.  In this project, the implementation is basically calling APIs to get old data, run transactions, and check results.
 
 <figure><img src="https://github.com/valhuber/TDD/blob/main/images/TDD-ide.png?raw=true"></figure>
-
-For more on TDD, [see here](https://github.com/valhuber/TDD/wiki/Stories-And-Behaviors).
 
 Execute the tests using the pre-supplied Launch Configurations (shown at the bottom):
 
@@ -182,10 +193,10 @@ Execute the tests using the pre-supplied Launch Configurations (shown at the bot
 
 The rules fire as transactions are run, and produce files later used in Report Behave Logic (described below): 
 1. `test/api_logic_server_behave/behave.log` - summarizes test success / failure
-2. `api_logic_server_behave/Bad_Order_Custom_Service.log` - [Logic Log output](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python#debugging).
+2. `api_logic_server_behave/scenario_logic_logs/Bad_Order_Custom_Service.log` - [Logic Log output](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python#debugging).
    * The code on line 121 signals the name of Logic Log
-   * Note the Logic Log actually consists of 2 logs:
-      * The first shows each rule firing, including complete old/new row values, with indentation for multi-table chaining
+   * Note the Logic Log actually consists of 2 sections:
+      * The first shows each rule firing, including complete old/new row values, with indentation for `multi-table chaining`
       * The "Rules Fired" summarizes which rules actually fired, representing a _confirmation of our Logic Specification_
 
 >  You can use the debugger to stop in a test and verify results
@@ -198,14 +209,14 @@ This is pretty interesting: a record of all our Features and Scenarios, includin
 
 Ideally, publishing this in a transparent manner (e.g., a wiki accessible via the Browser) would be a great asset to the team.
 
-So, this project provides `report_behave_logic.py` to create a TDD Report, _including logic_, as a wiki file.
+So, this project provides `report_behave_logic.py` to create a TDD Report - _including logic_ - as a wiki file.
 
 To run it, use Launch Configuration `Report Behave Logic`:
 
 1. Reads your current `readme.md` file (text like you are reading now), and
 2. Appends the [TDD Report:](#tdd-report) by processing the files created in step 3c
    1. Reading the `behave.log`, and
-   2. Injecting the `results_when` Logic Log file
+   2. Injecting the `scenario_logic_logs` files
 3. Creates the output report as a wiki file named `report_behave_logic.md`
 
 &nbsp;&nbsp;
@@ -213,69 +224,6 @@ To run it, use Launch Configuration `Report Behave Logic`:
 >  Key Take-away: TDD makes *requirements and tests* transparent; rules make your *logic* transparent; combine them both into the [**TDD Report.**](#tdd-report)
 
 &nbsp;&nbsp;
-
-# Business Agility
-
-<figure><img src="https://github.com/valhuber/TDD/blob/main/images/business-agility.png?raw=true"></figure>
-
-The underlying objective here is to promote _business agilty:_
-
-1. **Working Software, *Now:*** the project creation process creates screens for business user collaboration
-2. **Customer Collaboration:** 
-   * Screen-based collaboration, as noted above
-   * TDD is a transparent process for defining testable behaviors
-   * Logic (unlike code) is *transparent* - business users can read it and collaborate (_"hey, you forgot to add tax"_).
-      * This opens up the opportunity to combine the TDD Report _with a Logic report,_ as described below
-3. **Responding to Change:**
-   * Rebuild the App as requirements are uncovered
-   * Alter logic, utilizing *automatic ordering* to keep things agile
-
-&nbsp;&nbsp;
-
-### Increased Transparency: TDD Report, _with logic_
-
-This project illustrates you can extract the logic from the Logic Log, and insert it into the TDD output:
-1. The TDD Report follows (converted to wiki format)
-
-2. Click the __disclosure icons__ to see the rules actually used, including how they operate on the given scenario
-
-&nbsp;&nbsp;
-
-
-
-&nbsp;
-&nbsp;
-
-
-
-
-&nbsp;
-&nbsp;
-
-
-
-
-&nbsp;
-&nbsp;
-
-
-
-
-&nbsp;
-&nbsp;
-
-
-
-
-&nbsp;
-&nbsp;
-
-
-
-
-&nbsp;
-&nbsp;
-
 
 # TDD Report
 &nbsp;
