@@ -107,15 +107,9 @@ In a conventional system, this would mean revising the API and App.  However, si
 
 &nbsp;&nbsp;
 
-
-#### 2b. Uncover TDD Scenarios
+#### 2b. Define Scenarios in Behave
 
 User Interfaces also spark insight about the Features ("Place Order") and Scenarios ("Check Credit"): _"When the customer places an order, we need to reject it if it exceeds the credit limit"._  Capture these as described below.
-
-
-&nbsp;&nbsp;
-
-## 3. Define Scenarios in Behave
 
 TDD is designed for business user collaboration by making Features and Scenarios transparent.  So, the start of Behave is to define one or more `.feature` files.
 
@@ -127,13 +121,13 @@ For more on TDD, [see here](https://github.com/valhuber/TDD/wiki/Stories-And-Beh
 
 &nbsp;&nbsp;
 
-#### Add Custom Service
+##### Add Custom Service
 
 While the automatically-created API is a great start, you may uncover a need for a custom service.  This is easy to add - it's only about 10 lines of Python (`api/customize_api.py`), since the logic (discussed below) is enforced in the underlying data access.  For details, [see here](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#api-customization).
 
 &nbsp;&nbsp;
 
-## 4. Logic Specification
+#### 2c. Logic Specification
 
 We now choose a scenario (e.g, `Bad Order`), and engage business users for a clear understanding of _check credit_.  This follows a familiar step-wise definition of terms, which we capture in text as shown below.
 
@@ -144,7 +138,7 @@ Note this "cocktail napkin spec" is short, yet clear.  That's because instead of
 
 &nbsp;&nbsp;
 
-## 5. Declare Logic (same as spec)
+## 3a. Declare Logic (same as spec)
 
 Business Logic is the heart of the system, enforcing our business policies.  These consist of multi-table constraints and derivations, and actions such as sending email and messages.  A core TDD objective is to define and test such behavior.
 
@@ -183,7 +177,7 @@ Unlike manual code, logic is ***declarative:***
 
 &nbsp;&nbsp;
 
-## 6. Code/Run TDD Scenarios
+## 3b. Code/Run TDD Scenarios
 
 Implement the actual scenarios (tests) in Python (`place_order.py`), using annotations (`@when`) to match scenarios and implementations.  In this project, the implementation is basically calling APIs to get old data, run transactions, and check results.
 
@@ -206,7 +200,7 @@ The rules fire as transactions are run, and produce files later used in Report B
 
 &nbsp;&nbsp;
 
-## 7. **Create TDD/Logic Report**
+## 4. **Create TDD/Logic Report**
 
 This is pretty interesting: a record of all our Features and Scenarios, including transparent underlying logic.  The problem is that it's buried in some text files inside our project.
 
