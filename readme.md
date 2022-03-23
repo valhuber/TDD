@@ -107,7 +107,7 @@ In a conventional system, this would mean revising the API and App.  However, si
 
 &nbsp;&nbsp;
 
-#### 2b. Define Scenarios in Behave
+#### 2b. Define Behave Scenarios
 
 User Interfaces also spark insight about the Features ("Place Order") and Scenarios ("Check Credit"): _"When the customer places an order, we need to reject it if it exceeds the credit limit"._  Capture these as described below.
 
@@ -138,7 +138,7 @@ Note this "cocktail napkin spec" is short, yet clear.  That's because instead of
 
 &nbsp;&nbsp;
 
-## 3a. Declare Logic (same as spec)
+## 3a. Declare Logic (from spec)
 
 Business Logic is the heart of the system, enforcing our business policies.  These consist of multi-table constraints and derivations, and actions such as sending email and messages.  A core TDD objective is to define and test such behavior.
 
