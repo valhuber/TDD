@@ -4,15 +4,18 @@ This project  illustrates how [API Logic Server](https://github.com/valhuber/Api
 
 <figure><img src="https://github.com/valhuber/TDD/blob/main/images/introduction.png?raw=true"></figure>
   
-1. **Instant App:** API Logic Server creates an Admin App (and underlying API) with a single command
+1. **Instant App:** API Logic Server creates an Admin App (and underlying API) with a single command.
 
-1. **Collaboration:** the app drives collaboration, resulting in Design Specifications that are automated as executable rules.   These can be easily altered as further collaboration uncovers clarifications.
+1. **Customer Collaboration:** the app (Working Software, _Now_) drives collaboration, resulting in *Features* (Stories), *Scenarios* (tests), and *Design Specifications* that define how data is computed, validated, and processed (e.g., issues email or messages, auditing, etc.).
 
-1. **Iteration:** the Design Specifications translate directly into Rules, automated in API Logic Server.
+1. **Iteration:** the Design Specifications often translate directly into ***Executable* Rules,** automated in API Logic Server.    These can be easily altered as further collaboration uncovers clarifications (no archaeology).
 
-2. **Transparency:** the [**TDD** (Test Driven Development) Report](#tdd-report) captures the Features (Stories) and Scenarios (tests) to document the functionality of the system, as tests that confirm its operation.  The report includes the underlying Rules, increasing transparency to the implementation level.
+2. **Transparency:** the [**TDD** (Test Driven Development) Report](#tdd-report) documents the functionality of the system as Features (Stories) and Scenarios (tests) that confirm its operation.  The report includes the underlying Rules, extending transparency to the implementation level.
 
-  
+&nbsp;&nbsp;
+
+>  **Key Takeaway:** automation drives Time to Market, and provides working software rapidly; this drives TDD collaboration to define systems that meet actual needs, reducing requirements risk.
+
 &nbsp;&nbsp;
 
 # Sample Project
