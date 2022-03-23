@@ -14,7 +14,7 @@ This project  illustrates how [API Logic Server](https://github.com/valhuber/Api
 
 &nbsp;&nbsp;
 
->  **Key Takeaway:** automation drives Time to Market, and provides working software rapidly; this drives TDD collaboration to define systems that meet actual needs, reducing requirements risk.
+>  **Key Takeaway:** automation drives Time to Market, and provides working software rapidly; it also drives TDD collaboration to define systems that meet actual needs, reducing requirements risk.
 
 &nbsp;&nbsp;
 
